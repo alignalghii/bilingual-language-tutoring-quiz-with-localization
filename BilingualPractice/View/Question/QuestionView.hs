@@ -14,7 +14,7 @@ questionView :: Int -> Int -> String -> Html
 questionView nth ofAll hu = docTypeHtml $ do
     head $ do
         meta ! charset "UTF-8"
-        link ! rel "icon" ! href "img/favicon.ico"
+        link ! rel "icon" ! href "/img/favicon.ico"
         title "Magyar-angol szó- és mondatgyakorló — Kérdés"
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Kérdés"

@@ -15,8 +15,8 @@ resultView :: [QuestionAnswerMatchView] -> Html
 resultView confer = docTypeHtml $ do
     head $ do
         meta ! charset "UTF-8"
-        link ! rel "icon" ! href "img/favicon.ico"
-        link ! rel "stylesheet" ! href "style/table.css"
+        link ! rel "icon" ! href "/img/favicon.ico"
+        link ! rel "stylesheet" ! href "/style/table.css"
         title "Magyar-angol szó- és mondatgyakorló — Eredményhirdetés"
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Eredményhirdetés"

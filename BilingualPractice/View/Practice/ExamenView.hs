@@ -11,8 +11,8 @@ examenView :: Html
 examenView = docTypeHtml $ do
     head $ do
         meta ! charset "UTF-8"
-        link ! rel "icon" ! href "img/favicon.ico"
-        link ! rel "stylesheet" ! href "style/form.css"
+        link ! rel "icon" ! href "/img/favicon.ico"
+        link ! rel "stylesheet" ! href "/style/form.css"
         title "Magyar-angol szó- és mondatgyakorló — Gyakorlóvizsga (kérdéssor)"
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Gyakorlóvizsga (kérdéssor)"
