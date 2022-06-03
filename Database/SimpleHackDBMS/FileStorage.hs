@@ -33,3 +33,6 @@ modifyTable tableName f = do
 
 insertIntoTable :: (Read record, Show record) => TableName -> record -> IO ()
 insertIntoTable tableName = void . modifyTable tableName . flip insertAfter
+
+updateTable :: (Read record, Show record) => TableName -> (record -> record) -> IO [record]
+updateTable tableName = modifyTable tableName . map

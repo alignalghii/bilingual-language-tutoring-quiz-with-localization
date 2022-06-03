@@ -21,7 +21,7 @@ numeralsRelation = zipWith4 LxcE numerals_hu numerals_en  (repeat LUNumber) (rep
 findYourTranslation :: String -> [AnsweredQuestion] -> AnsweredQuestion
 findYourTranslation sameHu = head . filter ((== sameHu) . ansHu)
 
-data AnsweredQuestion = AnsQu {ansHu, ansEn :: String, ansTimeStart, ansTimeEnd :: UTCTime} deriving (Read, Show) -- Eq
+data AnsweredQuestion = AnsQu {ansHu, ansEn :: String, qst1Time, ansTime :: UTCTime} deriving (Read, Show) -- Eq
 
 data QuestionAnswerMatch = QuAnsMtch {dictHu, dictEn, yourEn :: String, mark :: Bool, askedAtTime, answeredAtTime :: UTCTime, dictEntity :: LinguisticalUnit, dictDifficulty :: Difficulty}
 
@@ -29,8 +29,8 @@ data QuestionAnswerMatch = QuAnsMtch {dictHu, dictEn, yourEn :: String, mark :: 
 
 withFirstUnansweredQuestionIfAnyOrElse :: (String -> a) -> ([LexiconEntry] -> [AnsweredQuestion] -> a) -> [LexiconEntry] -> [AnsweredQuestion] -> a
 withFirstUnansweredQuestionIfAnyOrElse ask summarize etalon personal = maybe (summarize etalon personal)
-                                                                              ask
-                                                                              (maybeFirstUnansweredQuestion etalon personal)
+                                                                             ask
+                                                                             (maybeFirstUnansweredQuestion etalon personal)
 
 maybeFirstUnansweredQuestion :: [LexiconEntry] -> [AnsweredQuestion] -> Maybe String
 maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu etalon
@@ -41,9 +41,16 @@ maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu
 -- Summarizing a practice result into a user-readable certificate:
 
 conferPracticeCertificate :: [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatch]
-conferPracticeCertificate etalon personal = map (conferAnswer personal) etalon
+conferPracticeCertificate etalon personal = diffingTimes $ map (conferAnswer personal) etalon
 
 conferAnswer :: [AnsweredQuestion] -> LexiconEntry -> QuestionAnswerMatch
-conferAnswer personal LxcE {hu, en, entity, difficulty} = let AnsQu {ansEn, ansTimeStart, ansTimeEnd} = findYourTranslation hu personal
+conferAnswer personal LxcE {hu, en, entity, difficulty} = let AnsQu {ansEn, qst1Time, ansTime} = findYourTranslation hu personal
                                                               mark   = en == ansEn
-                                                          in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark, askedAtTime = ansTimeStart, answeredAtTime = ansTimeEnd, dictEntity = entity, dictDifficulty = difficulty}
+                                                          in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
+
+diffingTimes :: [QuestionAnswerMatch] -> [QuestionAnswerMatch]
+diffingTimes []       = []
+diffingTimes (m : ms) = m : diffingTimes (map (\m' -> m' {askedAtTime = answeredAtTime m}) ms)
+
+
+data Practice = Prc {prcStartTime :: UTCTime, isOpen :: Bool} deriving (Read, Show)

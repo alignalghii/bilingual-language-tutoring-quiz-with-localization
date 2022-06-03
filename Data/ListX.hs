@@ -45,3 +45,6 @@ insertAfter as a = as ++ [a] -- not efficient
 
 uncurry4 :: (a1 -> a2 -> a3 -> a4 -> a') -> (a1, a2, a3, a4) -> a'
 uncurry4 f (a1, a2, a3, a4) = f a1 a2 a3 a4
+
+filterIt_unsafe :: (a -> Bool) -> [a] -> a
+filterIt_unsafe p = head . filter p
