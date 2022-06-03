@@ -18,7 +18,7 @@ examenView = docTypeHtml $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Gyakorlóvizsga (kérdéssor)"
         p $ do
             a ! href "/" $ "Vissza a főoldalra"
-        form ! action "/examen" ! method "post" $ do
+        form ! action "/practice/new" ! method "post" $ do
             div "Új gyakorlóvizsga indítása (a régi válaszaid, ha vannak, törlődnek)"
             label "Ennyi kérdésből álljon a gyakorlat:"
             input ! type_ "number" ! class_ "smallnum" ! min "1" ! max "30" ! name "number_of_questions" ! value "5"

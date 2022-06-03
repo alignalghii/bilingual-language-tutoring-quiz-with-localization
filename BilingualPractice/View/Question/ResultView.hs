@@ -21,7 +21,7 @@ resultView confer = docTypeHtml $ do
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Eredményhirdetés"
         p $ do
-            a ! href "/examen" $ "Új vizsga"
+            a ! href "/practice/new" $ "Új vizsga"
             span " ||| "
             a ! href "/" $ "Vissza a főoldalra"
         table $ do

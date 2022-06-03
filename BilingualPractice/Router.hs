@@ -15,8 +15,8 @@ router logFlag = do
     get  "/"         homeAction
     get  "/dump"     dumpAction
     get  "/rand"     randAction
-    get  "/examen"   proposeExamenAction
-    post "/examen"   performExamenAction
+    get  "/practice/new"   proposeExamenAction
+    post "/practice/new"   performExamenAction
     get  "/question" poseFirstRemainingExamenQuestionOrAnounceResultAction
     post "/question" receiveAnswerForQuestion
 

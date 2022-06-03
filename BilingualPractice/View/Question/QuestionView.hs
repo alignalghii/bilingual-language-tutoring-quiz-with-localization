@@ -19,7 +19,7 @@ questionView nth ofAll hu = docTypeHtml $ do
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Kérdés"
         p $ do
-            a ! href "/examen" $ "Vizsga újraindítása, eddigi eredmények feldolgozatlan törlése"
+            a ! href "/practice/new" $ "Vizsga újraindítása, eddigi eredmények feldolgozatlan törlése"
             span " ||| "
             a ! href "/" $ "Vissza a főoldalra"
         p $ toHtml $ show nth ++ ". kérdés az " ++ show ofAll ++ " kérdésből:"

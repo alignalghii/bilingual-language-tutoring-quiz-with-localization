@@ -23,5 +23,5 @@ homeView = docTypeHtml $ do
                 a ! href "/rand" $ "Véletlen kiválasztás"
                 span "(mint előfázisa a valódi tudástesztnek, gyakorlásnak)"
             li $ do
-                a ! href "/examen" $ "Véletlen kérdéssor"
+                a ! href "/practice/new" $ "Véletlen kérdéssor"
                 span "Valódi tudásteszt, gyakorlás: interaktív szakasz, megválaszolandó kérdések sorozata"
