@@ -23,7 +23,7 @@ indexPracticeView practices = docTypeHtml $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
         p $ do
             a ! href "/" $ "Vissza a főoldalra"
-            span " ||| "
+            span " •|||• "
             a ! href "/practice/new" $ "Új gyakorlat indítása"
         table $ do
             tr $ do

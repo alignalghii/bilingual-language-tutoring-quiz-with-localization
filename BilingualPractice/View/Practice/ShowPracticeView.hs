@@ -20,9 +20,9 @@ showPracticeView practiceBegin matches = docTypeHtml $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
         p $ do
             a ! href "/practice/index" $ "Vissza a többi régi gyakorlatod listájához"
-            span " ||| "
+            span " •|||• "
             a ! href "/practice/new" $ "Új gyakorlat indítása"
-            span " ||| "
+            span " •|||• "
             a ! href "/" $ "Vissza a főoldalra"
         table $ do
             caption $ toHtml practiceBegin

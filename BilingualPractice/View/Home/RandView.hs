@@ -20,7 +20,7 @@ randView records = docTypeHtml $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Véletlen kiválasztás"
         p $ do
             a ! href "/rand" $ "Újraválogatás"
-            span " ||| "
+            span " •|||• "
             a ! href "/" $ "Vissza a főoldalra"
         table $ do
             tr $ do
