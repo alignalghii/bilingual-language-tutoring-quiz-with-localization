@@ -2,10 +2,10 @@
 
 module BilingualPractice.Model.ViewModel where
 
-import BilingualPractice.Model.RelationalBusinessLogic (QuestionAnswerMatch (..), LinguisticalUnit (..), Difficulty (..), Practice (..), AnsweredQuestion (..))
+import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, QuestionAnswerMatch (..), LinguisticalUnit (..), Difficulty (..), Practice (..), AnsweredQuestion (..), conferPracticeCertificate)
 import Framework.Form (FormParamable (formParam))
 import Data.TimeX (abbrevTime, keepDateAbbrevTime')
-import Data.Time (TimeZone)
+import Data.Time (UTCTime, TimeZone)
 import Data.Property (matchField)
 import Data.Bool (bool)
 
@@ -43,7 +43,10 @@ viewMark :: Bool -> (String, String)
 viewMark = bool ("Rossz", "wrong") ("Jó", "ok")
 
 
-data PracticeView = PrcVw {prcStartTimeView :: String, questionsCount :: Int}
+data PracticeView = PrcVw {prcStartTimeId :: UTCTime, prcStartTimeView :: String, questionsCount :: Int}
 
 viewPractice :: TimeZone -> [AnsweredQuestion] -> Practice -> PracticeView
-viewPractice timeZone answers Prc {prcStartTime} = PrcVw {prcStartTimeView = keepDateAbbrevTime' timeZone prcStartTime, questionsCount = length $ filter (matchField qst1Time prcStartTime) answers}
+viewPractice timeZone answers Prc {prcStartTime} = PrcVw {prcStartTimeId = prcStartTime, prcStartTimeView = keepDateAbbrevTime' timeZone prcStartTime, questionsCount = length $ filter (matchField qst1Time prcStartTime) answers}
+
+conferAndViewCertificate :: TimeZone -> [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatchView]
+conferAndViewCertificate timeZone lexiconEntries answers = viewMatch timeZone <$> conferPracticeCertificate lexiconEntries answers

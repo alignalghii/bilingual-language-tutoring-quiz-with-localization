@@ -3,6 +3,7 @@
 module BilingualPractice.Model.RelationalBusinessLogic where
 
 import BilingualPractice.Model.Grammar.Numeral (numerals_en, numerals_hu)
+import Data.Property (matchField)
 import Data.Time (UTCTime)
 import Data.ListX (maybeHead)
 import Data.List (zipWith4, (\\))
@@ -18,8 +19,9 @@ data LexiconEntry = LxcE {hu, en :: String, entity :: LinguisticalUnit, difficul
 numeralsRelation :: [LexiconEntry]
 numeralsRelation = zipWith4 LxcE numerals_hu numerals_en  (repeat LUNumber) (repeat Easy)
 
-findYourTranslation :: String -> [AnsweredQuestion] -> AnsweredQuestion
-findYourTranslation sameHu = head . filter ((== sameHu) . ansHu)
+findCorrectTranslation :: [LexiconEntry] -> String -> LexiconEntry
+findCorrectTranslation lexicon sameHu = head $ filter (matchField hu sameHu) lexicon
+
 
 data AnsweredQuestion = AnsQu {ansHu, ansEn :: String, qst1Time, ansTime :: UTCTime} deriving (Read, Show) -- Eq
 
@@ -41,12 +43,11 @@ maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu
 -- Summarizing a practice result into a user-readable certificate:
 
 conferPracticeCertificate :: [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatch]
-conferPracticeCertificate etalon personal = diffingTimes $ map (conferAnswer personal) etalon
+conferPracticeCertificate lexicon answers = diffingTimes $ map (conferAnswer lexicon) answers
 
-conferAnswer :: [AnsweredQuestion] -> LexiconEntry -> QuestionAnswerMatch
-conferAnswer personal LxcE {hu, en, entity, difficulty} = let AnsQu {ansEn, qst1Time, ansTime} = findYourTranslation hu personal
-                                                              mark   = en == ansEn
-                                                          in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
+conferAnswer :: [LexiconEntry] -> AnsweredQuestion -> QuestionAnswerMatch
+conferAnswer lexicon AnsQu {ansHu, ansEn, qst1Time, ansTime} = let LxcE {hu, en, entity, difficulty} = findCorrectTranslation lexicon ansHu
+                                                               in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
 diffingTimes :: [QuestionAnswerMatch] -> [QuestionAnswerMatch]
 diffingTimes []       = []

@@ -6,7 +6,10 @@ import BilingualPractice.Model.ViewModel (PracticeView (..))
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
+import Network.URI.Encode (encode)
 import Control.Monad (forM_)
+import Data.Time (UTCTime)
+import Data.Bool (bool)
 
 indexPracticeView :: [PracticeView] -> Html
 indexPracticeView practices = docTypeHtml $ do
@@ -28,9 +31,12 @@ indexPracticeView practices = docTypeHtml $ do
                 th "Kérdések száma"
                 th "Megmutat"
                 th "Töröl"
-            forM_ practices $ \ PrcVw {prcStartTimeView, questionsCount} -> do
+            forM_ practices $ \ PrcVw {prcStartTimeId, prcStartTimeView, questionsCount} -> do
                 tr $ do
                     td $ toHtml prcStartTimeView
                     td $ toHtml questionsCount
+                    td $ bool "" (showLink prcStartTimeId) (questionsCount > 0)
                     td ""
-                    td ""
+
+showLink :: UTCTime -> Html
+showLink timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ "Mutat"

@@ -7,7 +7,7 @@ import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQu
                                                         withFirstUnansweredQuestionIfAnyOrElse, conferPracticeCertificate)
 import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables,
                                                                   fetchOpenPractice, closePractices, saveAnswers)
-import BilingualPractice.Model.ViewModel (viewMatch)
+import BilingualPractice.Model.ViewModel (conferAndViewCertificate)
 import BilingualPractice.View.Question.QuestionView (questionView) -- !!
 import BilingualPractice.View.Question.ResultView   (resultView) -- !!
 import Database.SimpleHackDBMS.FileStorage (insertIntoTable)
@@ -37,4 +37,4 @@ announceResult :: [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
 announceResult etalon personal = do
     liftIO $ closePractices >> saveAnswers personal
     timeZone <- liftIO getCurrentTimeZone
-    blaze $ resultView $ viewMatch timeZone <$> conferPracticeCertificate etalon personal
+    blaze $ resultView $ conferAndViewCertificate timeZone etalon personal
