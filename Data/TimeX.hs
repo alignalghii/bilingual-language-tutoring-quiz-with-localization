@@ -1,14 +1,15 @@
 module Data.TimeX where
 
-import Data.Time (UTCTime, formatTime, defaultTimeLocale)
+import Data.Time (UTCTime, formatTime, defaultTimeLocale, FormatTime, TimeZone, utcToLocalTime)
 import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 
 
-abbrevTime :: UTCTime -> String
-abbrevTime = formatTime defaultTimeLocale "%H:%M:%S"
+abbrevTime, keepDateAbbrevTime :: FormatTime t => t -> String
+abbrevTime         = formatTime defaultTimeLocale "%T"
+keepDateAbbrevTime = formatTime defaultTimeLocale "%F %T"
 
-abbrevTimeRead :: String -> String
-abbrevTimeRead = abbrevTime . read
+keepDateAbbrevTime' :: TimeZone -> UTCTime -> String
+keepDateAbbrevTime' timeZone = keepDateAbbrevTime . utcToLocalTime timeZone
 
-epoch :: UTCTime
-epoch = posixSecondsToUTCTime 0
+-- abbrevTimeRead :: String -> String
+-- abbrevTimeRead = abbrevTime . read

@@ -17,11 +17,20 @@ homeView = docTypeHtml $ do
         h1 "Magyar-angol szó- és mondatgyakorló"
         ul $ do
             li $ do
-                a ! href "/dump" $ "Teljes kimutatás"
-                span "(adminisztrátoroknak, fejlesztőknek)"
+                span "Fejlesztőknek szóló segédfunkciók"
+                ul $ do
+                    li $ do
+                        a ! href "/dump" $ "Teljes kimutatás"
+                        span "(adminisztrátoroknak, fejlesztőknek)"
+                    li $ do
+                        a ! href "/rand" $ "Véletlen kiválasztás"
+                        span "(mint előfázisa a valódi tudástesztnek, gyakorlásnak)"
             li $ do
-                a ! href "/rand" $ "Véletlen kiválasztás"
-                span "(mint előfázisa a valódi tudástesztnek, gyakorlásnak)"
-            li $ do
-                a ! href "/practice/new" $ "Véletlen kérdéssor"
-                span "Valódi tudásteszt, gyakorlás: interaktív szakasz, megválaszolandó kérdések sorozata"
+                span "Gyakorlatok"
+                ul $ do
+                    li $ do
+                        a ! href "/practice/index" $ "Listázás: eddigi gyakorlataid"
+                        span "Azok a kérdéssorok (gyakorlatok), amelyeket eddig végeztél"
+                    li $ do
+                        a ! href "/practice/new" $ "Új gyakorlat: véletlen kérdéssor generálása"
+                        span "Valódi tudásteszt, gyakorlás: interaktív szakasz, megválaszolandó kérdések sorozata"

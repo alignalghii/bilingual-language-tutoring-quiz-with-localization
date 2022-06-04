@@ -13,7 +13,7 @@ import BilingualPractice.View.Question.ResultView   (resultView) -- !!
 import Database.SimpleHackDBMS.FileStorage (insertIntoTable)
 import Web.Scotty (ActionM, param, redirect)
 import Control.Monad.Trans (liftIO)
-import Data.Time (getCurrentTime)
+import Data.Time (getCurrentTime, getCurrentTimeZone)
 
 
 poseFirstRemainingExamenQuestionOrAnounceResultAction :: ActionM ()
@@ -36,4 +36,5 @@ receiveAnswerForQuestion = do
 announceResult :: [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
 announceResult etalon personal = do
     liftIO $ closePractices >> saveAnswers personal
-    blaze $ resultView $ viewMatch <$> conferPracticeCertificate etalon personal
+    timeZone <- liftIO getCurrentTimeZone
+    blaze $ resultView $ viewMatch timeZone <$> conferPracticeCertificate etalon personal
