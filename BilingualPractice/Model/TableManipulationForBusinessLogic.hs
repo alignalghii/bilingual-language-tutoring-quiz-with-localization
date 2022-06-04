@@ -2,10 +2,11 @@
 
 module BilingualPractice.Model.TableManipulationForBusinessLogic where
 
-import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion, numeralsRelation, Practice (..))
-import Database.SimpleHackDBMS.FileStorage (readTable, writeTable, truncateTable, insertIntoTable, updateTable)
+import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (qst1Time), numeralsRelation, Practice (..))
+import Database.SimpleHackDBMS.FileStorage (readTable, writeTable, truncateTable, insertIntoTable, updateTable, deleteFromTable)
+import Data.Property (matchField)
 import Data.ListX (filterIt_unsafe)
-import Data.Time (getCurrentTime)
+import Data.Time (UTCTime, getCurrentTime)
 import Control.Monad (void)
 
 
@@ -35,3 +36,8 @@ closePractices = void $ do
 
 saveAnswers :: [AnsweredQuestion] -> IO ()
 saveAnswers = mapM_ $ insertIntoTable "answer"
+
+deletePractice :: UTCTime -> IO ()
+deletePractice utc = void $ do
+    deleteFromTable "practice" $ matchField prcStartTime utc
+    deleteFromTable "answer"   $ matchField qst1Time     utc

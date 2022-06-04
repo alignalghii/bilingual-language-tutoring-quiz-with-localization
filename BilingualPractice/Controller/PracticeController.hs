@@ -3,7 +3,7 @@
 module BilingualPractice.Controller.PracticeController where
 
 import Framework.Controller (blaze)
-import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readExtendedLexiconTable)
+import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readExtendedLexiconTable, deletePractice)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, entity, difficulty, qst1Time)
 import BilingualPractice.Model.ViewModel (Viewable (view), viewPractice, conferAndViewCertificate)
 import BilingualPractice.View.Practice.ExamenView        (examenView)
@@ -36,6 +36,13 @@ showPracticeAction = do
     lexicon <- liftIO $ readExtendedLexiconTable
     timeZone <- liftIO getCurrentTimeZone
     blaze $ showPracticeView (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate timeZone lexicon answers
+
+deletePracticeAction :: ActionM ()
+deletePracticeAction = do
+   utc <- read <$> param "start"
+   liftIO $ deletePractice utc
+   redirect "/practice/index"
+
 
 proposeExamenAction :: ActionM ()
 proposeExamenAction = blaze examenView

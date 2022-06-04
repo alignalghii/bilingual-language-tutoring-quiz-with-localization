@@ -13,6 +13,9 @@ type PropertyMapping a b = [PropertyAssignment a b]
 p *&&* q = \a -> p a && q a
 p *||* q = \a -> p a || q a
 
+propNot :: PropertyPredicate a -> PropertyPredicate a
+propNot prop = not . prop
+
 propertyConjunction, propertyDisjunction :: [PropertyPredicate a] -> PropertyPredicate a
 propertyConjunction = foldr (*&&*) $ const True
 propertyDisjunction = foldr (*||*) $ const False

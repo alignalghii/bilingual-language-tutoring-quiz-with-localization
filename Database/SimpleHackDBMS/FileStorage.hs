@@ -2,6 +2,7 @@ module Database.SimpleHackDBMS.FileStorage where
 
 import System.IO.Strict (readFile)
 import Prelude hiding (readFile)
+import Data.Property (PropertyPredicate, propNot)
 import Data.ListX (insertAfter)
 import Control.Monad (void)
 
@@ -36,3 +37,7 @@ insertIntoTable tableName = void . modifyTable tableName . flip insertAfter
 
 updateTable :: (Read record, Show record) => TableName -> (record -> record) -> IO [record]
 updateTable tableName = modifyTable tableName . map
+
+selectFromTable, deleteFromTable :: (Read record, Show record) => TableName -> PropertyPredicate record -> IO [record]
+selectFromTable tableName = modifyTable tableName . filter
+deleteFromTable tableName = selectFromTable tableName . propNot

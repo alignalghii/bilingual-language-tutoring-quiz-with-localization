@@ -25,18 +25,19 @@ indexPracticeView practices = docTypeHtml $ do
             a ! href "/" $ "Vissza a főoldalra"
             span " •|||• "
             a ! href "/practice/new" $ "Új gyakorlat indítása"
-        table $ do
-            tr $ do
-                th "A gyakorlat kezdőidőpontja"
-                th "Kérdések száma"
-                th "Megmutat"
-                th "Töröl"
-            forM_ practices $ \ PrcVw {prcStartTimeId, prcStartTimeView, questionsCount} -> do
+        form ! method "post" ! action "/practice/delete" $ do
+            table $ do
                 tr $ do
-                    td $ toHtml prcStartTimeView
-                    td $ toHtml questionsCount
-                    td $ bool "" (showLink prcStartTimeId) (questionsCount > 0)
-                    td ""
+                    th "A gyakorlat kezdőidőpontja"
+                    th "Kérdések száma"
+                    th "Megmutat"
+                    th "Töröl"
+                forM_ practices $ \ PrcVw {prcStartTimeId, prcStartTimeView, questionsCount} -> do
+                    tr $ do
+                        td $ toHtml prcStartTimeView
+                        td $ toHtml questionsCount
+                        td $ bool "" (showLink prcStartTimeId) (questionsCount > 0)
+                        td $ button ! type_ "submit" ! name "start" ! value (toValue $ show $ prcStartTimeId) $ "Töröld!"
 
 showLink :: UTCTime -> Html
 showLink timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ "Mutat"
