@@ -55,3 +55,6 @@ diffingTimes (m : ms) = m : diffingTimes (map (\m' -> m' {askedAtTime = answered
 
 
 data Practice = Prc {prcStartTime :: UTCTime, isOpen :: Bool} deriving (Read, Show)
+
+
+data Session = Sssn {etalon :: [LexiconEntry], personal :: [AnsweredQuestion], maybePracticeStart :: Maybe UTCTime} deriving (Read, Show)

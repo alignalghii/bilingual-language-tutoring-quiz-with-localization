@@ -1,3 +1,7 @@
 input.smallnum {
     width: 3em;
 }
+
+form.inline {
+    display: inline;
+}

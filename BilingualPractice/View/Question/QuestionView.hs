@@ -15,13 +15,16 @@ questionView nth ofAll hu = docTypeHtml $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
+        link ! rel "stylesheet" ! href "/style/form.css"
         title "Magyar-angol szó- és mondatgyakorló — Kérdés"
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Kérdés"
         p $ do
-            a ! href "/practice/new" $ "Vizsga újraindítása, eddigi eredmények feldolgozatlan törlése"
+            form ! method "post" ! action "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $
+                button ! type_ "submit" $ "Vizsga újraindítása, eddigi eredmények feldolgozatlan törlése"
             span " •|||• "
-            a ! href "/" $ "Vissza a főoldalra"
+            form ! method "post" ! action "practice/closefix" ! class_ "inline" $
+                button ! type_ "submit" $ "Vissza a főoldalra"
         p $ toHtml $ show nth ++ ". kérdés az " ++ show ofAll ++ " kérdésből:"
         form ! action "/question" ! method "post" $ do
             label "Magyarul:"

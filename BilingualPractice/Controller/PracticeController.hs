@@ -3,7 +3,7 @@
 module BilingualPractice.Controller.PracticeController where
 
 import Framework.Controller (blaze)
-import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readExtendedLexiconTable, deletePractice)
+import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readExtendedLexiconTable, closePracticeStart, deletePractice)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, entity, difficulty, qst1Time)
 import BilingualPractice.Model.ViewModel (Viewable (view), viewPractice, conferAndViewCertificate)
 import BilingualPractice.View.Practice.ExamenView        (examenView)
@@ -16,9 +16,10 @@ import System.RandomX (randQuery)
 import Data.Property (matchField)
 import Web.Scotty (ActionM, param, params, redirect)
 import Network.URI.Encode (decode) -- @TODO should come tom ViewModel
-import Data.Text.Lazy (unpack)
+import Data.Text.Lazy (unpack, intercalate)
 import Data.TimeX (keepDateAbbrevTime')
 import Data.Time (getCurrentTimeZone)
+import Data.Bool (bool)
 import Control.Monad.Trans (liftIO)
 
 
@@ -37,6 +38,14 @@ showPracticeAction = do
     timeZone <- liftIO getCurrentTimeZone
     blaze $ showPracticeView (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate timeZone lexicon answers
 
+closePracticeAction :: ActionM ()
+closePracticeAction = do
+    redirectRoute <- ("/" <>) . intercalate "/" . map snd <$> params
+    --let redirectRoute = mconcat ["/", redirectRoute1, "/", redirectRoute2]
+    --    errorRoute    = "/error/navigationalinconsistency"
+    liftIO closePracticeStart >>= redirect . bool "/error/navigationinconsistency" redirectRoute
+    -- liftIO $ print routes
+
 deletePracticeAction :: ActionM ()
 deletePracticeAction = do
    utc <- read <$> param "start"
@@ -51,8 +60,11 @@ performExamenAction :: ActionM ()
 performExamenAction = do
     pars <- map (unpack . fst) <$> params
     numberOfQuestions <- read <$> param "number_of_questions" -- @TODO: form validation
-    liftIO $ preparePracticeControllingTables =<< randQuery numberOfQuestions =<< filter (useCheckMatrixCNF lexiconEntryCheckMatrix pars) <$> readExtendedLexiconTable
-    redirect "/question"
+    flag <- liftIO $ preparePracticeControllingTables =<< randQuery numberOfQuestions =<< filter (useCheckMatrixCNF lexiconEntryCheckMatrix pars) <$> readExtendedLexiconTable
+    redirect $ bool "/error/navigationinconsistency" "/question" flag
+
+restartPracticeAction :: ActionM ()
+restartPracticeAction = liftIO closePracticeStart >>= (redirect . bool "/error/navigationinconsistency" "/practice/new")
 
 -- lexiconEntryProps = selectorsPropertyCNF lexiconEntryProperties
 

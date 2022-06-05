@@ -2,5 +2,6 @@
 *.o
 Main
 var/*.table
+var/*.data
 var/*.hs
 !var/.gitkeep
