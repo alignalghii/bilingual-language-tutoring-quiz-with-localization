@@ -38,6 +38,6 @@ appendToTable = mapM_ . insertIntoTable
 updateTable :: (Read record, Show record) => TableName -> (record -> record) -> IO [record]
 updateTable tableName = modifyTable tableName . map
 
-selectFromTable, deleteFromTable :: (Read record, Show record) => TableName -> PropertyPredicate record -> IO [record]
-selectFromTable tableName = modifyTable tableName . filter
-deleteFromTable tableName = selectFromTable tableName . propNot
+keepFromTable, deleteFromTable :: (Read record, Show record) => TableName -> PropertyPredicate record -> IO [record]
+keepFromTable tableName = modifyTable tableName . filter
+deleteFromTable tableName = keepFromTable tableName . propNot
