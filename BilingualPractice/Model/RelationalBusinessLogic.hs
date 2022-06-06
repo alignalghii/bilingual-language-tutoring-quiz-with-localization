@@ -19,8 +19,13 @@ data LexiconEntry = LxcE {hu, en :: String, entity :: LinguisticalUnit, difficul
 numeralsRelation :: [LexiconEntry]
 numeralsRelation = zipWith4 LxcE numerals_hu numerals_en  (repeat LUNumber) (repeat Easy)
 
+ -- @TODO use a multi-value approach like >>= and use `findCorrectTranslations` instead:
+ -- it should be more roboust to potential later lexicon streamlingings!
 findCorrectTranslation :: [LexiconEntry] -> String -> LexiconEntry
-findCorrectTranslation lexicon sameHu = head $ filter (matchField hu sameHu) lexicon
+findCorrectTranslation lexicon sameHu = head $ findCorrectTranslations lexicon sameHu
+
+findCorrectTranslations :: [LexiconEntry] -> String -> [LexiconEntry]
+findCorrectTranslations lexicon sameHu = filter (matchField hu sameHu) lexicon
 
 
 data AnsweredQuestion = AnsQu {ansHu, ansEn :: String, qst1Time, ansTime :: UTCTime} deriving (Read, Show) -- Eq
@@ -58,3 +63,11 @@ data Practice = Prc {prcStartTime :: UTCTime, isOpen :: Bool} deriving (Read, Sh
 
 
 data Session = Sssn {etalon :: [LexiconEntry], personal :: [AnsweredQuestion], maybePracticeStart :: Maybe UTCTime} deriving (Read, Show)
+
+
+restoreEtalonByAnswers :: [AnsweredQuestion] -> [LexiconEntry] -> [LexiconEntry]
+restoreEtalonByAnswers answers lexicon = answers >>= findCorrectTranslations lexicon . ansHu
+-- filter $ flip elem (map ansHu answers) . hu -- does not keep the order of answers
+
+answersOfPracticeStart :: UTCTime -> [AnsweredQuestion] -> [AnsweredQuestion]
+answersOfPracticeStart = filter . matchField qst1Time

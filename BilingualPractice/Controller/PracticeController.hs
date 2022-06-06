@@ -4,7 +4,7 @@ module BilingualPractice.Controller.PracticeController where
 
 import Framework.Controller (blaze)
 import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readExtendedLexiconTable, closePracticeStart, deletePractice)
-import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, entity, difficulty, qst1Time)
+import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, entity, difficulty, qst1Time, restoreEtalonByAnswers, answersOfPracticeStart)
 import BilingualPractice.Model.ViewModel (Viewable (view), viewPractice, conferAndViewCertificate)
 import BilingualPractice.View.Practice.ExamenView        (examenView)
 import BilingualPractice.View.Practice.IndexPracticeView (indexPracticeView)
@@ -20,6 +20,7 @@ import Data.Text.Lazy (unpack, intercalate)
 import Data.TimeX (keepDateAbbrevTime')
 import Data.Time (getCurrentTimeZone)
 import Data.Bool (bool)
+import Control.Monad (liftM2)
 import Control.Monad.Trans (liftIO)
 
 
@@ -51,6 +52,13 @@ deletePracticeAction = do
    utc <- read <$> param "start"
    liftIO $ deletePractice utc
    redirect "/practice/index"
+
+repeatPracticeAction :: ActionM ()
+repeatPracticeAction = do
+    utc                <- read <$> param "start"
+    (lexicon, answers) <- liftIO $ liftM2 (,) readExtendedLexiconTable (readTable "answer")
+    flag               <- liftIO $ preparePracticeControllingTables $ restoreEtalonByAnswers (answersOfPracticeStart utc answers) lexicon
+    redirect $ bool "/error/navigationinconsistency" "/question" flag
 
 
 proposeExamenAction :: ActionM ()

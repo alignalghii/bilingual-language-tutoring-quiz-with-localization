@@ -3,7 +3,7 @@
 module BilingualPractice.Router where
 
 import BilingualPractice.Controller.HomeController (homeAction, dumpAction, randAction, errorAction)
-import BilingualPractice.Controller.PracticeController (proposeExamenAction, performExamenAction, restartPracticeAction, indexPracticeAction, showPracticeAction, closePracticeAction, deletePracticeAction)
+import BilingualPractice.Controller.PracticeController (proposeExamenAction, performExamenAction, restartPracticeAction, indexPracticeAction, showPracticeAction, closePracticeAction, deletePracticeAction, repeatPracticeAction)
 import BilingualPractice.Controller.QuestionController (poseFirstRemainingExamenQuestionOrAnounceResultAction, receiveAnswerForQuestion)
 import BilingualPractice.BuiltinServer (builtinServerOptions)
 import Web.Scotty (ScottyM, middleware, get, post)
@@ -21,6 +21,7 @@ router logFlag = do
     post "/practice/new"   performExamenAction
     post "/practice/restart" restartPracticeAction
     post "/practice/delete" deletePracticeAction
+    post "/practice/repeat" repeatPracticeAction
     post "/practice/closefix" closePracticeAction
     get  "/question" poseFirstRemainingExamenQuestionOrAnounceResultAction
     post "/question" receiveAnswerForQuestion

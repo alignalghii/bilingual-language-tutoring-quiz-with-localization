@@ -5,7 +5,7 @@ module BilingualPractice.View.Practice.IndexPracticeView (indexPracticeView) whe
 import BilingualPractice.Model.ViewModel (PracticeView (..))
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
-import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
+import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label, div)
 import Network.URI.Encode (encode)
 import Control.Monad (forM_)
 import Data.Time (UTCTime)
@@ -25,19 +25,25 @@ indexPracticeView practices = docTypeHtml $ do
             a ! href "/" $ "Vissza a főoldalra"
             span " •|||• "
             a ! href "/practice/new" $ "Új gyakorlat indítása"
-        form ! method "post" ! action "/practice/delete" $ do
+        div $
             table $ do
                 tr $ do
                     th "A gyakorlat kezdőidőpontja"
                     th "Kérdések száma"
                     th "Megmutat"
                     th "Töröl"
+                    th "Megismétel"
                 forM_ practices $ \ PrcVw {prcStartTimeId, prcStartTimeView, questionsCount} -> do
                     tr $ do
                         td $ toHtml prcStartTimeView
                         td $ toHtml questionsCount
                         td $ bool "" (showLink prcStartTimeId) (questionsCount > 0)
-                        td $ button ! type_ "submit" ! name "start" ! value (toValue $ show $ prcStartTimeId) $ "Töröld!"
+                        td $ showFormDel prcStartTimeId
+                        td $ bool "" (showFormRep prcStartTimeId) (questionsCount > 0)
 
 showLink :: UTCTime -> Html
 showLink timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ "Mutat"
+
+showFormDel, showFormRep :: UTCTime -> Html
+showFormDel timeId = form ! method "post" ! action "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Töröld!"
+showFormRep timeId = form ! method "post" ! action "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Ismételd meg!"
