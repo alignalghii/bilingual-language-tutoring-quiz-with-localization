@@ -5,7 +5,7 @@ module BilingualPractice.Model.RelationalBusinessLogic where
 import BilingualPractice.Model.Grammar.Numeral (numerals_en, numerals_hu)
 import Data.Property (matchField)
 import Data.Time (UTCTime)
-import Data.ListX (maybeHead)
+import Data.ListX (maybeHead, filterIt_unsafe)
 import Data.List (zipWith4, (\\))
 import Data.Bool (bool)
 
@@ -22,10 +22,10 @@ numeralsRelation = zipWith4 LxcE numerals_hu numerals_en  (repeat LUNumber) (rep
  -- @TODO use a multi-value approach like >>= and use `findCorrectTranslations` instead:
  -- it should be more roboust to potential later lexicon streamlingings!
 findCorrectTranslation :: [LexiconEntry] -> String -> LexiconEntry
-findCorrectTranslation lexicon sameHu = head $ findCorrectTranslations lexicon sameHu
+findCorrectTranslation = flip $ filterIt_unsafe . matchField hu --head $ findCorrectTranslations lexicon sameHu
 
-findCorrectTranslations :: [LexiconEntry] -> String -> [LexiconEntry]
-findCorrectTranslations lexicon sameHu = filter (matchField hu sameHu) lexicon
+--findCorrectTranslations :: [LexiconEntry] -> String -> [LexiconEntry]
+--findCorrectTranslations lexicon sameHu = filter (matchField hu sameHu) lexicon
 
 
 data AnsweredQuestion = AnsQu {ansHu, ansEn :: String, qst1Time, ansTime :: UTCTime} deriving (Read, Show) -- Eq
@@ -34,10 +34,10 @@ data QuestionAnswerMatch = QuAnsMtch {dictHu, dictEn, yourEn :: String, mark :: 
 
 -- Governing a practice by the remaining questions:
 
-withFirstUnansweredQuestionIfAnyOrElse :: (String -> a) -> ([LexiconEntry] -> [AnsweredQuestion] -> a) -> [LexiconEntry] -> [AnsweredQuestion] -> a
-withFirstUnansweredQuestionIfAnyOrElse ask summarize etalon personal = maybe (summarize etalon personal)
-                                                                             ask
-                                                                             (maybeFirstUnansweredQuestion etalon personal)
+withFirstUnansweredQuestionIfAnyOrElse :: (String -> a) -> ([LexiconEntry] -> [AnsweredQuestion] -> a) -> [LexiconEntry] -> [AnsweredQuestion] -> [LexiconEntry] -> a
+withFirstUnansweredQuestionIfAnyOrElse ask summarize etalon personal lexicon = maybe (summarize etalon personal)
+                                                                                     ask
+                                                                                     (maybeFirstUnansweredQuestion etalon personal)
 
 maybeFirstUnansweredQuestion :: [LexiconEntry] -> [AnsweredQuestion] -> Maybe String
 maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu etalon
@@ -48,17 +48,17 @@ maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu
 -- Summarizing a practice result into a user-readable certificate:
 
 conferPracticeCertificate :: [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatch]
-conferPracticeCertificate lexicon answers = diffingTimes $ (conferAnswers lexicon) =<< answers
+conferPracticeCertificate lexicon personalAnswers = diffingTimes $ diffingTimes $ map (conferAnswer lexicon) personalAnswers
 
-pairingUp :: AnsweredQuestion -> LexiconEntry -> QuestionAnswerMatch
-pairingUp AnsQu {ansHu, ansEn, qst1Time, ansTime} LxcE {hu, en, entity, difficulty} = QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
+--pairingUp :: AnsweredQuestion -> LexiconEntry -> QuestionAnswerMatch
+--pairingUp AnsQu {ansHu, ansEn, qst1Time, ansTime} LxcE {hu, en, entity, difficulty} = QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
 conferAnswer :: [LexiconEntry] -> AnsweredQuestion -> QuestionAnswerMatch
 conferAnswer lexicon AnsQu {ansHu, ansEn, qst1Time, ansTime} = let LxcE {hu, en, entity, difficulty} = findCorrectTranslation lexicon ansHu
                                                                in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
-conferAnswers :: [LexiconEntry] -> AnsweredQuestion -> [QuestionAnswerMatch]
-conferAnswers lexicon answer = pairingUp answer <$> findCorrectTranslations lexicon (ansHu answer)
+--conferAnswers :: [LexiconEntry] -> AnsweredQuestion -> [QuestionAnswerMatch]
+--conferAnswers lexicon answer = pairingUp answer <$> findCorrectTranslations lexicon (ansHu answer)
 
 diffingTimes :: [QuestionAnswerMatch] -> [QuestionAnswerMatch]
 diffingTimes []       = []
@@ -72,8 +72,9 @@ data Session = Sssn {etalon :: [LexiconEntry], personal :: [AnsweredQuestion], m
 
 
 restoreEtalonByAnswers :: [AnsweredQuestion] -> [LexiconEntry] -> [LexiconEntry]
-restoreEtalonByAnswers answers lexicon = answers >>= findCorrectTranslations lexicon . ansHu
--- filter $ flip elem (map ansHu answers) . hu -- does not keep the order of answers
+restoreEtalonByAnswers answers lexicon = findCorrectTranslation lexicon . ansHu <$> answers
+-- filter $ flip elem (map ansHu answers-) . hu         -- does not keep the order of answers
+-- answers >>= findCorrectTranslations lexicon . ansHu  -- unituitive duplications
 
 answersOfPracticeStart :: UTCTime -> [AnsweredQuestion] -> [AnsweredQuestion]
 answersOfPracticeStart = filter . matchField qst1Time

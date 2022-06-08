@@ -6,7 +6,7 @@ import Framework.Controller (blaze)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (..), prcStartTime,
                                                         withFirstUnansweredQuestionIfAnyOrElse, conferPracticeCertificate,
                                                         maybePracticeStart)
-import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables,
+import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables, readExtendedLexiconTable,
                                                                   getSession, getPracticeStart_unsafe, checkOpenPracticeStart, closePracticeStart, insertAsNewPractice, saveAnswers)
 import BilingualPractice.Model.ViewModel (conferAndViewCertificate)
 import BilingualPractice.View.Question.QuestionView (questionView) -- !!
@@ -23,9 +23,10 @@ poseFirstRemainingExamenQuestionOrAnounceResultAction = do
     if flag
         then do
             (etalon, personal) <- liftIO readPracticeControllingTables
+            lexicon            <- liftIO readExtendedLexiconTable
             let (ofAll, answd) = (length etalon, length personal)
                 nth            = answd + 1
-            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView nth ofAll) announceResult etalon personal
+            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView nth ofAll) announceResult etalon personal lexicon
         else redirect "/error/navigationinconsistency"
 
 receiveAnswerForQuestion :: ActionM ()
@@ -39,7 +40,7 @@ receiveAnswerForQuestion = do
     redirect "/question"
 
 announceResult :: [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
-announceResult etalon personal = do
+announceResult lexicon personal = do
     case personal of
         AnsQu {qst1Time = prcStartTime} : _ -> do
             timeZone <- liftIO $ do
@@ -47,7 +48,7 @@ announceResult etalon personal = do
                 saveAnswers personal
                 closePracticeStart
                 getCurrentTimeZone
-            blaze $ resultView $ conferAndViewCertificate timeZone etalon personal
+            blaze $ resultView $ conferAndViewCertificate timeZone lexicon personal
         [] -> do
             liftIO closePracticeStart
             redirect "/error/emptydata"

@@ -51,4 +51,4 @@ viewPractice :: TimeZone -> [AnsweredQuestion] -> Practice -> PracticeView
 viewPractice timeZone answers Prc {prcStartTime} = PrcVw {prcStartTimeId = prcStartTime, prcStartTimeView = keepDateAbbrevTime' timeZone prcStartTime, questionsCount = length $ filter (matchField qst1Time prcStartTime) answers}
 
 conferAndViewCertificate :: TimeZone -> [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatchView]
-conferAndViewCertificate timeZone lexiconEntries answers = viewMatch timeZone <$> conferPracticeCertificate lexiconEntries answers
+conferAndViewCertificate timeZone lexicon personalAnswers = viewMatch timeZone <$> conferPracticeCertificate lexicon personalAnswers
