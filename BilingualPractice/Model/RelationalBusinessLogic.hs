@@ -34,10 +34,10 @@ data QuestionAnswerMatch = QuAnsMtch {dictHu, dictEn, yourEn :: String, mark :: 
 
 -- Governing a practice by the remaining questions:
 
-withFirstUnansweredQuestionIfAnyOrElse :: (String -> a) -> ([LexiconEntry] -> [AnsweredQuestion] -> a) -> [LexiconEntry] -> [AnsweredQuestion] -> [LexiconEntry] -> a
-withFirstUnansweredQuestionIfAnyOrElse ask summarize etalon personal lexicon = maybe (summarize etalon personal)
-                                                                                     ask
-                                                                                     (maybeFirstUnansweredQuestion etalon personal)
+withFirstUnansweredQuestionIfAnyOrElse :: (String -> a) -> ([LexiconEntry] -> [AnsweredQuestion] -> a) -> [LexiconEntry] -> [AnsweredQuestion] -> a
+withFirstUnansweredQuestionIfAnyOrElse ask summarize etalon personal = maybe (summarize etalon personal)
+                                                                             ask
+                                                                             (maybeFirstUnansweredQuestion etalon personal)
 
 maybeFirstUnansweredQuestion :: [LexiconEntry] -> [AnsweredQuestion] -> Maybe String
 maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu etalon
@@ -48,7 +48,7 @@ maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu
 -- Summarizing a practice result into a user-readable certificate:
 
 conferPracticeCertificate :: [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatch]
-conferPracticeCertificate lexicon personalAnswers = diffingTimes $ diffingTimes $ map (conferAnswer lexicon) personalAnswers
+conferPracticeCertificate lexicon personalAnswers = diffingTimes $ map (conferAnswer lexicon) personalAnswers
 
 --pairingUp :: AnsweredQuestion -> LexiconEntry -> QuestionAnswerMatch
 --pairingUp AnsQu {ansHu, ansEn, qst1Time, ansTime} LxcE {hu, en, entity, difficulty} = QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}

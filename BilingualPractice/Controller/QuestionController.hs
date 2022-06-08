@@ -23,10 +23,9 @@ poseFirstRemainingExamenQuestionOrAnounceResultAction = do
     if flag
         then do
             (etalon, personal) <- liftIO readPracticeControllingTables
-            lexicon            <- liftIO readExtendedLexiconTable
             let (ofAll, answd) = (length etalon, length personal)
                 nth            = answd + 1
-            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView nth ofAll) announceResult etalon personal lexicon
+            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView nth ofAll) announceResult etalon personal
         else redirect "/error/navigationinconsistency"
 
 receiveAnswerForQuestion :: ActionM ()
@@ -40,7 +39,8 @@ receiveAnswerForQuestion = do
     redirect "/question"
 
 announceResult :: [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
-announceResult lexicon personal = do
+announceResult etalon personal = do
+    let lexicon = etalon -- lexicon <- liftIO readExtendedLexiconTable
     case personal of
         AnsQu {qst1Time = prcStartTime} : _ -> do
             timeZone <- liftIO $ do
