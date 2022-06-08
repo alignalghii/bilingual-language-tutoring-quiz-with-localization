@@ -6,7 +6,7 @@ import Framework.Controller (blaze)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (..), prcStartTime,
                                                         withFirstUnansweredQuestionIfAnyOrElse, conferPracticeCertificate,
                                                         maybePracticeStart)
-import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables, readExtendedLexiconTable,
+import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables,
                                                                   getSession, getPracticeStart_unsafe, checkOpenPracticeStart, closePracticeStart, insertAsNewPractice, saveAnswers)
 import BilingualPractice.Model.ViewModel (conferAndViewCertificate)
 import BilingualPractice.View.Question.QuestionView (questionView) -- !!
