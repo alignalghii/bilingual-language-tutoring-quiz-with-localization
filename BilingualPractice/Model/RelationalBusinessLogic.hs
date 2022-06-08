@@ -10,7 +10,7 @@ import Data.List (zipWith4, (\\))
 import Data.Bool (bool)
 
 
-data LinguisticalUnit = LUNumber | LUWord | LUSentence deriving (Eq, Read, Show, Bounded, Enum)
+data LinguisticalUnit = LUNumber | LUWord | LUPhrase | LUSentence deriving (Eq, Read, Show, Bounded, Enum)
 
 data Difficulty = Easy | Difficult deriving (Eq, Read, Show, Bounded, Enum)
 

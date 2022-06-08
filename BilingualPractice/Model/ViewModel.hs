@@ -16,6 +16,7 @@ class Viewable a where
 instance Viewable LinguisticalUnit where
     view LUNumber   = "szám"
     view LUWord     = "szó"
+    view LUPhrase   = "szókapcsolat"
     view LUSentence = "mondat"
 
 instance Viewable Difficulty where
@@ -26,6 +27,7 @@ instance Viewable Difficulty where
 instance FormParamable LinguisticalUnit where
     formParam LUNumber   = "number"
     formParam LUWord     = "word"
+    formParam LUPhrase   = "phrase"
     formParam LUSentence = "sentence"
 
 instance FormParamable Difficulty where

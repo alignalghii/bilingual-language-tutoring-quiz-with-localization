@@ -31,6 +31,9 @@ examenView = docTypeHtml $ do
                     input ! type_ "checkbox" ! name "word" ! checked ""
                     label "Szó"
                 li $ do
+                    input ! type_ "checkbox" ! name "phrase" ! checked ""
+                    label "Szókapcsolat"
+                li $ do
                     input ! type_ "checkbox" ! name "sentence" ! checked ""
                     label "Mondat"
             div "Milyen nehézségi szinten?"
