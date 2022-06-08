@@ -48,11 +48,17 @@ maybeFirstUnansweredQuestion etalon personal = let etalon_questions     = map hu
 -- Summarizing a practice result into a user-readable certificate:
 
 conferPracticeCertificate :: [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatch]
-conferPracticeCertificate lexicon answers = diffingTimes $ map (conferAnswer lexicon) answers
+conferPracticeCertificate lexicon answers = diffingTimes $ (conferAnswers lexicon) =<< answers
+
+pairingUp :: AnsweredQuestion -> LexiconEntry -> QuestionAnswerMatch
+pairingUp AnsQu {ansHu, ansEn, qst1Time, ansTime} LxcE {hu, en, entity, difficulty} = QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
 conferAnswer :: [LexiconEntry] -> AnsweredQuestion -> QuestionAnswerMatch
 conferAnswer lexicon AnsQu {ansHu, ansEn, qst1Time, ansTime} = let LxcE {hu, en, entity, difficulty} = findCorrectTranslation lexicon ansHu
                                                                in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
+
+conferAnswers :: [LexiconEntry] -> AnsweredQuestion -> [QuestionAnswerMatch]
+conferAnswers lexicon answer = pairingUp answer <$> findCorrectTranslations lexicon (ansHu answer)
 
 diffingTimes :: [QuestionAnswerMatch] -> [QuestionAnswerMatch]
 diffingTimes []       = []
