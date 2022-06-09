@@ -37,7 +37,7 @@ showPracticeAction = do
     answers <- liftIO $ filter (matchField qst1Time utc) <$> readTable "answer"
     lexicon <- liftIO $ readExtendedLexiconTable
     timeZone <- liftIO getCurrentTimeZone
-    blaze $ showPracticeView (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate timeZone lexicon answers
+    blaze $ showPracticeView utc (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate timeZone lexicon answers
 
 closePracticeAction :: ActionM ()
 closePracticeAction = do

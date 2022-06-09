@@ -7,9 +7,11 @@ import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
 import Control.Monad (forM_)
+import Data.Time (UTCTime)
 
-showPracticeView :: String -> [QuestionAnswerMatchView] -> Html
-showPracticeView practiceBegin matches = docTypeHtml $ do
+
+showPracticeView :: UTCTime -> String -> [QuestionAnswerMatchView] -> Html
+showPracticeView startTime startTimeLocalised matches = docTypeHtml $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
@@ -19,13 +21,15 @@ showPracticeView practiceBegin matches = docTypeHtml $ do
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
         p $ do
-            a ! href "/practice/index" $ "Vissza a többi régi gyakorlatod listájához"
+            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ "Ismételd meg!"
             span " •|||• "
             a ! href "/practice/new" $ "Új gyakorlat indítása"
             span " •|||• "
+            a ! href "/practice/index" $ "Vissza a többi régi gyakorlatod listájához"
+            span " •|||• "
             a ! href "/" $ "Vissza a főoldalra"
         table $ do
-            caption $ toHtml practiceBegin
+            caption $ toHtml startTimeLocalised
             tr $ do
                 th "Magyar"
                 th "Angol"
