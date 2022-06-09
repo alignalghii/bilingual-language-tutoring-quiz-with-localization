@@ -15,9 +15,9 @@ randView records = docTypeHtml $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Magyar-angol szó- és mondatgyakorló — Véletlen kiválasztás"
+        title "Magyar-angol szó- és mondatgyakorló — Lexikon véletlen mintakiválasztása"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Véletlen kiválasztás"
+        h1 "Magyar-angol szó- és mondatgyakorló — Lexikon véletlen mintakiválasztása"
         p $ do
             a ! href "/rand" $ "Újraválogatás"
             span " •|||• "

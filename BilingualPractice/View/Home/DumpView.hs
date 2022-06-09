@@ -15,9 +15,9 @@ dumpView vocabularyData = docTypeHtml $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Magyar-angol szó- és mondatgyakorló — Teljes kimutatás"
+        title "Magyar-angol szó- és mondatgyakorló — Lexikon teljes megmutatása"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Teljes kimutatás"
+        h1 "Magyar-angol szó- és mondatgyakorló — Lexikon teljes megmutatása"
         p $
             a ! href "/" $ "Vissza a főoldalra"
         table $ do
