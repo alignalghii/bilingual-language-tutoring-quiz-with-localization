@@ -13,9 +13,9 @@ examenView = docTypeHtml $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
-        title "Magyar-angol szó- és mondatgyakorló — Gyakorlóvizsga (kérdéssor)"
+        title "Magyar-angol szó- és mondatgyakorló — Új gyakorlat (véletlen kérdéssor) indítása"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Gyakorlóvizsga (kérdéssor)"
+        h1 "Magyar-angol szó- és mondatgyakorló — Új gyakorlat (véletlen kérdéssor) indítása"
         p $ do
             a ! href "/" $ "Vissza a főoldalra"
         form ! action "/practice/new" ! method "post" $ do

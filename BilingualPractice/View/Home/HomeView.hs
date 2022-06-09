@@ -24,17 +24,17 @@ homeView = docTypeHtml $ do
                         a ! href "/dump" $ "Teljes kimutatás:"
                         span "itt láthatod tartalmilag a teljes anyagot a maga nyers összességében"
                     li $ do
-                        a ! href "/rand" $ "Véletlen kiválasztás"
-                        span "(mint előfázisa a valódi tudástesztnek, gyakorlásnak)"
+                        a ! href "/rand" $ "Véletlen kiválasztás:"
+                        span "itt láthastsz mintát arról, hogyan működik a véletlen mintvétel, mik  lexikont kitevő szó-, szókapcsolat- és mondatkincs arányai"
             li $ do
                 strong "Gyakorlatok:"
-                span "vagyis összeállított kérdéssorok (akár véletlen leválogatással, akár szakszerű összeválogatásként)"
+                span "vagyis összeállított kérdéssorok (egyelőre véletlen leválogatással, később egyedi összeválogatott gyakorlósorok is feltölthetőek lesznek)"
                 ul $ do
                     li $ do
                         a ! href "/practice/index" $ "Személyes történeted: vagyis elvégzett eddigi gyakorlataid"
-                        span "— itt láthatod kapott kérdéseidre adott válaszaid párjaiként, időrendben"
+                        span "— itt láthatod kapott kérdéseidre adott válaszaidat kérdés-felelet párokként, kiértékelve, időrendben"
                     li $ do
-                        a ! href "/practice/new" $ "Új gyakorlat: véletlen kérdéssor generálása"
-                        span "Valódi tudásteszt, gyakorlás: interaktív szakasz, megválaszolandó kérdések sorozata"
+                        a ! href "/practice/new" $ "Új gyakorlat: véletlen kérdéssor generálása."
+                        span "Tudásteszt, gyakorlás: megválaszolandó kérdések sorozata, majd válaszaid után kiértékelés, eredmény és mentés"
             li $ do
                 strong "Felhasználók"

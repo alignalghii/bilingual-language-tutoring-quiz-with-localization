@@ -18,7 +18,7 @@ indexPracticeView practices = docTypeHtml $ do
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Magyar-angol szó- és mondatgyakorló — Gyakorlóvizsga (kérdéssor)"
+        title "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
         p $ do
