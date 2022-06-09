@@ -51,6 +51,6 @@ homeView = docTypeHtml $ do
             span "mikro-keretrendszer használatát mutatja fel). Íme a projekt forráskódjának szabadon elérhető"
             a ! href "https://github.com/alignalghii/bilingual-Hungarian-English-practice-quiz-app" ! target "_plain" $ "GitHub-profilja."
         p $ do
-            span "Ennek a nyelvnek,technológiának, paradigmának a terén személyes múltam, vízióim"
+            span "Ennek a nyelvnek, technológiának, paradigmának a terén személyes múltam, vízióim"
             a ! href "https://alignalghii.github.io" $ "külön portfólióoldalon"
             span "szerepeplnek."
