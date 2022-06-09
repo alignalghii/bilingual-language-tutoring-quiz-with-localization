@@ -39,7 +39,10 @@ homeView = docTypeHtml $ do
             li $ do
                 strong "Felhasználók"
         h2 "Tartalmi leírás"
-        p "A program egyszerű közvetlen begépelős rövid fordítási kérdéseket, gyakorlatsorokat ad fel véletlenszerűen egy feltölthető nagy <q>lexikon</q>-tananyagból, amely szavakat, szókapcsolatokat, mondatokat tartalmaz, nehézségi szint szerint is kategorizálhatóan, szűrhetően.
+        p $ do
+            span "A program egyszerű közvetlen begépelős rövid fordítási kérdéseket, gyakorlatsorokat ad fel véletlenszerűen egy feltölthető nagy"
+            q "lexikon"
+            span "-tananyagból, amely szavakat, szókapcsolatokat, mondatokat tartalmaz, nehézségi szint szerint is kategorizálhatóan, szűrhetően."
         p "A tanuló utólag is visszanézheti korább elvégzett gyakorlatait, tetszés szerint megismételheti őket."
         h2 "Technikai háttér"
         p $ do
