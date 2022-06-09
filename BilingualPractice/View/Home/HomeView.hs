@@ -38,3 +38,16 @@ homeView = docTypeHtml $ do
                         span "Tudásteszt, gyakorlás: megválaszolandó kérdések sorozata, majd válaszaid után kiértékelés, eredmény és mentés"
             li $ do
                 strong "Felhasználók"
+        h2 "Tartalmi leírás"
+        p "A program egyszerű közvetlen begépelős rövid fordítási kérdéseket, gyakorlatsorokat ad fel véletlenszerűen egy feltölthető nagy <q>lexikon</q>-tananyagból, amely szavakat, szókapcsolatokat, mondatokat tartalmaz, nehézségi szint szerint is kategorizálhatóan, szűrhetően.
+        p "A tanuló utólag is visszanézheti korább elvégzett gyakorlatait, tetszés szerint megismételheti őket."
+        h2 "Technikai háttér"
+        p $ do
+            span "Szakmailag a program a Haskell nevű funkcionális programnyelve alkalmazhatóságának feltérképezésére szolgál a webprogramozás területén (ezen belül konkrétabban a"
+            q "Scotty"
+            span "mikro-keretrendszer használatát mutatja fel). Íme a projekt forráskódjának szabadon elérhető"
+            a ! href "https://github.com/alignalghii/bilingual-Hungarian-English-practice-quiz-app" ! target "_plain" $ "GitHub-profilja."
+        p $ do
+            span "Ennek a nyelvnek,technológiának, paradigmának a terén személyes múltam, vízióim"
+            a ! href "https://alignalghii.github.io" $ "külön portfólióoldalon"
+            span "szerepeplnek."
