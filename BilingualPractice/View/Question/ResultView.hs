@@ -11,16 +11,19 @@ import Data.Bool (bool)
 import Data.Time
 
 
-resultView :: [QuestionAnswerMatchView] -> Html
-resultView confer = docTypeHtml $ do
+resultView :: UTCTime -> [QuestionAnswerMatchView] -> Html
+resultView startTime confer = docTypeHtml $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
+        link ! rel "stylesheet" ! href "/style/form.css"
         title "Magyar-angol szó- és mondatgyakorló — Eredményhirdetés"
     body $ do
         h1 "Magyar-angol szó- és mondatgyakorló — Eredményhirdetés"
         p $ do
+            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ "Ismételd meg!"
+            span " •|||• "
             a ! href "/practice/new" $ "Új vizsga"
             span " •|||• "
             a ! href "/" $ "Vissza a főoldalra"
