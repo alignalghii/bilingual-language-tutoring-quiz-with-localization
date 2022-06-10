@@ -8,7 +8,7 @@ import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Data.Bool (bool)
 
 homeView :: Html
-homeView = docTypeHtml $ do
+homeView = docTypeHtml ! lang "hu" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
@@ -52,5 +52,5 @@ homeView = docTypeHtml $ do
             a ! href "https://github.com/alignalghii/bilingual-Hungarian-English-practice-quiz-app" ! target "_plain" $ "GitHub-profilja."
         p $ do
             span "Ennek a nyelvnek, technológiának, paradigmának a terén személyes múltam, vízióim"
-            a ! href "https://alignalghii.github.io" $ "külön portfólióoldalon"
+            a ! href "https://alignalghii.github.io"  ! target "_plain" $ "külön portfólióoldalon"
             span "szerepeplnek."
