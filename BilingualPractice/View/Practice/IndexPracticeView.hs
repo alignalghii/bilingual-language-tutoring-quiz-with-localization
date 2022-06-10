@@ -12,7 +12,7 @@ import Data.Time (UTCTime)
 import Data.Bool (bool)
 
 indexPracticeView :: [PracticeView] -> Html
-indexPracticeView practices = docTypeHtml $ do
+indexPracticeView practices = docTypeHtml ! lang "hu" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"

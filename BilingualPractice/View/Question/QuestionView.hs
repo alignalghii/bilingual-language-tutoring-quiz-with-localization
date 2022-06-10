@@ -11,7 +11,7 @@ import Data.Time
 
 
 questionView :: Int -> Int -> String -> Html
-questionView nth ofAll hu = docTypeHtml $ do
+questionView nth ofAll hu = docTypeHtml ! lang "hu" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"

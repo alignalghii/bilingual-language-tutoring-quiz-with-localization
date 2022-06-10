@@ -10,7 +10,7 @@ import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Control.Monad (forM_)
 
 randView :: [LexiconEntry] -> Html
-randView records = docTypeHtml $ do
+randView records = docTypeHtml ! lang "hu" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"

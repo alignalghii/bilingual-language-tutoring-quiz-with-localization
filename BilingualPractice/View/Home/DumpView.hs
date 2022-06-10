@@ -10,7 +10,7 @@ import Text.Blaze.Html5.Attributes as HA hiding (title, span, form)
 import Control.Monad (forM_)
 
 dumpView :: [LexiconEntry] -> Html
-dumpView vocabularyData = docTypeHtml $ do
+dumpView vocabularyData = docTypeHtml ! lang "hu" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"

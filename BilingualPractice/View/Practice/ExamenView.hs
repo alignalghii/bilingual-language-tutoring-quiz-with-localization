@@ -8,7 +8,7 @@ import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
 import Control.Monad (forM_)
 
 examenView :: Html
-examenView = docTypeHtml $ do
+examenView = docTypeHtml ! lang "hu" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
