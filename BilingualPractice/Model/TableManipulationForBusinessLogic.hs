@@ -23,15 +23,15 @@ preparePracticeControllingTables etalon = do
     eitherZombieOrVirginPracticeStart <- openPracticeStart
     case eitherZombieOrVirginPracticeStart of
         Right _ -> do
-            writeTable "etalon" etalon
-            truncateTable "personal" :: IO [AnsweredQuestion] -- to help type deduction, we return with type [AnsweredQuestion] explicitly
+            modifySession $ \s -> s {etalon = etalon}
+            modifySession $ \s -> s {personal = []}
             return True
         Left _ -> return False
 
 readPracticeControllingTables :: IO ([LexiconEntry], [AnsweredQuestion])
 readPracticeControllingTables = do
-    etalon   <- readTable "etalon"
-    personal <- readTable "personal"
+    etalon   <- getSession etalon
+    personal <- getSession personal
     return (etalon, personal)
 
 -- fetchOpenPractice :: IO Practice

@@ -5,9 +5,9 @@ module BilingualPractice.Controller.QuestionController where
 import Framework.Controller (blaze)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (..), prcStartTime,
                                                         withFirstUnansweredQuestionIfAnyOrElse, conferPracticeCertificate,
-                                                        maybePracticeStart)
+                                                        maybePracticeStart, Session (personal))
 import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables,
-                                                                  getSession, getPracticeStart_unsafe, checkOpenPracticeStart, closePracticeStart, insertAsNewPractice, saveAnswers)
+                                                                  getSession, getPracticeStart_unsafe, checkOpenPracticeStart, closePracticeStart, insertAsNewPractice, saveAnswers, modifySession)
 import BilingualPractice.Model.ViewModel (conferAndViewCertificate)
 import BilingualPractice.View.Question.QuestionView (questionView) -- !!
 import BilingualPractice.View.Question.ResultView   (resultView) -- !!
@@ -35,7 +35,7 @@ receiveAnswerForQuestion = do
     prcStartTime <- liftIO getPracticeStart_unsafe
     liftIO $ do
         ansTime  <- getCurrentTime
-        insertIntoTable "personal" AnsQu {ansHu, ansEn, qst1Time = prcStartTime, ansTime}
+        modifySession $ \s -> s {personal = personal s ++ [AnsQu {ansHu, ansEn, qst1Time = prcStartTime, ansTime}]}
     redirect "/question"
 
 announceResult :: [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
