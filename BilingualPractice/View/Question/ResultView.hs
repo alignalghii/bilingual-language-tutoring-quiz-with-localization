@@ -18,25 +18,25 @@ resultView startTime confer = docTypeHtml ! lang "hu" $ do
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
         link ! rel "stylesheet" ! href "/style/form.css"
-        title "Magyar-angol szó- és mondatgyakorló — Eredményhirdetés"
+        title "Hungarian-English word and sentence practice quiz-sets — Results of the practice"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Eredményhirdetés"
+        h1 "Hungarian-English word and sentence practice quiz-sets — Results of the practice"
         p $ do
-            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ "Ismételd meg!"
+            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ "Repeat this very same practice!"
             span " •|||• "
-            a ! href "/practice/new" $ "Új vizsga"
+            a ! href "/practice/new" $ "New practice"
             span " •|||• "
-            a ! href "/" $ "Vissza a főoldalra"
+            a ! href "/" $ "Back to the main page"
         table $ do
             tr $ do
-                th "Magyar"
-                th "Angol"
-                th "A Te válaszod"
-                th "Jó vagy rossz lett-e?"
-                th "Kérdés időpontja"
-                th "Válaszod időpontja"
-                th "Szó vagy mondat?"
-                th "Nehézségi szint"
+                th "Hungarian"
+                th "English"
+                th "Your answer"
+                th "Correct or wrong?"
+                th "Time when You received questions"
+                th "Time when You provided the answer"
+                th "Word or sentence?"
+                th "Difficulty level"
             forM_ confer $ \QuAnsMtchVw {dictHuView, dictEnView, yourEnView, markView = (markMsg, markStl), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView} -> do
                 tr $ do
                     td $ toHtml dictHuView

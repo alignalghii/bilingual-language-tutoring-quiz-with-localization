@@ -16,21 +16,21 @@ questionView nth ofAll hu = docTypeHtml ! lang "hu" $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
-        title "Magyar-angol szó- és mondatgyakorló — Kérdés"
+        title "Hungarian-English word and sentence practice quiz-sets — Question"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Kérdés"
+        h1 "Hungarian-English word and sentence practice quiz-sets — Question"
         p $ do
             form ! method "post" ! action "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $
-                button ! type_ "submit" $ "Vizsga újraindítása, eddigi eredmények feldolgozatlan törlése"
+                button ! type_ "submit" $ "Quit recent practice and restort it anew, delete all Your Former answers to this recent practice"
             span " •|||• "
             form ! method "post" ! action "practice/closefix" ! class_ "inline" $
-                button ! type_ "submit" $ "Vissza a főoldalra"
-        p $ toHtml $ show nth ++ ". kérdés az " ++ show ofAll ++ " kérdésből:"
+                button ! type_ "submit" $ "Back to the main page"
+        p $ toHtml $ "The" ++ show nth ++ "th question from the " ++ show ofAll ++ " questions:"
         form ! action "/question" ! method "post" $ do
-            label "Magyarul:"
+            label "In Hungarian:"
             span $ toHtml hu
             br
-            label "Angolul:"
+            label "In English:"
             input ! type_ "hidden" ! name "hu" ! value (toValue hu)
             input ! type_ "text"   ! name "en" ! autofocus ""
-            button ! type_ "submit" $ "Mehet"
+            button ! type_ "submit" $ "Go!"

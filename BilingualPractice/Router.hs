@@ -26,8 +26,8 @@ router logFlag = do
     get  "/question" poseFirstRemainingExamenQuestionOrAnounceResultAction
     post "/question" receiveAnswerForQuestion
 
-    get  "/error/navigationinconsistency" $ errorAction "Az oldal bejárása során következetlenség történhetett (valami lezáratlanul maradt cselekmény)!"
-    get  "/error/emptydata" $ errorAction "Nincsenek adatok!"
+    get  "/error/navigationinconsistency" $ errorAction "Inconsistent traversal of the site: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
+    get  "/error/emptydata" $ errorAction "There are no data!"
     --post "/error/closepractice" $ errorClosePracticeAction
 
 -- Important note:

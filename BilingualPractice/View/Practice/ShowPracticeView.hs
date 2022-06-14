@@ -17,28 +17,28 @@ showPracticeView startTime startTimeLocalised matches = docTypeHtml ! lang "hu" 
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Magyar-angol szó- és mondatgyakorló — Gyakorlóvizsga (kérdéssor)"
+        title "Hungarian-English word and sentence practice quiz-sets — Showing the selected former practice"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
+        h1 "Hungarian-English word and sentence practice quiz-sets  — Showing the selected former practice"
         p $ do
-            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ "Ismételd meg!"
+            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ "Repeat this very same practice!"
             span " •|||• "
-            a ! href "/practice/new" $ "Új gyakorlat indítása"
+            a ! href "/practice/new" $ "Start a new practice!"
             span " •|||• "
-            a ! href "/practice/index" $ "Vissza a többi régi gyakorlatod listájához"
+            a ! href "/practice/index" $ "Back to the complete list of all Your former practices"
             span " •|||• "
-            a ! href "/" $ "Vissza a főoldalra"
+            a ! href "/" $ "Back to the main page"
         table $ do
             caption $ toHtml startTimeLocalised
             tr $ do
-                th "Magyar"
-                th "Angol"
-                th "A Te válaszod"
-                th "Jó vagy rossz lett-e?"
-                th "Kérdés időpontja"
-                th "Válaszod időpontja"
-                th "Szó vagy mondat?"
-                th "Nehézségi szint"
+                th "Hungarian"
+                th "English"
+                th "Your answer"
+                th "Correct or wrong?"
+                th "Time when You received questions"
+                th "Time when You provided the answer"
+                th "Word or sentence?"
+                th "Difficulty level"
             forM_ matches $ \QuAnsMtchVw {dictHuView, dictEnView, yourEnView, markView = (markMsg, markStl), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView} -> do
                 tr $ do
                     td $ toHtml dictHuView

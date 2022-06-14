@@ -16,40 +16,42 @@ errorView msg = docTypeHtml ! lang "hu" $ do
         link ! rel "stylesheet" ! href "/style/form.css"
         title "Magyar-angol szó- és mondatgyakorló — Hiba!"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Hiba!"
         ul $ do
             li $ do
-                span "Fejlesztőknek szóló segédfunkciók"
+                strong "Lexicon:"
+                span "that is, all words, phrases, sentences that make up the contents of the practice quiz-sets"
                 ul $ do
+                    a ! href "/dump" $ "Whole-dump index list: showing the underlying complete lexicon"
+                    span "— You can see the raw entry data of the entire lexicon here"
                     li $ do
-                        a ! href "/dump" $ "Teljes kimutatás"
-                        span "(adminisztrátoroknak, fejlesztőknek)"
-                    li $ do
-                        a ! href "/rand" $ "Véletlen kiválasztás"
-                        span "(mint előfázisa a valódi tudástesztnek, gyakorlásnak)"
+                        a ! href "/rand" $ "Random selection:"
+                        span "You can see the operation of the randomized sampling here, for example, what the proportions of various difficulty levels are and also the proportions of words, phrases and sentences are to each other."
             li $ do
-                span "Gyakorlatok"
+                strong "Practices:"
+                span "that is, series sets of question-answer pairs, i.e quiz-sets (by simple randomized sampling, for the time being, but in future also custom-assembled materials will be uploadable by a tutor)"
                 ul $ do
                     li $ do
-                        a ! href "/practice/index" $ "Listázás: eddigi gyakorlataid"
-                        span "Azok a kérdéssorok (gyakorlatok), amelyeket eddig végeztél"
+                        a ! href "/practice/index" $ "Your personal history: all the practices You have already done"
+                        span "— You can see them here as Your answers given to the questions you received in Your former practicings, evaluated, and in time order"
                     li $ do
-                        a ! href "/practice/new" $ "Új gyakorlat: véletlen kérdéssor generálása"
-                        span "Valódi tudásteszt, gyakorlás: interaktív szakasz, megválaszolandó kérdések sorozata"
+                        a ! href "/practice/new" $ "New practice: generating a random quiz"
+                        span "sampled randomly from the lexicon: questions, to which You will answer, and Your done practice can be stored, viewed back and repeated, too."
+            li $ do
+                strong "Users"
         p ! class_ "error" $ toHtml msg
-        div "Lehetséges segítség:"
+        div "Possible help hints to fix the error:"
         ul $ do
             li $ do
-                span "Üres adat hiba esetén nincs különösebb tennivalód:"
+                span "In case of empty data error:"
                 ul $ do
-                    li "várj az adatbázis nagyobb feltöltöttségére,"
                     li $ do
-                        span "vagy"
-                        a ! href "/practice/new" $ "enyhíts a szűrési feltételeken!"
+                        span "either"
+                        a ! href "/practice/new" $ "maybe You have set the filtering options too strict,"
+                    li "or the database has not yet been filled with data"
             li $ do
-                span "Bejárási következetlenég, lezáratlanul maradt cselekmény esetén"
+                span "In case of inconsistent traversal of the site error: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
                 ul $ do
                     li $
                         form ! method "post" ! action "/practice/closefix" ! class_ "inline" $
-                            button ! type_ "submit" $ "zárd be az esetleg szabálytalanul megszakított (lezárás nélkül) félbe maradt új gyakolatot."
+                            button ! type_ "submit" $ "click here to close ."
             li "Előfordulhat, hogy nem kell semmit csinálnod: használd nyugodtan tovább az oldalt"

@@ -18,21 +18,21 @@ indexPracticeView practices = docTypeHtml ! lang "hu" $ do
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
+        title "Hungarian-English word and sentence practice quiz-sets — List of Your former practices"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Eddigi gyakorlataid listája"
+        h1 "Hungarian-English word and sentence practice quiz-sets — List of Your former practices"
         p $ do
-            a ! href "/" $ "Vissza a főoldalra"
+            a ! href "/" $ "Back to the main page"
             span " •|||• "
-            a ! href "/practice/new" $ "Új gyakorlat indítása"
+            a ! href "/practice/new" $ "Start a new practice"
         div $
             table $ do
                 tr $ do
-                    th "A gyakorlat kezdőidőpontja"
-                    th "Kérdések száma"
-                    th "Megmutat"
-                    th "Töröl"
-                    th "Megismétel"
+                    th "The start time of the practice"
+                    th "Number of questions"
+                    th "Show"
+                    th "Delete"
+                    th "Repeat"
                 forM_ practices $ \ PrcVw {prcStartTimeId, prcStartTimeView, questionsCount} -> do
                     tr $ do
                         td $ toHtml prcStartTimeView
@@ -42,8 +42,8 @@ indexPracticeView practices = docTypeHtml ! lang "hu" $ do
                         td $ bool "" (showFormRep prcStartTimeId) (questionsCount > 0)
 
 showLink :: UTCTime -> Html
-showLink timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ "Mutat"
+showLink timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ "Show"
 
 showFormDel, showFormRep :: UTCTime -> Html
-showFormDel timeId = form ! method "post" ! action "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Töröld!"
-showFormRep timeId = form ! method "post" ! action "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Ismételd meg!"
+showFormDel timeId = form ! method "post" ! action "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Delete!"
+showFormRep timeId = form ! method "post" ! action "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Repeat!"

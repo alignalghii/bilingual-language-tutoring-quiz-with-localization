@@ -13,36 +13,35 @@ examenView = docTypeHtml ! lang "hu" $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
-        title "Magyar-angol szó- és mondatgyakorló — Új gyakorlat (véletlen kérdéssor) indítása"
+        title "Hungarian-English word and sentence practice quiz-sets — Start a new practice (quiz-set)"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Új gyakorlat (véletlen kérdéssor) indítása"
+        h1 "Hungarian-English word and sentence practice quiz-sets — Start a new practice (quiz-set)"
         p $ do
-            a ! href "/" $ "Vissza a főoldalra"
+            a ! href "/" $ "Back to the main page"
         form ! action "/practice/new" ! method "post" $ do
-            div "Új gyakorlóvizsga indítása (a régi válaszaid, ha vannak, törlődnek)"
-            label "Ennyi kérdésből álljon a gyakorlat:"
+            div "Re-start as a new practice (Your former anwers of this recent practice get deleted)"
+            label "The practice should consist of that many questions:"
             input ! type_ "number" ! class_ "smallnum" ! min "1" ! max "30" ! name "number_of_questions" ! value "5"
-            div "Szám, szó, vagy mondat gyakoroltatása legyen?"
+            div "What kind of linguistical units should we practice: numbers, words, phrases, or sentences?"
             ul $ do
                 li $ do
                     input ! type_ "checkbox" ! name "number" ! checked ""
-                    label "Szám"
+                    label "Number"
                 li $ do
                     input ! type_ "checkbox" ! name "word" ! checked ""
-                    label "Szó"
+                    label "Word"
                 li $ do
                     input ! type_ "checkbox" ! name "phrase" ! checked ""
-                    label "Szókapcsolat"
+                    label "Phrase"
                 li $ do
                     input ! type_ "checkbox" ! name "sentence" ! checked ""
-                    label "Mondat"
-            div "Milyen nehézségi szinten?"
+                    label "Sentence"
+            div "On what difficulty level?"
             ul $ do
                 li $ do
                     input ! type_ "checkbox" ! name "easy" ! checked ""
-                    label "Könnyű"
+                    label "Easy"
                 li $ do
                     input ! type_ "checkbox" ! name "difficult" ! checked ""
-                    label "Nehéz"
-            button ! type_ "submit" $ "Mehet"
-
+                    label "Difficult"
+            button ! type_ "submit" $ "Go!"

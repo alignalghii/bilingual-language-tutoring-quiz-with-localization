@@ -15,19 +15,19 @@ randView records = docTypeHtml ! lang "hu" $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Magyar-angol szó- és mondatgyakorló — Lexikon véletlen mintakiválasztása"
+        title "Hungarian-English word and sentence practice quiz-sets — Lexicon random sampling"
     body $ do
-        h1 "Magyar-angol szó- és mondatgyakorló — Lexikon véletlen mintakiválasztása"
+        h1 "Hungarian-English word and sentence practice quiz-sets — Lexicon random sampling"
         p $ do
-            a ! href "/rand" $ "Újraválogatás"
+            a ! href "/rand" $ "Re-sampling again randomized"
             span " •|||• "
-            a ! href "/" $ "Vissza a főoldalra"
+            a ! href "/" $ "Back to the main page"
         table $ do
             tr $ do
-                th "Angol"
-                th "Magyar"
-                th "Szó vagy mondat?"
-                th "Nehézségi szint"
+                th "English"
+                th "Hungarian"
+                th "Word or sentence?"
+                th "Difficulty level"
             forM_ records $ \ LxcE {en, hu, entity, difficulty} -> do
                 tr $ do
                     td $ toHtml en
