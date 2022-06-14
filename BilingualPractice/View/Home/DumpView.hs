@@ -22,13 +22,13 @@ dumpView vocabularyData = docTypeHtml ! lang "en" $ do
             a ! href "/" $ "Back to the main page"
         table $ do
             tr $ do
-                th "English"
                 th "Hungarian"
+                th "English"
                 th "Word or sentence?"
                 th "Difficulty level"
             forM_ vocabularyData $ \ LxcE {en, hu, entity, difficulty} -> do
                 tr $ do
-                    td $ toHtml en
                     td $ toHtml hu
+                    td $ toHtml en
                     td $ toHtml $ view entity
                     td $ toHtml $ view difficulty
