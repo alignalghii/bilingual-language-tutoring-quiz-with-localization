@@ -12,7 +12,7 @@ import Data.Time
 
 
 resultView :: UTCTime -> [QuestionAnswerMatchView] -> Html
-resultView startTime confer = docTypeHtml ! lang "hu" $ do
+resultView startTime confer = docTypeHtml ! lang "en" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"

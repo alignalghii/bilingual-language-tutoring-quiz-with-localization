@@ -11,7 +11,7 @@ import Data.Time (UTCTime)
 
 
 showPracticeView :: UTCTime -> String -> [QuestionAnswerMatchView] -> Html
-showPracticeView startTime startTimeLocalised matches = docTypeHtml ! lang "hu" $ do
+showPracticeView startTime startTimeLocalised matches = docTypeHtml ! lang "en" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"

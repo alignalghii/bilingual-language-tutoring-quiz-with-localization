@@ -8,7 +8,7 @@ import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Data.Bool (bool)
 
 homeView :: Html
-homeView = docTypeHtml ! lang "hu" $ do
+homeView = docTypeHtml ! lang "en" $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
