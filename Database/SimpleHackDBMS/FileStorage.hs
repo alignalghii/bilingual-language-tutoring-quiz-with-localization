@@ -32,8 +32,9 @@ modifyTable tableName f = do
 insertIntoTable :: (Read record, Show record) => TableName -> record -> IO ()
 insertIntoTable tableName = void . modifyTable tableName . flip insertAfter
 
-appendToTable :: (Read record, Show record) => TableName -> [record] -> IO ()
-appendToTable = mapM_ . insertIntoTable
+appendToTable :: (Read record, Show record) => TableName -> [record] -> IO [record]
+appendToTable tableName = modifyTable tableName . flip (++)
+-- appendToTable = mapM_ . insertIntoTable -- it can couse lock problems: ``var/answer.table: openFile: resource busy (file is locked)''
 
 updateTable :: (Read record, Show record) => TableName -> (record -> record) -> IO [record]
 updateTable tableName = modifyTable tableName . map
