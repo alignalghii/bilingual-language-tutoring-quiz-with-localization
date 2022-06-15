@@ -25,7 +25,10 @@ questionView nth ofAll hu = docTypeHtml ! lang "en" $ do
             span " •|||• "
             form ! method "post" ! action "practice/closefix" ! class_ "inline" $
                 button ! type_ "submit" $ "Back to the main page"
-        p $ toHtml $ "The " ++ show nth ++ "th question from the " ++ show ofAll ++ " questions:"
+        p $ do
+            span $ toHtml $ "The " ++ show nth
+            sup "th"
+            span $ toHtml $ "question from the " ++ show ofAll ++ " questions:"
         form ! action "/question" ! method "post" $ do
             label "In Hungarian:"
             span $ toHtml hu
