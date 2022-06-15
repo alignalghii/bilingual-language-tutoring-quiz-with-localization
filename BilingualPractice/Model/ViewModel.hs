@@ -14,14 +14,14 @@ class Viewable a where
     view :: a -> String
 
 instance Viewable LinguisticalUnit where
-    view LUNumber   = "szám"
-    view LUWord     = "szó"
-    view LUPhrase   = "szókapcsolat"
-    view LUSentence = "mondat"
+    view LUNumber   = "number"
+    view LUWord     = "word"
+    view LUPhrase   = "phrase"
+    view LUSentence = "sentence"
 
 instance Viewable Difficulty where
-    view Easy      = "könnyű"
-    view Difficult = "nehéz"
+    view Easy      = "easy"
+    view Difficult = "difficult"
 
 
 instance FormParamable LinguisticalUnit where
@@ -42,7 +42,7 @@ viewMatch timeZone QuAnsMtch {dictHu, dictEn, yourEn, mark, askedAtTime, answere
 
 
 viewMark :: Bool -> (String, String)
-viewMark = bool ("Rossz", "wrong") ("Jó", "ok")
+viewMark = bool ("Wrong", "wrong") ("OK", "ok")
 
 
 data PracticeView = PrcVw {prcStartTimeId :: UTCTime, prcStartTimeView :: String, questionsCount :: Int}
