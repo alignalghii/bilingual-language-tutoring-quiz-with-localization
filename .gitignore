@@ -6,3 +6,4 @@ var/*.data
 var/*.hs
 !var/.gitkeep
 _obsolete
+test/*.archive
