@@ -31,11 +31,11 @@ errorView msg = docTypeHtml ! lang "en" $ do
                 span "that is, series sets of question-answer pairs, i.e quiz-sets (by simple randomized sampling, for the time being, but in future also custom-assembled materials will be uploadable by a tutor)"
                 ul $ do
                     li $ do
-                        a ! href "/practice/index" $ "Your personal history: all the practices You have already done"
-                        span "— You can see them here as Your answers given to the questions you received in Your former practicings, evaluated, and in time order"
-                    li $ do
                         a ! href "/practice/new" $ "New practice: generating a random quiz"
                         span "sampled randomly from the lexicon: questions, to which You will answer, and Your done practice can be stored, viewed back and repeated, too."
+                    li $ do
+                        a ! href "/practice/index" $ "Your personal history: all the practices You have already done"
+                        span "— You can see them here as Your answers given to the questions you received in Your former practicings, evaluated, and in time order"
             li $ do
                 strong "Users"
         p ! class_ "error" $ toHtml msg
