@@ -23,3 +23,14 @@ tensAnd_hu = ["tizen", "huszon", "harminc", "negyven", "ötven", "hatvan", "hetv
 ones_en = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 tens_en = ["ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
 teens_en = ["eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"]
+
+
+ordinalSuffix_en' :: Int -> String
+ordinalSuffix_en' n = show n ++ ordinalSuffix_en n
+
+singularOrPluralSuffix_en' :: Int -> ShowS
+singularOrPluralSuffix_en' n word = concat [show n, " ", word, singularOrPluralSuffix_en n]
+
+ordinalSuffix_en, singularOrPluralSuffix_en :: Int -> String
+ordinalSuffix_en n = ("th" : "st" : "nd" : "rd" : repeat "th") !! n
+singularOrPluralSuffix_en   n = ("s" : "" : "s" : repeat "s") !! n

@@ -2,6 +2,7 @@
 
 module BilingualPractice.View.Question.QuestionView (questionView) where
 
+import BilingualPractice.Model.Grammar.Numeral (ordinalSuffix_en, singularOrPluralSuffix_en')
 import Prelude hiding (head, span)
 import Text.Blaze.Html5 as H hiding (map, mark)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
@@ -27,8 +28,8 @@ questionView nth ofAll hu = docTypeHtml ! lang "en" $ do
                 button ! type_ "submit" $ "Back to the main page"
         p $ do
             span $ toHtml $ "The " ++ show nth
-            sup "th"
-            span $ toHtml $ "question from the " ++ show ofAll ++ " questions:"
+            sup $ toHtml $ ordinalSuffix_en nth
+            span $ toHtml $ "question from the " ++ singularOrPluralSuffix_en' ofAll "question" ++ ":"
         form ! action "/question" ! method "post" $ do
             label "In Hungarian:"
             span $ toHtml hu
