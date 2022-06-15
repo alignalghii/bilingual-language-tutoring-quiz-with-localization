@@ -21,11 +21,11 @@ questionView nth ofAll hu = docTypeHtml ! lang "en" $ do
         h1 "Hungarian-English word and sentence practice quiz-sets — Question"
         p $ do
             form ! method "post" ! action "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $
-                button ! type_ "submit" $ "Quit recent practice and restort it anew, delete all Your Former answers to this recent practice"
+                button ! type_ "submit" $ "Quit recent practice and restart it anew, delete all Your Former answers to this recent practice"
             span " •|||• "
             form ! method "post" ! action "practice/closefix" ! class_ "inline" $
                 button ! type_ "submit" $ "Back to the main page"
-        p $ toHtml $ "The" ++ show nth ++ "th question from the " ++ show ofAll ++ " questions:"
+        p $ toHtml $ "The " ++ show nth ++ "th question from the " ++ show ofAll ++ " questions:"
         form ! action "/question" ! method "post" $ do
             label "In Hungarian:"
             span $ toHtml hu
