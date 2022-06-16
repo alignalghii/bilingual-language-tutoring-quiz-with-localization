@@ -17,5 +17,5 @@ It is implemented in Scotty, a Haskell microframework. For database, it uses a s
 
 As for coding style, it intends to be extrmely DRY by using the tools where declarative and functional programming languages shine: algebraic datatypes, monad transformers, domain-specific embedded languages, arrows. Although the app is small, it tries to provide a presentation about at least very embryonic stages of using very concise concepts and a point-free style stolen from and inspired by combinatory logic and category theory.
 
-A strange backyard of the program: although it i intended to be be provided with modern test environment (unit tests, database tests, web API tests), but now it has a hacky-tailored **curl-grep** style of tool to investigate reproducible and traceable test runs: [test/API-client-tester.bash](test/API-client-tester.bash).
+A strange backyard of the program: although I intended to provided the project with a modern test environment (unit tests, database tests, web API tests), but for now it has a hacky-tailored **curl-grep** style of custom test tool to investigate reproducible and traceable test runs: [test/API-client-tester.bash](test/API-client-tester.bash).
 
