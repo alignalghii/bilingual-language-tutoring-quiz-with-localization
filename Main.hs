@@ -7,4 +7,4 @@ import System.Environment (getArgs)
 main :: IO ()
 main = do
     logFlag <- (not . null) <$> getArgs
-    scotty 3000 $ router logFlag
+    scotty 3001 $ router logFlag
