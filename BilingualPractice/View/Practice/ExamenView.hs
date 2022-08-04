@@ -42,6 +42,9 @@ examenView = docTypeHtml ! lang "en" $ do
                     input ! type_ "checkbox" ! name "easy" ! checked ""
                     label "Easy"
                 li $ do
+                    input ! type_ "checkbox" ! name "middleLevel" ! checked ""
+                    label "Middle-level"
+                li $ do
                     input ! type_ "checkbox" ! name "difficult" ! checked ""
                     label "Difficult"
             button ! type_ "submit" $ "Go!"

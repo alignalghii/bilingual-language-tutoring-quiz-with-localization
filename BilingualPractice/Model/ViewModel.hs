@@ -20,8 +20,9 @@ instance Viewable LinguisticalUnit where
     view LUSentence = "sentence"
 
 instance Viewable Difficulty where
-    view Easy      = "easy"
-    view Difficult = "difficult"
+    view Easy        = "easy"
+    view MiddleLevel = "middle-level"
+    view Difficult   = "difficult"
 
 
 instance FormParamable LinguisticalUnit where
@@ -31,8 +32,9 @@ instance FormParamable LinguisticalUnit where
     formParam LUSentence = "sentence"
 
 instance FormParamable Difficulty where
-    formParam Easy      = "easy"
-    formParam Difficult = "difficult"
+    formParam Easy        = "easy"
+    formParam MiddleLevel = "middleLevel"
+    formParam Difficult   = "difficult"
 
 
 data QuestionAnswerMatchView = QuAnsMtchVw {dictHuView, dictEnView, yourEnView :: String, markView :: (String, String), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView :: String}

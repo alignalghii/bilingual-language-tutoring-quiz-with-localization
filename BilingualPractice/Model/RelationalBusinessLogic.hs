@@ -12,7 +12,7 @@ import Data.Bool (bool)
 
 data LinguisticalUnit = LUNumber | LUWord | LUPhrase | LUSentence deriving (Eq, Read, Show, Bounded, Enum)
 
-data Difficulty = Easy | Difficult deriving (Eq, Read, Show, Bounded, Enum)
+data Difficulty = Easy | MiddleLevel | Difficult deriving (Eq, Read, Show, Bounded, Enum)
 
 data LexiconEntry = LxcE {hu, en :: String, entity :: LinguisticalUnit, difficulty :: Difficulty} deriving (Read, Show) -- Eq
 
