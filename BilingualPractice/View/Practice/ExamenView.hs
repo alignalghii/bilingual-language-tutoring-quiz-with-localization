@@ -19,7 +19,7 @@ examenView = docTypeHtml ! lang "en" $ do
         p $ do
             a ! href "/" $ "Back to the main page"
         form ! action "/practice/new" ! method "post" $ do
-            p "Here you can start a new practice. (If You have pending answers from an earlier start atempt and forced interrupt, they get deleted.)"
+            p "Here you can start a new practice: generate a new question sequence. Beware that if You have pending answers, they get deleted immediatelly upon Your clicking the &ldquo;Start new practice button&rdquo;. (You may have such pending (&ldquo;zombie&rdquo;) answers in the case when You had earlier new practice generation attempts which got interruped in an irreguar way, i.e. nor have You done them, nor have You quitted them explicitely with the &ldquo;Quit practice&rdquo; or the &ldquo;Back to main page&rdquo; buttons.)"
             label "The practice should consist of that many questions:"
             input ! type_ "number" ! class_ "smallnum" ! min "1" ! max "30" ! name "number_of_questions" ! value "5"
             div "What kind of linguistical units should we practice: numbers, words, phrases, or sentences?"
