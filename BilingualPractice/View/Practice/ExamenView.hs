@@ -19,7 +19,7 @@ examenView = docTypeHtml ! lang "en" $ do
         p $ do
             a ! href "/" $ "Back to the main page"
         form ! action "/practice/new" ! method "post" $ do
-            p "Here you can start a new practice. (If You have pending answers from and earlier start atempt and forced interrupt, they get deleted.)"
+            p "Here you can start a new practice. (If You have pending answers from an earlier start atempt and forced interrupt, they get deleted.)"
             label "The practice should consist of that many questions:"
             input ! type_ "number" ! class_ "smallnum" ! min "1" ! max "30" ! name "number_of_questions" ! value "5"
             div "What kind of linguistical units should we practice: numbers, words, phrases, or sentences?"
