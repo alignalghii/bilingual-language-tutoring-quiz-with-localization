@@ -3,6 +3,7 @@
 module Main (main) where
 
 import BilingualPractice.Router (router)
+import BilingualPractice.Language (Language (..))
 import Web.Scotty (scotty)
 import System.Environment (getProgName, getArgs)
 import System.Console.GetOpt (OptDescr (Option), ArgDescr (..), getOpt, ArgOrder (Permute), usageInfo)
@@ -36,15 +37,16 @@ serveWith progName flags = do
     if Help `elem` flags
         then putStrLn $ usageInfo (progName ++ " <OPTIONS>") options
         else do
-            let portNumber = fromMaybe 3000 $ firstJust (\case {Port n -> Just n; _ -> Nothing}) flags
+            let portNumber = fromMaybe 3000 $ firstJust (\case {Port n    -> Just n   ; _ -> Nothing}) flags
+            let lang       = fromMaybe Hu   $ firstJust (\case {Lang lang -> Just lang; _ -> Nothing}) flags
             let logFlag    = Log `elem` flags
-            scotty portNumber $ router logFlag
+            scotty portNumber $ router logFlag lang
 
-data Flag = Port Int | Lang String | Log | Help deriving Eq
+data Flag = Port Int | Lang Language | Log | Help deriving Eq
 
 options :: [OptDescr Flag]
 options = [  Option "p"  ["port"    ] (ReqArg (Port . read) "<PORT-NUMBER>") "Provide port number <PORT-NUMBER> the server should listen on",
-             Option "n"  ["language"] (ReqArg Lang          "<LANGUAGE>"   ) "Provide which language the explanatory texts & widget labels should be",
+             Option "n"  ["language"] (ReqArg (Lang . read) "<LANGUAGE>"   ) "Provide which language the explanatory texts & widget labels should be",
              Option "g"  ["log"     ] (NoArg  Log                          ) "Determine whether the server should print logging messages",
              Option "h?" ["help"    ] (NoArg  Help                         ) "Help"
           ]

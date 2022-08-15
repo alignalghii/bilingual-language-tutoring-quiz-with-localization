@@ -2,6 +2,7 @@
 
 module BilingualPractice.Controller.QuestionController where
 
+import BilingualPractice.Language (Language)
 import Framework.Controller (blaze)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (..), prcStartTime,
                                                         withFirstUnansweredQuestionIfAnyOrElse, conferPracticeCertificate,
@@ -17,8 +18,8 @@ import Control.Monad.Trans (liftIO)
 import Data.Time (getCurrentTime, getCurrentTimeZone)
 
 
-poseFirstRemainingExamenQuestionOrAnounceResultAction :: ActionM ()
-poseFirstRemainingExamenQuestionOrAnounceResultAction = do
+poseFirstRemainingExamenQuestionOrAnounceResultAction :: Language -> ActionM ()
+poseFirstRemainingExamenQuestionOrAnounceResultAction _ = do
     flag <- liftIO checkOpenPracticeStart
     if flag
         then do

@@ -2,6 +2,7 @@
 
 module BilingualPractice.Controller.HomeController where
 
+import BilingualPractice.Language (Language)
 import Framework.Controller (blaze)
 import BilingualPractice.Model.TableManipulationForBusinessLogic (readExtendedLexiconTable, closePracticeStart)
 import BilingualPractice.View.Home.HomeView     (homeView)
@@ -13,14 +14,14 @@ import Web.Scotty (ActionM, redirect)
 import Control.Monad.Trans (liftIO)
 
 
-homeAction :: ActionM ()
-homeAction = blaze homeView
+homeAction :: Language -> ActionM ()
+homeAction _ = blaze homeView
 
-dumpAction :: ActionM ()
-dumpAction = liftIO readExtendedLexiconTable >>= (blaze . dumpView)
+dumpAction :: Language -> ActionM ()
+dumpAction _ = liftIO readExtendedLexiconTable >>= (blaze . dumpView)
 
-randAction :: ActionM ()
-randAction = liftIO (readExtendedLexiconTable >>= randQuery 10) >>= (blaze . randView)
+randAction :: Language -> ActionM ()
+randAction _ = liftIO (readExtendedLexiconTable >>= randQuery 10) >>= (blaze . randView)
 
 errorAction :: String -> ActionM ()
 errorAction = blaze . errorView

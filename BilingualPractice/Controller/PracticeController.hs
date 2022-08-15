@@ -2,6 +2,7 @@
 
 module BilingualPractice.Controller.PracticeController where
 
+import BilingualPractice.Language (Language)
 import Framework.Controller (blaze)
 import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readExtendedLexiconTable, closePracticeStart, deletePractice)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, entity, difficulty, qst1Time, restoreEtalonByAnswers, answersOfPracticeStart)
@@ -24,15 +25,15 @@ import Control.Monad (liftM2)
 import Control.Monad.Trans (liftIO)
 
 
-indexPracticeAction :: ActionM ()
-indexPracticeAction = do
+indexPracticeAction :: Language -> ActionM ()
+indexPracticeAction _ = do
     practices <- liftIO $ readTable "practice"
     answers   <- liftIO $ readTable "answer"
     timeZone  <- liftIO getCurrentTimeZone
     blaze $ indexPracticeView $ viewPractice timeZone answers <$> practices
 
-showPracticeAction :: ActionM ()
-showPracticeAction = do
+showPracticeAction :: Language -> ActionM ()
+showPracticeAction _ = do
     utc <- (read . decode . unpack) <$> param "utc"
     answers <- liftIO $ filter (matchField qst1Time utc) <$> readTable "answer"
     lexicon <- liftIO $ readExtendedLexiconTable
@@ -61,8 +62,8 @@ repeatPracticeAction = do
     redirect $ bool "/error/navigationinconsistency" "/question" flag
 
 
-proposeExamenAction :: ActionM ()
-proposeExamenAction = blaze examenView
+proposeExamenAction :: Language -> ActionM ()
+proposeExamenAction _ = blaze examenView
 
 performExamenAction :: ActionM ()
 performExamenAction = do
