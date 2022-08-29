@@ -2,7 +2,8 @@
 
 module BilingualPractice.View.Home.HomeView (homeView) where
 
-import BilingualPractice.Language (Language (..))
+import BilingualPractice.Language (Language (..), languageAttrValue)
+import BilingualPractice.View.CommonSnippets (portfolioLinkTextSnippet)
 
 import Prelude hiding (head, span)
 import Text.Blaze.Html5 as H hiding (map)
@@ -47,9 +48,6 @@ homeView language = docTypeHtml ! lang (languageAttrValue language) $ do
         p $ developerDocumentationParagraph1ContentSnippet language
         p $ developerDocumentationParagraph2ContentSnippet language
 
-languageAttrValue :: IsString string => Language -> string
-languageAttrValue En = "en"
-languageAttrValue Hu = "hu"
 
 titleSnippet :: IsString string => Language -> string
 titleSnippet En = "Hungarian-English word and sentence practice quiz-sets"
@@ -144,9 +142,9 @@ developerDocumentationParagraph1ContentSnippet Hu = do
 developerDocumentationParagraph2ContentSnippet :: Language -> Html
 developerDocumentationParagraph2ContentSnippet En = do
     span "I have also a personal portfolio page about both my past in Haskell (and its underlying mathematics), and also about my future visions: see"
-    a ! href "https://alignalghii.github.io"  ! target "_plain" $ "this profolio site"
+    a ! href (portfolioLinkTextSnippet En)  ! target "_plain" $ "this profolio site"
     span "too."
 developerDocumentationParagraph2ContentSnippet Hu = do
     span "Ennek a nyelvnek, technológiának, paradigmának a terén személyes múltam, vízióim"
-    a ! href "https://alignalghii.github.io/index.hu.html"  ! target "_plain" $ "külön portfólióoldalon"
+    a ! href (portfolioLinkTextSnippet Hu)  ! target "_plain" $ "külön portfólióoldalon"
     span "szerepeplnek."
