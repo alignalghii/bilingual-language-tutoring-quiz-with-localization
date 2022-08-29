@@ -15,7 +15,7 @@ import Control.Monad.Trans (liftIO)
 
 
 homeAction :: Language -> ActionM ()
-homeAction _ = blaze homeView
+homeAction = blaze . homeView
 
 dumpAction :: Language -> ActionM ()
 dumpAction _ = liftIO readExtendedLexiconTable >>= (blaze . dumpView)
