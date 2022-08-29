@@ -2,6 +2,10 @@
 
 module BilingualPractice.View.Home.RandView (randView) where
 
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, hungarianLanguageNameSnippet, englishLanguageNameSnippet, linguisticalUnitNameSnippet, difficultLevelNameSnippet)
+import BilingualPractice.Language (Language (..), languageAttrValue)
+import Data.String (IsString)
+
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry (..))
 import BilingualPractice.Model.ViewModel (view)
 import Prelude hiding (head, span)
@@ -9,28 +13,37 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Control.Monad (forM_)
 
-randView :: [LexiconEntry] -> Html
-randView records = docTypeHtml ! lang "en" $ do
+randView :: Language -> [LexiconEntry] -> Html
+randView language records = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Hungarian-English word and sentence practice quiz-sets — Lexicon random sampling"
+        title $ titleSnippet language
     body $ do
-        h1 "Hungarian-English word and sentence practice quiz-sets — Lexicon random sampling"
+        h1 $ titleSnippet language
         p $ do
-            a ! href "/rand" $ "Re-sampling again randomized"
+            a ! href "/rand" $ resamplingLinkTextSnippet language
             span " •|||• "
-            a ! href "/" $ "Back to the main page"
+            a ! href "/" $ backHomeLinkTextSnippet language
         table $ do
             tr $ do
-                th "Hungarian"
-                th "English"
-                th "Word or sentence?"
-                th "Difficulty level"
+                th $ hungarianLanguageNameSnippet language
+                th $ englishLanguageNameSnippet   language
+                th $ linguisticalUnitNameSnippet  language
+                th $ difficultLevelNameSnippet    language
             forM_ records $ \ LxcE {en, hu, entity, difficulty} -> do
                 tr $ do
                     td $ toHtml hu
                     td $ toHtml en
                     td $ toHtml $ view entity
                     td $ toHtml $ view difficulty
+
+
+titleSnippet :: (IsString string, Semigroup string) => Language -> string
+titleSnippet En = appTitleSnippet En <> " — Lexicon random sampling"
+titleSnippet Hu = appTitleSnippet Hu <> " — Lexikon véletlen mintakiválasztása"
+
+resamplingLinkTextSnippet :: IsString string => Language -> string
+resamplingLinkTextSnippet En = "Re-sampling again randomized"
+resamplingLinkTextSnippet Hu = "Újraválogatás"

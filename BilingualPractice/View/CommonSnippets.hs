@@ -17,3 +17,15 @@ backHomeLinkTextSnippet Hu = "Vissza a főoldalra"
 portfolioLinkTextSnippet :: IsString string => Language -> string
 portfolioLinkTextSnippet En = "https://alignalghii.github.io"
 portfolioLinkTextSnippet Hu = "https://alignalghii.github.io/index.hu.html"
+
+hungarianLanguageNameSnippet, englishLanguageNameSnippet :: IsString string => Language -> string
+hungarianLanguageNameSnippet En = "Hungarian"
+hungarianLanguageNameSnippet Hu = "Magyar"
+englishLanguageNameSnippet En = "English"
+englishLanguageNameSnippet Hu = "Angol"
+
+linguisticalUnitNameSnippet, difficultLevelNameSnippet :: IsString string => Language -> string
+linguisticalUnitNameSnippet En = "Word or sentence?"
+linguisticalUnitNameSnippet Hu = "Szó vagy mondat?"
+difficultLevelNameSnippet En = "Difficulty level"
+difficultLevelNameSnippet Hu = "Nehézségi szint"

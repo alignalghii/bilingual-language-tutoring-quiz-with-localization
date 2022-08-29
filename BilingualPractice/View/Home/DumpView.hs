@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Home.DumpView (dumpView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, hungarianLanguageNameSnippet, englishLanguageNameSnippet, linguisticalUnitNameSnippet, difficultLevelNameSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
@@ -41,15 +41,3 @@ dumpView language vocabularyData = docTypeHtml ! lang (languageAttrValue languag
 titleSnippet :: (IsString string, Semigroup string) => Language -> string
 titleSnippet En = appTitleSnippet En <> " — Showing the underlying complete lexicon"
 titleSnippet Hu = appTitleSnippet Hu <> " — Lexikon teljes megmutatása"
-
-hungarianLanguageNameSnippet, englishLanguageNameSnippet :: IsString string => Language -> string
-hungarianLanguageNameSnippet En = "Hungarian"
-hungarianLanguageNameSnippet Hu = "Magyar"
-englishLanguageNameSnippet En = "English"
-englishLanguageNameSnippet Hu = "Angol"
-
-linguisticalUnitNameSnippet, difficultLevelNameSnippet :: IsString string => Language -> string
-linguisticalUnitNameSnippet En = "Word or sentence?"
-linguisticalUnitNameSnippet Hu = "Szó vagy mondat?"
-difficultLevelNameSnippet En = "Difficulty level"
-difficultLevelNameSnippet Hu = "Nehézségi szint"
