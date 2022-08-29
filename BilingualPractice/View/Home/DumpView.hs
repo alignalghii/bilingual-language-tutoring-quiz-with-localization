@@ -2,6 +2,10 @@
 
 module BilingualPractice.View.Home.DumpView (dumpView) where
 
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet)
+import BilingualPractice.Language (Language (..), languageAttrValue)
+import Data.String (IsString)
+
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry (..))
 import BilingualPractice.Model.ViewModel (view)
 import Prelude hiding (head)
@@ -9,26 +13,43 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, span, form)
 import Control.Monad (forM_)
 
-dumpView :: [LexiconEntry] -> Html
-dumpView vocabularyData = docTypeHtml ! lang "en" $ do
+dumpView :: Language -> [LexiconEntry] -> Html
+dumpView language vocabularyData = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Hungarian-English word and sentence practice quiz-sets — Showing the underlying complete lexicon"
+        title $ titleSnippet language
     body $ do
-        h1 "Hungarian-English word and sentence practice quiz-sets — Showing the underlying complete lexicon"
+        h1 $ titleSnippet language
         p $
-            a ! href "/" $ "Back to the main page"
+            a ! href "/" $ backHomeLinkTextSnippet language
         table $ do
             tr $ do
-                th "Hungarian"
-                th "English"
-                th "Word or sentence?"
-                th "Difficulty level"
+                th $ hungarianLanguageNameSnippet language
+                th $ englishLanguageNameSnippet   language
+                th $ linguisticalUnitNameSnippet  language
+                th $ difficultLevelNameSnippet    language
             forM_ vocabularyData $ \ LxcE {en, hu, entity, difficulty} -> do
                 tr $ do
                     td $ toHtml hu
                     td $ toHtml en
                     td $ toHtml $ view entity
                     td $ toHtml $ view difficulty
+
+
+titleSnippet :: (IsString string, Semigroup string) => Language -> string
+titleSnippet En = appTitleSnippet En <> " — Showing the underlying complete lexicon"
+titleSnippet Hu = appTitleSnippet Hu <> " — Lexikon teljes megmutatása"
+
+hungarianLanguageNameSnippet, englishLanguageNameSnippet :: IsString string => Language -> string
+hungarianLanguageNameSnippet En = "Hungarian"
+hungarianLanguageNameSnippet Hu = "Magyar"
+englishLanguageNameSnippet En = "English"
+englishLanguageNameSnippet Hu = "Angol"
+
+linguisticalUnitNameSnippet, difficultLevelNameSnippet :: IsString string => Language -> string
+linguisticalUnitNameSnippet En = "Word or sentence?"
+linguisticalUnitNameSnippet Hu = "Szó vagy mondat?"
+difficultLevelNameSnippet En = "Difficulty level"
+difficultLevelNameSnippet Hu = "Nehézségi szint"

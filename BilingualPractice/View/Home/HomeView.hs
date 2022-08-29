@@ -2,8 +2,8 @@
 
 module BilingualPractice.View.Home.HomeView (homeView) where
 
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, portfolioLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
-import BilingualPractice.View.CommonSnippets (portfolioLinkTextSnippet)
 
 import Prelude hiding (head, span)
 import Text.Blaze.Html5 as H hiding (map)
@@ -50,8 +50,7 @@ homeView language = docTypeHtml ! lang (languageAttrValue language) $ do
 
 
 titleSnippet :: IsString string => Language -> string
-titleSnippet En = "Hungarian-English word and sentence practice quiz-sets"
-titleSnippet Hu = "Magyar-angol szó- és mondatgyakorló"
+titleSnippet = appTitleSnippet
 
 lexiconDefiniendumSnippet :: IsString string => Language -> string
 lexiconDefiniendumSnippet En = "Lexicon:"
