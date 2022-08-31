@@ -4,11 +4,11 @@ module BilingualPractice.View.Home.HomeView (homeView) where
 
 import BilingualPractice.View.CommonSnippets (appTitleSnippet, portfolioLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
+import Data.String (IsString)
 
 import Prelude hiding (head, span)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
-import Data.String (IsString)
 import Data.Bool (bool)
 
 homeView :: Language -> Html
