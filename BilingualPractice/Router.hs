@@ -26,8 +26,8 @@ router logFlag lang = do
     get  "/question"           $ poseFirstRemainingExamenQuestionOrAnounceResultAction lang
     post "/question"           $ receiveAnswerForQuestion
 
-    get  "/error/navigationinconsistency" $ errorAction "Inconsistent traversal of the site: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
-    get  "/error/emptydata" $ errorAction "There are no data!"
+    get  "/error/navigationinconsistency" $ errorAction lang "Inconsistent traversal of the site: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
+    get  "/error/emptydata" $ errorAction lang "There are no data!"
     --post "/error/closepractice" $ errorClosePracticeAction
 
 -- Important note:

@@ -2,56 +2,155 @@
 
 module BilingualPractice.View.Home.ErrorView (errorView) where
 
+import BilingualPractice.View.CommonSnippets (appTitleSnippet)
+import BilingualPractice.Language (Language (..), languageAttrValue)
+import Data.String (IsString)
+
 import Prelude hiding (head, span, div)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Data.Bool (bool)
 
-errorView :: String -> Html
-errorView msg = docTypeHtml ! lang "en" $ do
+errorView :: Language -> String -> Html
+errorView language msg = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/general.css"
         link ! rel "stylesheet" ! href "/style/form.css"
-        title "Magyar-angol szó- és mondatgyakorló — Hiba!"
+        title $ titleSnippet language
     body $ do
+        h1 $ titleSnippet language
         ul $ do
             li $ do
-                strong "Lexicon:"
-                span "that is, all words, phrases, sentences that make up the contents of the practice quiz-sets"
+                strong $ lexiconDefiniendumSnippet language
+                span $ lexiconDefinitorSnippet language
                 ul $ do
-                    a ! href "/dump" $ "Whole-dump index list: showing the underlying complete lexicon"
-                    span "— You can see the raw entry data of the entire lexicon here"
+                    a ! href "/dump" $ wholeDumpLinkTextSnippet language
+                    span $ wholeDumpExplanationSnippet language
                     li $ do
-                        a ! href "/rand" $ "Random selection:"
-                        span "You can see the operation of the randomized sampling here, for example, what the proportions of various difficulty levels are and also the proportions of words, phrases and sentences are to each other."
+                        a ! href "/rand" $ randomSelectionLinkTextSnippet language
+                        span $ randomSelectionExplanationSnippet language
             li $ do
-                strong "Practices:"
-                span "that is, series sets of question-answer pairs, i.e quiz-sets (by simple randomized sampling, for the time being, but in future also custom-assembled materials will be uploadable by a tutor)"
+                strong $ practicesDefiniendumSnippet language
+                span $ practicesDefinitorSnippet language
                 ul $ do
                     li $ do
-                        a ! href "/practice/new" $ "New practice: generating a random quiz"
-                        span "sampled randomly from the lexicon: questions, to which You will answer, and Your done practice can be stored, viewed back and repeated, too."
+                        a ! href "/practice/new" $ newPracticeLinkTextSnippet language
+                        span $ newPracticeExplanationSnippet language
                     li $ do
-                        a ! href "/practice/index" $ "Your personal history: all the practices You have already done"
-                        span "— You can see them here as Your answers given to the questions you received in Your former practicings, evaluated, and in time order"
+                        a ! href "/practice/index" $ indexPracticeLinkTextSnippet language
+                        span $ indexPracticeExplanationSnippet language
             li $ do
-                strong "Users"
+                strong $ usersDefiniendumSnippet language
         p ! class_ "error" $ toHtml msg
-        div "Possible help hints to fix the error:"
+        div $ errorFixHintHeadingSnippet language
         ul $ do
             li $ do
-                span "In case of empty data error:"
+                span $ emptyDataErrorCaseHeadingSnippet language
                 ul $ do
                     li $ do
-                        span "either"
-                        a ! href "/practice/new" $ "maybe You have set the filtering options too strict,"
-                    li "or the database has not yet been filled with data"
+                        span $ disjunctionWord1Snippet language
+                        a ! href "/practice/new" $ tooStrictFilteringHintSnippet language
+                    li $ do
+                        span $ disjunctionWord2Snippet language
+                        emptyDatabaseHintSnippet language
             li $ do
-                span "In case of inconsistent traversal of the site error: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
+                span $ inconsistentTraversalErrorCaseHeadingSnippet language
                 ul $ do
                     li $
                         form ! method "post" ! action "/practice/closefix" ! class_ "inline" $
-                            button ! type_ "submit" $ "click here to close ."
-            li "Előfordulhat, hogy nem kell semmit csinálnod: használd nyugodtan tovább az oldalt"
+                            button ! type_ "submit" $ closeFixButtonLabelSnippet language
+            li $ noProblemTextSnippet language
+
+
+titleSnippet :: (IsString string, Semigroup string) => Language -> string
+titleSnippet En = appTitleSnippet En <> " — Error!"
+titleSnippet Hu = appTitleSnippet Hu <> " — Hiba!"
+
+lexiconDefiniendumSnippet En = "Lexicon:"
+lexiconDefiniendumSnippet Hu = "Lexikon:"
+
+lexiconDefinitorSnippet :: IsString string => Language -> string
+lexiconDefinitorSnippet En = "that is, all words, phrases, sentences that make up the contents of the practice quiz-sets"
+lexiconDefinitorSnippet Hu = "a program, a gyakorlatok, a tanulás alapját képező szavak, szókapcsolatok, mondatok összessége"
+
+wholeDumpLinkTextSnippet :: IsString string => Language -> string
+wholeDumpLinkTextSnippet En = "Whole-dump index list: showing the underlying complete lexicon"
+wholeDumpLinkTextSnippet Hu = "Teljes kimutatás:"
+
+wholeDumpExplanationSnippet :: IsString string => Language -> string
+wholeDumpExplanationSnippet En = "— You can see the raw entry data of the entire lexicon here"
+wholeDumpExplanationSnippet Hu = "itt láthatod tartalmilag a teljes anyagot a maga nyers összességében"
+
+randomSelectionLinkTextSnippet :: IsString string => Language -> string
+randomSelectionLinkTextSnippet En = "Random selection:"
+randomSelectionLinkTextSnippet Hu = "Véletlen kiválasztás:"
+
+randomSelectionExplanationSnippet :: IsString string => Language -> string
+randomSelectionExplanationSnippet En = "You can see the operation of the randomized sampling here, for example, what the proportions of various difficulty levels are and also the proportions of words, phrases and sentences are to each other."
+randomSelectionExplanationSnippet Hu = "itt láthatsz mintát arról, hogyan működik a véletlen mintvétel, mik  lexikont kitevő szó-, szókapcsolat- és mondatkincs arányai"
+
+practicesDefiniendumSnippet :: IsString string => Language -> string
+practicesDefiniendumSnippet En = "Practices:"
+practicesDefiniendumSnippet Hu = "Gyakorlatok:"
+
+practicesDefinitorSnippet :: IsString string => Language -> string
+practicesDefinitorSnippet En = "that is, series sets of question-answer pairs, i.e quiz-sets (by simple randomized sampling, for the time being, but in future also custom-assembled materials will be uploadable by a tutor)"
+practicesDefinitorSnippet Hu = "vagyis összeállított kérdéssorok (egyelőre véletlen leválogatással, később egyedi összeválogatott gyakorlósorok is feltölthetőek lesznek)"
+
+newPracticeLinkTextSnippet :: IsString string => Language -> string
+newPracticeLinkTextSnippet En = "New practice: generating a random quiz"
+newPracticeLinkTextSnippet Hu = "Új gyakorlat: véletlen kérdéssor generálása."
+
+newPracticeExplanationSnippet :: IsString string => Language -> string
+newPracticeExplanationSnippet En = "sampled randomly from the lexicon: questions, to which You will answer, and Your done practice can be stored, viewed back and repeated, too."
+newPracticeExplanationSnippet Hu = "Tudásteszt, gyakorlás: megválaszolandó kérdések sorozata, majd válaszaid után kiértékelés, eredmény és mentés"
+
+indexPracticeLinkTextSnippet :: IsString string => Language -> string
+indexPracticeLinkTextSnippet En = "Your personal history: all the practices You have already done"
+indexPracticeLinkTextSnippet Hu = "Személyes történeted: vagyis elvégzett eddigi gyakorlataid"
+
+indexPracticeExplanationSnippet :: IsString string => Language -> string
+indexPracticeExplanationSnippet En = "— You can see them here as Your answers given to the questions you received in Your former practicings, evaluated, and in time order"
+indexPracticeExplanationSnippet Hu = "— itt láthatod kapott kérdéseidre adott válaszaidat kérdés-felelet párokként, kiértékelve, időrendben"
+
+usersDefiniendumSnippet :: IsString string => Language -> string
+usersDefiniendumSnippet En = "Users"
+usersDefiniendumSnippet Hu = "Felhasználók"
+
+errorFixHintHeadingSnippet :: IsString string => Language -> string
+errorFixHintHeadingSnippet En = "Possible help hints to fix the error:"
+errorFixHintHeadingSnippet Hu = "Lehetséges segítség:"
+
+emptyDataErrorCaseHeadingSnippet :: IsString string => Language -> string
+emptyDataErrorCaseHeadingSnippet En = "In case of empty data error:"
+emptyDataErrorCaseHeadingSnippet Hu = "Üres adat hiba esetén nincs különösebb tennivalód:"
+
+disjunctionWord1Snippet :: IsString string => Language -> string
+disjunctionWord1Snippet En = "either"
+disjunctionWord1Snippet Hu = "vagy"
+
+disjunctionWord2Snippet :: IsString string => Language -> string
+disjunctionWord2Snippet En = "or"
+disjunctionWord2Snippet Hu = "vagy"
+
+tooStrictFilteringHintSnippet :: IsString string => Language -> string
+tooStrictFilteringHintSnippet En = "maybe You have set the filtering options too strict,"
+tooStrictFilteringHintSnippet Hu = "enyhíts a szűrési feltételeken!"
+
+emptyDatabaseHintSnippet :: IsString string => Language -> string
+emptyDatabaseHintSnippet En = "or the database has not yet been filled with data"
+emptyDatabaseHintSnippet Hu = "várj az adatbázis nagyobb feltöltöttségére,"
+
+inconsistentTraversalErrorCaseHeadingSnippet :: IsString string => Language -> string
+inconsistentTraversalErrorCaseHeadingSnippet En = "In case of inconsistent traversal of the site error: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
+inconsistentTraversalErrorCaseHeadingSnippet Hu = "Bejárási következetlenég, lezáratlanul maradt cselekmény esetén"
+
+closeFixButtonLabelSnippet :: IsString string => Language -> string
+closeFixButtonLabelSnippet En = "click here to close."
+closeFixButtonLabelSnippet Hu = "zárd be az esetleg szabálytalanul megszakított (lezárás nélkül) félbe maradt új gyakolatot."
+
+noProblemTextSnippet :: IsString string => Language -> string
+noProblemTextSnippet En = "There is also a chance that no action has to be done: the error is temporary, You can use the site without any worries"
+noProblemTextSnippet Hu = "Előfordulhat, hogy nem kell semmit csinálnod: használd nyugodtan tovább az oldalt"

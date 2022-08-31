@@ -23,8 +23,8 @@ dumpAction language = liftIO readExtendedLexiconTable >>= (blaze . dumpView lang
 randAction :: Language -> ActionM ()
 randAction language = liftIO (readExtendedLexiconTable >>= randQuery 10) >>= (blaze . randView language)
 
-errorAction :: String -> ActionM ()
-errorAction = blaze . errorView
+errorAction :: Language -> String -> ActionM ()
+errorAction language = blaze . errorView language
 
 --errorClosePracticeAction :: ActionM ()
 --errorClosePracticeAction = do
