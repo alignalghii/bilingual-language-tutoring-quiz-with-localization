@@ -14,30 +14,30 @@ import Data.Bool (bool)
 
 
 class Viewable a where
-    view :: IsString string => a -> Language -> string
+    view :: IsString string => Language -> a -> string
 
 instance Viewable LinguisticalUnit where
-    view LUNumber   En = "number"
-    view LUNumber   Hu = "szám"
-    view LUWord     En = "word"
-    view LUWord     Hu = "szó"
-    view LUPhrase   En = "phrase"
-    view LUPhrase   Hu = "szókapcsolat"
-    view LUSentence En = "sentence"
-    view LUSentence Hu = "mondat"
+    view En LUNumber   = "number"
+    view Hu LUNumber   = "szám"
+    view En LUWord     = "word"
+    view Hu LUWord     = "szó"
+    view En LUPhrase   = "phrase"
+    view Hu LUPhrase   = "szókapcsolat"
+    view En LUSentence = "sentence"
+    view Hu LUSentence = "mondat"
 
 instance Viewable Difficulty where
-    view Easy        En = "easy"
-    view Easy        Hu = "könnyű"
-    view MiddleLevel En = "middle-level"
-    view MiddleLevel Hu = "középszintű"
-    view Difficult   En = "difficult"
-    view Difficult   Hu = "nehéz"
+    view En Easy        = "easy"
+    view Hu Easy        = "könnyű"
+    view En MiddleLevel = "middle-level"
+    view Hu MiddleLevel = "középszintű"
+    view En Difficult   = "difficult"
+    view Hu Difficult   = "nehéz"
 
 instance Viewable Language where
     view En En = "English"
-    view En Hu = "angol"
-    view Hu En = "Hungarian"
+    view Hu En = "angol"
+    view En Hu = "Hungarian"
     view Hu Hu = "magyar"
 
 
@@ -59,7 +59,7 @@ instance FormParamable Language where
 data QuestionAnswerMatchView = QuAnsMtchVw {dictHuView, dictEnView, yourEnView :: String, markView :: (String, String), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView :: String}
 
 viewMatch :: Language -> TimeZone -> QuestionAnswerMatch -> QuestionAnswerMatchView
-viewMatch lang timeZone QuAnsMtch {dictHu, dictEn, yourEn, mark, askedAtTime, answeredAtTime, dictEntity, dictDifficulty} = QuAnsMtchVw {dictHuView = dictHu, dictEnView = dictEn, yourEnView = yourEn, markView = viewMark mark, askedAtTimeView = keepDateAbbrevTime' timeZone askedAtTime, answeredAtTimeView = keepDateAbbrevTime' timeZone answeredAtTime, dictEntityView = view dictEntity lang, dictDifficultyView = view dictDifficulty lang}
+viewMatch lang timeZone QuAnsMtch {dictHu, dictEn, yourEn, mark, askedAtTime, answeredAtTime, dictEntity, dictDifficulty} = QuAnsMtchVw {dictHuView = dictHu, dictEnView = dictEn, yourEnView = yourEn, markView = viewMark mark, askedAtTimeView = keepDateAbbrevTime' timeZone askedAtTime, answeredAtTimeView = keepDateAbbrevTime' timeZone answeredAtTime, dictEntityView = view lang dictEntity, dictDifficultyView = view lang dictDifficulty}
 
 
 viewMark :: Bool -> (String, String)

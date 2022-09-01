@@ -40,7 +40,7 @@ listCheckboxesFor :: (FormParamable a, Viewable a) => Language -> [a] -> Html
 listCheckboxesFor language values = ul $ forM_ values $ \value -> do
                            li $ do
                                input ! type_ "checkbox" ! name (formParam value) ! checked ""
-                               label $ view value language
+                               label $ view language value
 
 
 titleSnippet :: (IsString string, Semigroup string) => Language -> string

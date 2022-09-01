@@ -26,16 +26,16 @@ dumpView language vocabularyData = docTypeHtml ! lang (languageAttrValue languag
             a ! href "/" $ backHomeLinkTextSnippet language
         table $ do
             tr $ do
-                th $ view Hu language
-                th $ view En language
+                th $ view language Hu
+                th $ view language En
                 th $ askLinguisticalUnitSnippet language
                 th $ askDifficultyLevelSnippet  language
             forM_ vocabularyData $ \ LxcE {en, hu, entity, difficulty} -> do
                 tr $ do
                     td $ toHtml hu
                     td $ toHtml en
-                    td $ view entity language
-                    td $ view difficulty language
+                    td $ view language entity
+                    td $ view language difficulty
 
 
 titleSnippet :: (IsString string, Semigroup string) => Language -> string
