@@ -37,7 +37,7 @@ resultView startTime confer = docTypeHtml ! lang "en" $ do
                 th "Time when You provided the answer"
                 th "Word or sentence?"
                 th "Difficulty level"
-            forM_ confer $ \QuAnsMtchVw {dictHuView, dictEnView, yourEnView, markView = (markMsg, markStl), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView} -> do
+            forM_ confer $ \QuAnsMtchVw {dictHuView, dictEnView, yourEnView, markViewAndStyle = (markMsg, markStl), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView} -> do
                 tr $ do
                     td $ toHtml dictHuView
                     td $ toHtml dictEnView

@@ -11,6 +11,7 @@ import Data.TimeX (abbrevTime, keepDateAbbrevTime')
 import Data.Time (UTCTime, TimeZone)
 import Data.Property (matchField)
 import Data.Bool (bool)
+import Control.Arrow ((&&&))
 
 
 class Viewable a where
@@ -53,15 +54,20 @@ instance FormParamable Difficulty where
     formParam Difficult   = "difficult"
 
 
-data QuestionAnswerMatchView = QuAnsMtchVw {dictHuView, dictEnView, yourEnView :: String, markView :: (String, String), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView :: String}
+data QuestionAnswerMatchView = QuAnsMtchVw {dictHuView, dictEnView, yourEnView :: String, markViewAndStyle :: (String, String), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView :: String}
 
 viewMatch :: Language -> TimeZone -> QuestionAnswerMatch -> QuestionAnswerMatchView
-viewMatch lang timeZone QuAnsMtch {dictHu, dictEn, yourEn, mark, askedAtTime, answeredAtTime, dictEntity, dictDifficulty} = QuAnsMtchVw {dictHuView = dictHu, dictEnView = dictEn, yourEnView = yourEn, markView = viewMark mark, askedAtTimeView = keepDateAbbrevTime' timeZone askedAtTime, answeredAtTimeView = keepDateAbbrevTime' timeZone answeredAtTime, dictEntityView = view lang dictEntity, dictDifficultyView = view lang dictDifficulty}
+viewMatch lang timeZone QuAnsMtch {dictHu, dictEn, yourEn, mark, askedAtTime, answeredAtTime, dictEntity, dictDifficulty} = QuAnsMtchVw {dictHuView = dictHu, dictEnView = dictEn, yourEnView = yourEn, markViewAndStyle = viewAndStyleMark lang mark, askedAtTimeView = keepDateAbbrevTime' timeZone askedAtTime, answeredAtTimeView = keepDateAbbrevTime' timeZone answeredAtTime, dictEntityView = view lang dictEntity, dictDifficultyView = view lang dictDifficulty}
 
+viewAndStyleMark :: Language -> Bool -> (String, String)
+viewAndStyleMark lang = viewMark lang &&& styleMark
 
-viewMark :: Bool -> (String, String)
-viewMark = bool ("Wrong", "wrong") ("OK", "ok")
+viewMark :: Language -> Bool -> String
+viewMark En = bool "Wrong" "OK"
+viewMark Hu = bool "Rossz" "Jó"
 
+styleMark :: Bool -> String
+styleMark = bool "wrong" "ok"
 
 data PracticeView = PrcVw {prcStartTimeId :: UTCTime, prcStartTimeView :: String, questionsCount :: Int}
 

@@ -39,7 +39,7 @@ showPracticeView startTime startTimeLocalised matches = docTypeHtml ! lang "en" 
                 th "Time when You provided the answer"
                 th "Word or sentence?"
                 th "Difficulty level"
-            forM_ matches $ \QuAnsMtchVw {dictHuView, dictEnView, yourEnView, markView = (markMsg, markStl), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView} -> do
+            forM_ matches $ \QuAnsMtchVw {dictHuView, dictEnView, yourEnView, markViewAndStyle = (markMsg, markStl), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView} -> do
                 tr $ do
                     td $ toHtml dictHuView
                     td $ toHtml dictEnView
