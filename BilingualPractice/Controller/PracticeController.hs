@@ -33,12 +33,12 @@ indexPracticeAction _ = do
     blaze $ indexPracticeView $ viewPractice timeZone answers <$> practices
 
 showPracticeAction :: Language -> ActionM ()
-showPracticeAction _ = do
+showPracticeAction lang = do
     utc <- (read . decode . unpack) <$> param "utc"
     answers <- liftIO $ filter (matchField qst1Time utc) <$> readTable "answer"
     lexicon <- liftIO $ readExtendedLexiconTable
     timeZone <- liftIO getCurrentTimeZone
-    blaze $ showPracticeView utc (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate timeZone lexicon answers
+    blaze $ showPracticeView utc (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate lang timeZone lexicon answers
 
 closePracticeAction :: ActionM ()
 closePracticeAction = do
@@ -63,7 +63,7 @@ repeatPracticeAction = do
 
 
 proposeExamenAction :: Language -> ActionM ()
-proposeExamenAction _ = blaze examenView
+proposeExamenAction = blaze . examenView
 
 performExamenAction :: ActionM ()
 performExamenAction = do

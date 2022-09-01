@@ -19,14 +19,14 @@ import Data.Time (getCurrentTime, getCurrentTimeZone)
 
 
 poseFirstRemainingExamenQuestionOrAnounceResultAction :: Language -> ActionM ()
-poseFirstRemainingExamenQuestionOrAnounceResultAction _ = do
+poseFirstRemainingExamenQuestionOrAnounceResultAction lang = do
     flag <- liftIO checkOpenPracticeStart
     if flag
         then do
             (etalon, personal) <- liftIO readPracticeControllingTables
             let (ofAll, answd) = (length etalon, length personal)
                 nth            = answd + 1
-            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView nth ofAll) announceResult etalon personal
+            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView nth ofAll) (announceResult lang) etalon personal
         else redirect "/error/navigationinconsistency"
 
 receiveAnswerForQuestion :: ActionM ()
@@ -39,8 +39,8 @@ receiveAnswerForQuestion = do
         modifySession $ \s -> s {personal = personal s ++ [AnsQu {ansHu, ansEn, qst1Time = prcStartTime, ansTime}]}
     redirect "/question"
 
-announceResult :: [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
-announceResult etalon personal = do
+announceResult :: Language -> [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
+announceResult lang etalon personal = do
     let lexicon = etalon -- lexicon <- liftIO readExtendedLexiconTable
     case personal of
         AnsQu {qst1Time = prcStartTime} : _ -> do
@@ -49,7 +49,7 @@ announceResult etalon personal = do
                 saveAnswers personal
                 closePracticeStart
                 getCurrentTimeZone
-            blaze $ resultView prcStartTime $ conferAndViewCertificate timeZone lexicon personal
+            blaze $ resultView prcStartTime $ conferAndViewCertificate lang timeZone lexicon personal
         [] -> do
             liftIO closePracticeStart
             redirect "/error/emptydata"

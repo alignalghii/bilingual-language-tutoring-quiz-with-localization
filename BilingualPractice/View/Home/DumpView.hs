@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Home.DumpView (dumpView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, hungarianLanguageNameSnippet, englishLanguageNameSnippet, linguisticalUnitNameSnippet, difficultLevelNameSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
@@ -26,16 +26,16 @@ dumpView language vocabularyData = docTypeHtml ! lang (languageAttrValue languag
             a ! href "/" $ backHomeLinkTextSnippet language
         table $ do
             tr $ do
-                th $ hungarianLanguageNameSnippet language
-                th $ englishLanguageNameSnippet   language
-                th $ linguisticalUnitNameSnippet  language
-                th $ difficultLevelNameSnippet    language
+                th $ view Hu language
+                th $ view En language
+                th $ askLinguisticalUnitSnippet language
+                th $ askDifficultyLevelSnippet  language
             forM_ vocabularyData $ \ LxcE {en, hu, entity, difficulty} -> do
                 tr $ do
                     td $ toHtml hu
                     td $ toHtml en
-                    td $ toHtml $ view entity
-                    td $ toHtml $ view difficulty
+                    td $ view entity language
+                    td $ view difficulty language
 
 
 titleSnippet :: (IsString string, Semigroup string) => Language -> string

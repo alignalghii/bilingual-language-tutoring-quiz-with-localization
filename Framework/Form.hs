@@ -2,11 +2,12 @@ module Framework.Form where
 
 import Data.Property (PropertyPredicate, matchField, mapProperties, propertyConjunction, propertyDisjunction)
 import Data.ReflectionX (fieldInhabitants)
+import Data.String (IsString)
 import Control.Arrow ((&&&))
 
 
 class FormParamable a where
-    formParam :: a -> String
+    formParam :: IsString string => a -> string
 
 type CheckList record = [(String, PropertyPredicate record)]
 
