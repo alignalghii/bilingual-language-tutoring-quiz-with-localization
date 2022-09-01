@@ -52,9 +52,6 @@ instance FormParamable Difficulty where
     formParam MiddleLevel = "middleLevel"
     formParam Difficult   = "difficult"
 
-instance FormParamable Language where
-
-
 
 data QuestionAnswerMatchView = QuAnsMtchVw {dictHuView, dictEnView, yourEnView :: String, markView :: (String, String), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView :: String}
 
