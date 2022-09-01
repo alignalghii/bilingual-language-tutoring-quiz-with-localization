@@ -2,11 +2,12 @@
 
 module BilingualPractice.View.Practice.ExamenView (examenView) where
 
-import BilingualPractice.Model.ViewModel (view)
+import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
-import Framework.Form (formParam)
+import Framework.Form (FormParamable (formParam))
 import BilingualPractice.Model.RelationalBusinessLogic (LinguisticalUnit (..), Difficulty (..))
+import Data.ReflectionX (allInhabitants)
 import Data.String (IsString)
 
 import Prelude hiding (head, div, span, min, max)
@@ -30,31 +31,16 @@ examenView language = docTypeHtml ! lang (languageAttrValue language) $ do
             label $ askPracticeSizeSnippet language
             input ! type_ "number" ! class_ "smallnum" ! min "1" ! max "30" ! name "number_of_questions" ! value "5"
             div $ askLinguisticalUnitSnippet language
-            ul $ do
-                li $ do
-                    input ! type_ "checkbox" ! name (formParam LUNumber) ! checked ""
-                    label $ view LUNumber language
-                li $ do
-                    input ! type_ "checkbox" ! name (formParam LUWord) ! checked ""
-                    label $ view LUWord language
-                li $ do
-                    input ! type_ "checkbox" ! name (formParam LUPhrase) ! checked ""
-                    label $ view LUPhrase language
-                li $ do
-                    input ! type_ "checkbox" ! name (formParam LUSentence) ! checked ""
-                    label $ view LUSentence language
+            listCheckboxesFor language (allInhabitants :: [LinguisticalUnit])
             div $ askDifficultyLevel language
-            ul $ do
-                li $ do
-                    input ! type_ "checkbox" ! name (formParam Easy) ! checked ""
-                    label $ view Easy language
-                li $ do
-                    input ! type_ "checkbox" ! name (formParam MiddleLevel) ! checked ""
-                    label $ view MiddleLevel language
-                li $ do
-                    input ! type_ "checkbox" ! name (formParam Difficult) ! checked ""
-                    label $ view Difficult language
+            listCheckboxesFor language (allInhabitants :: [Difficulty])
             button ! type_ "submit" $ submitCommandSnippet language
+
+listCheckboxesFor :: (FormParamable a, Viewable a) => Language -> [a] -> Html
+listCheckboxesFor language values = ul $ forM_ values $ \value -> do
+                           li $ do
+                               input ! type_ "checkbox" ! name (formParam value) ! checked ""
+                               label $ view value language
 
 
 titleSnippet :: (IsString string, Semigroup string) => Language -> string
