@@ -2,6 +2,10 @@
 
 module BilingualPractice.View.Practice.IndexPracticeView (indexPracticeView) where
 
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet)
+import BilingualPractice.Language (Language (..), languageAttrValue)
+import Data.String (IsString)
+
 import BilingualPractice.Model.ViewModel (PracticeView (..))
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
@@ -11,39 +15,82 @@ import Control.Monad (forM_)
 import Data.Time (UTCTime)
 import Data.Bool (bool)
 
-indexPracticeView :: [PracticeView] -> Html
-indexPracticeView practices = docTypeHtml ! lang "en" $ do
+indexPracticeView :: Language -> [PracticeView] -> Html
+indexPracticeView language practices = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Hungarian-English word and sentence practice quiz-sets — List of Your former practices"
+        title $ titleSnippet language
     body $ do
-        h1 "Hungarian-English word and sentence practice quiz-sets — List of Your former practices"
+        h1 $ titleSnippet language
         p $ do
-            a ! href "/" $ "Back to the main page"
+            a ! href "/" $ backHomeLinkTextSnippet language
             span " •|||• "
-            a ! href "/practice/new" $ "Start a new practice"
+            a ! href "/practice/new" $ newPracticeLinkTextSnippet language
         div $
             table $ do
                 tr $ do
-                    th "The start time of the practice"
-                    th "Number of questions"
-                    th "Show"
-                    th "Delete"
-                    th "Repeat"
+                    th $ practiceStartTableHeaderTextSnippet  language
+                    th $ practiceSizeTableHeaderTextSnippet   language
+                    th $ practiceShowTableHeaderTextSnippet   language
+                    th $ practiceDeleteTableHeaderTextSnippet language
+                    th $ practiceRepeatTableHeaderTextSnippet language
                 forM_ practices $ \ PrcVw {prcStartTimeId, prcStartTimeView, questionsCount} -> do
                     tr $ do
                         td $ toHtml prcStartTimeView
                         td $ toHtml questionsCount
-                        td $ bool "" (showLink prcStartTimeId) (questionsCount > 0)
-                        td $ showFormDel prcStartTimeId
-                        td $ bool "" (showFormRep prcStartTimeId) (questionsCount > 0)
+                        td $ bool "" (showLink language prcStartTimeId) (questionsCount > 0)
+                        td $ showFormDel language prcStartTimeId
+                        td $ bool "" (showFormRep language prcStartTimeId) (questionsCount > 0)
 
-showLink :: UTCTime -> Html
-showLink timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ "Show"
+showLink :: Language -> UTCTime -> Html
+showLink language timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ showLinkTextSnippet language
 
-showFormDel, showFormRep :: UTCTime -> Html
-showFormDel timeId = form ! method "post" ! action "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Delete!"
-showFormRep timeId = form ! method "post" ! action "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ "Repeat!"
+showFormDel, showFormRep :: Language-> UTCTime -> Html
+showFormDel language timeId = form ! method "post" ! action "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ deleteLinkTextSnippet language
+showFormRep language timeId = form ! method "post" ! action "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ repeatLinkTextSnippet language
+
+
+-- Localization snippets:
+
+titleSnippet :: (IsString string, Semigroup string) => Language -> string
+titleSnippet En = appTitleSnippet En <> " — List of Your former practices"
+titleSnippet Hu = appTitleSnippet Hu <> " — Eddigi gyakorlataid listája"
+
+newPracticeLinkTextSnippet :: IsString string => Language -> string
+newPracticeLinkTextSnippet En = "Start a new practice"
+newPracticeLinkTextSnippet Hu = "Új gyakorlat indítása"
+
+showLinkTextSnippet :: IsString string => Language -> string
+showLinkTextSnippet En = "Show"
+showLinkTextSnippet Hu = "Mutat"
+
+deleteLinkTextSnippet :: IsString string => Language -> string
+deleteLinkTextSnippet En = "Delete!"
+deleteLinkTextSnippet Hu = "Töröld!"
+
+repeatLinkTextSnippet :: IsString string => Language -> string
+repeatLinkTextSnippet En = "Repeat!"
+repeatLinkTextSnippet Hu = "Ismételd meg!"
+
+practiceStartTableHeaderTextSnippet :: IsString string => Language -> string
+practiceStartTableHeaderTextSnippet En = "The start time of the practice"
+practiceStartTableHeaderTextSnippet Hu = "A gyakorlat kezdőidőpontja"
+
+practiceSizeTableHeaderTextSnippet :: IsString string => Language -> string
+practiceSizeTableHeaderTextSnippet En = "Number of questions"
+practiceSizeTableHeaderTextSnippet Hu = "Kérdések száma"
+
+practiceShowTableHeaderTextSnippet :: IsString string => Language -> string
+practiceShowTableHeaderTextSnippet En = "Show"
+practiceShowTableHeaderTextSnippet Hu = "Megmutat"
+
+practiceDeleteTableHeaderTextSnippet :: IsString string => Language -> string
+practiceDeleteTableHeaderTextSnippet En = "Delete"
+practiceDeleteTableHeaderTextSnippet Hu = "Töröl"
+
+practiceRepeatTableHeaderTextSnippet :: IsString string => Language -> string
+practiceRepeatTableHeaderTextSnippet En = "Repeat"
+practiceRepeatTableHeaderTextSnippet Hu = "Megismétel"

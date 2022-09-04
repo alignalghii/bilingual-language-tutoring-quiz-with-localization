@@ -26,11 +26,11 @@ import Control.Monad.Trans (liftIO)
 
 
 indexPracticeAction :: Language -> ActionM ()
-indexPracticeAction _ = do
+indexPracticeAction lang = do
     practices <- liftIO $ readTable "practice"
     answers   <- liftIO $ readTable "answer"
     timeZone  <- liftIO getCurrentTimeZone
-    blaze $ indexPracticeView $ viewPractice timeZone answers <$> practices
+    blaze $ indexPracticeView lang $ viewPractice timeZone answers <$> practices
 
 showPracticeAction :: Language -> ActionM ()
 showPracticeAction lang = do
