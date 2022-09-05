@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Practice.IndexPracticeView (indexPracticeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
@@ -58,10 +58,6 @@ showFormRep language timeId = form ! method "post" ! action "/practice/repeat" $
 titleSnippet :: (IsString string, Semigroup string) => Language -> string
 titleSnippet En = appTitleSnippet En <> " — List of Your former practices"
 titleSnippet Hu = appTitleSnippet Hu <> " — Eddigi gyakorlataid listája"
-
-newPracticeLinkTextSnippet :: IsString string => Language -> string
-newPracticeLinkTextSnippet En = "Start a new practice"
-newPracticeLinkTextSnippet Hu = "Új gyakorlat indítása"
 
 showLinkTextSnippet :: IsString string => Language -> string
 showLinkTextSnippet En = "Show"

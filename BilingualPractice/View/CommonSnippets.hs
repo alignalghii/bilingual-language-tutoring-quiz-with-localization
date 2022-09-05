@@ -23,3 +23,11 @@ askLinguisticalUnitSnippet En = "Word or sentence?"
 askLinguisticalUnitSnippet Hu = "Szó vagy mondat?"
 askDifficultyLevelSnippet En = "Difficulty level"
 askDifficultyLevelSnippet Hu = "Nehézségi szint"
+
+newPracticeLinkTextSnippet :: IsString string => Language -> string
+newPracticeLinkTextSnippet En = "Start a new practice"
+newPracticeLinkTextSnippet Hu = "Új gyakorlat indítása"
+
+askGuessCorrectnessStatusSnippet :: IsString string => Language -> string
+askGuessCorrectnessStatusSnippet En = "Correct or wrong?"
+askGuessCorrectnessStatusSnippet Hu = "Jó vagy rossz lett-e?"

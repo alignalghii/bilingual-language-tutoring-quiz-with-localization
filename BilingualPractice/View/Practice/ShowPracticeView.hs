@@ -2,6 +2,11 @@
 
 module BilingualPractice.View.Practice.ShowPracticeView (showPracticeView) where
 
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet)
+import BilingualPractice.Model.ViewModel (Viewable (view))
+import BilingualPractice.Language (Language (..), languageAttrValue)
+import Data.String (IsString)
+
 import BilingualPractice.Model.ViewModel (QuestionAnswerMatchView (..))
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
@@ -10,35 +15,35 @@ import Control.Monad (forM_)
 import Data.Time (UTCTime)
 
 
-showPracticeView :: UTCTime -> String -> [QuestionAnswerMatchView] -> Html
-showPracticeView startTime startTimeLocalised matches = docTypeHtml ! lang "en" $ do
+showPracticeView :: Language -> UTCTime -> String -> [QuestionAnswerMatchView] -> Html
+showPracticeView language startTime startTimeLocalised matches = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
         link ! rel "stylesheet" ! href "/style/table.css"
-        title "Hungarian-English word and sentence practice quiz-sets — Showing the selected former practice"
+        title $ titleSnippet language
     body $ do
-        h1 "Hungarian-English word and sentence practice quiz-sets  — Showing the selected former practice"
+        h1 $ titleSnippet language
         p $ do
-            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ "Repeat this very same practice!"
+            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language
             span " •|||• "
-            a ! href "/practice/new" $ "Start a new practice!"
+            a ! href "/practice/new" $ newPracticeLinkTextSnippet language <> "!"
             span " •|||• "
-            a ! href "/practice/index" $ "Back to the complete list of all Your former practices"
+            a ! href "/practice/index" $ backToPracticeIndexLinkTextSnippet language
             span " •|||• "
-            a ! href "/" $ "Back to the main page"
+            a ! href "/" $ backHomeLinkTextSnippet language
         table $ do
             caption $ toHtml startTimeLocalised
             tr $ do
-                th "Hungarian"
-                th "English"
-                th "Your answer"
-                th "Correct or wrong?"
-                th "Time when You received questions"
-                th "Time when You provided the answer"
-                th "Word or sentence?"
-                th "Difficulty level"
+                th $ view language Hu
+                th $ view language En
+                th $ echoDesignationSnippet language
+                th $ askGuessCorrectnessStatusSnippet language
+                th $ askQuestionReceivingTimeSnippet language
+                th $ askAnswerProvidingTimeSnippet language
+                th $ askLinguisticalUnitSnippet language
+                th $ askDifficultyLevelSnippet  language
             forM_ matches $ \QuAnsMtchVw {dictHuView, dictEnView, yourEnView, markViewAndStyle = (markMsg, markStl), askedAtTimeView, answeredAtTimeView, dictEntityView, dictDifficultyView} -> do
                 tr $ do
                     td $ toHtml dictHuView
@@ -49,3 +54,30 @@ showPracticeView startTime startTimeLocalised matches = docTypeHtml ! lang "en" 
                     td $ toHtml $ answeredAtTimeView
                     td $ toHtml dictEntityView
                     td $ toHtml dictDifficultyView
+
+
+-- Localization snippets:
+
+titleSnippet :: (IsString string, Semigroup string) => Language -> string
+titleSnippet En = appTitleSnippet En <> " — Showing the selected former practice"
+titleSnippet Hu = appTitleSnippet Hu <> " — A kiválasztott korábbi gyakorlat megmutatása"
+
+backToPracticeIndexLinkTextSnippet :: (IsString string, Semigroup string) => Language -> string
+backToPracticeIndexLinkTextSnippet En = appTitleSnippet En <> "Back to the complete list of all Your former practices"
+backToPracticeIndexLinkTextSnippet Hu = appTitleSnippet Hu <> "Vissza a többi régi gyakorlatod listájához"
+
+echoDesignationSnippet :: IsString string => Language -> string
+echoDesignationSnippet En = "Your answer"
+echoDesignationSnippet Hu = "A Te válaszod"
+
+askQuestionReceivingTimeSnippet :: IsString string => Language -> string
+askQuestionReceivingTimeSnippet En = "Time when You received questions"
+askQuestionReceivingTimeSnippet Hu = "Kérdés időpontja"
+
+askAnswerProvidingTimeSnippet :: IsString string => Language -> string
+askAnswerProvidingTimeSnippet En = "Time when You provided the answer"
+askAnswerProvidingTimeSnippet Hu = "Válaszod időpontja"
+
+repeatSamePracticeCommandSnippet :: IsString string => Language -> string
+repeatSamePracticeCommandSnippet En = "Repeat this very same practice!"
+repeatSamePracticeCommandSnippet Hu = "Ismételd meg ugyanezt a gyakorlatot!"
