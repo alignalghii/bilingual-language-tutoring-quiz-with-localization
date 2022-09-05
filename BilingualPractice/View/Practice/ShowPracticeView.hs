@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Practice.ShowPracticeView (showPracticeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet, echoDesignationSnippet, askQuestionReceivingTimeSnippet, askAnswerProvidingTimeSnippet, repeatSamePracticeCommandSnippet)
 import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
@@ -65,19 +65,3 @@ titleSnippet Hu = appTitleSnippet Hu <> " — A kiválasztott korábbi gyakorlat
 backToPracticeIndexLinkTextSnippet :: (IsString string, Semigroup string) => Language -> string
 backToPracticeIndexLinkTextSnippet En = appTitleSnippet En <> "Back to the complete list of all Your former practices"
 backToPracticeIndexLinkTextSnippet Hu = appTitleSnippet Hu <> "Vissza a többi régi gyakorlatod listájához"
-
-echoDesignationSnippet :: IsString string => Language -> string
-echoDesignationSnippet En = "Your answer"
-echoDesignationSnippet Hu = "A Te válaszod"
-
-askQuestionReceivingTimeSnippet :: IsString string => Language -> string
-askQuestionReceivingTimeSnippet En = "Time when You received questions"
-askQuestionReceivingTimeSnippet Hu = "Kérdés időpontja"
-
-askAnswerProvidingTimeSnippet :: IsString string => Language -> string
-askAnswerProvidingTimeSnippet En = "Time when You provided the answer"
-askAnswerProvidingTimeSnippet Hu = "Válaszod időpontja"
-
-repeatSamePracticeCommandSnippet :: IsString string => Language -> string
-repeatSamePracticeCommandSnippet En = "Repeat this very same practice!"
-repeatSamePracticeCommandSnippet Hu = "Ismételd meg ugyanezt a gyakorlatot!"

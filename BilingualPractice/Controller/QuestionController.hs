@@ -49,7 +49,7 @@ announceResult lang etalon personal = do
                 saveAnswers personal
                 closePracticeStart
                 getCurrentTimeZone
-            blaze $ resultView prcStartTime $ conferAndViewCertificate lang timeZone lexicon personal
+            blaze $ resultView lang prcStartTime $ conferAndViewCertificate lang timeZone lexicon personal
         [] -> do
             liftIO closePracticeStart
             redirect "/error/emptydata"

@@ -35,3 +35,20 @@ askGuessCorrectnessStatusSnippet Hu = "Jó vagy rossz lett-e?"
 submitCommandSnippet :: IsString string => Language -> string
 submitCommandSnippet En = "Go!"
 submitCommandSnippet Hu = "Mehet!"
+
+
+echoDesignationSnippet :: IsString string => Language -> string
+echoDesignationSnippet En = "Your answer"
+echoDesignationSnippet Hu = "A Te válaszod"
+
+askQuestionReceivingTimeSnippet :: IsString string => Language -> string
+askQuestionReceivingTimeSnippet En = "Time when You received questions"
+askQuestionReceivingTimeSnippet Hu = "Kérdés időpontja"
+
+askAnswerProvidingTimeSnippet :: IsString string => Language -> string
+askAnswerProvidingTimeSnippet En = "Time when You provided the answer"
+askAnswerProvidingTimeSnippet Hu = "Válaszod időpontja"
+
+repeatSamePracticeCommandSnippet :: IsString string => Language -> string
+repeatSamePracticeCommandSnippet En = "Repeat this very same practice!"
+repeatSamePracticeCommandSnippet Hu = "Ismételd meg ugyanezt a gyakorlatot!"
