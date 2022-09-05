@@ -31,3 +31,7 @@ newPracticeLinkTextSnippet Hu = "Új gyakorlat indítása"
 askGuessCorrectnessStatusSnippet :: IsString string => Language -> string
 askGuessCorrectnessStatusSnippet En = "Correct or wrong?"
 askGuessCorrectnessStatusSnippet Hu = "Jó vagy rossz lett-e?"
+
+submitCommandSnippet :: IsString string => Language -> string
+submitCommandSnippet En = "Go!"
+submitCommandSnippet Hu = "Mehet!"

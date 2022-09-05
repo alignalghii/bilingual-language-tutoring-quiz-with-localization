@@ -3,7 +3,7 @@
 module BilingualPractice.View.Practice.ExamenView (examenView) where
 
 import BilingualPractice.Model.ViewModel (Viewable (view))
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, submitCommandSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Framework.Form (FormParamable (formParam))
 import BilingualPractice.Model.RelationalBusinessLogic (LinguisticalUnit (..), Difficulty (..))
@@ -62,7 +62,3 @@ askLinguisticalUnitSnippet Hu = "Szám, szó, vagy mondat gyakoroltatása legyen
 askDifficultyLevel :: IsString string => Language -> string
 askDifficultyLevel En = "On what difficulty level?"
 askDifficultyLevel Hu = "Milyen nehézségi szinten?"
-
-submitCommandSnippet :: IsString string => Language -> string
-submitCommandSnippet En = "Go!"
-submitCommandSnippet Hu = "Mehet!"

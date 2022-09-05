@@ -26,7 +26,7 @@ poseFirstRemainingExamenQuestionOrAnounceResultAction lang = do
             (etalon, personal) <- liftIO readPracticeControllingTables
             let (ofAll, answd) = (length etalon, length personal)
                 nth            = answd + 1
-            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView nth ofAll) (announceResult lang) etalon personal
+            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView lang nth ofAll) (announceResult lang) etalon personal
         else redirect "/error/navigationinconsistency"
 
 receiveAnswerForQuestion :: ActionM ()
