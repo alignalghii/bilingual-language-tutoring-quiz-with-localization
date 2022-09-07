@@ -6,6 +6,8 @@ import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextS
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
+import BilingualPractice.View.Helper (langLink)
+
 import BilingualPractice.Model.ViewModel (PracticeView (..))
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
@@ -26,9 +28,9 @@ indexPracticeView language practices = docTypeHtml ! lang (languageAttrValue lan
     body $ do
         h1 $ titleSnippet language
         p $ do
-            a ! href "/" $ backHomeLinkTextSnippet language
+            langLink language "/" backHomeLinkTextSnippet
             span " •|||• "
-            a ! href "/practice/new" $ newPracticeLinkTextSnippet language
+            langLink language "/practice/new" newPracticeLinkTextSnippet
         div $
             table $ do
                 tr $ do

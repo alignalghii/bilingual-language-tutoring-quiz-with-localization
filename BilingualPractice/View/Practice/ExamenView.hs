@@ -10,6 +10,8 @@ import BilingualPractice.Model.RelationalBusinessLogic (LinguisticalUnit (..), D
 import Data.ReflectionX (allInhabitants)
 import Data.String (IsString)
 
+import BilingualPractice.View.Helper (langLink)
+
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
@@ -25,7 +27,7 @@ examenView language = docTypeHtml ! lang (languageAttrValue language) $ do
     body $ do
         h1 $ titleSnippet language
         p $ do
-            a ! href "/" $ backHomeLinkTextSnippet language
+            langLink language "/" backHomeLinkTextSnippet
         form ! action "/practice/new" ! method "post" $ do
             p $ newPracticeDetailingSnippet language
             label $ askPracticeSizeSnippet language

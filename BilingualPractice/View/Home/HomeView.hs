@@ -6,6 +6,8 @@ import BilingualPractice.View.CommonSnippets (appTitleSnippet, portfolioLinkText
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
+import BilingualPractice.View.Helper (langLink)
+
 import Prelude hiding (head, span)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
@@ -24,20 +26,20 @@ homeView language = docTypeHtml ! lang (languageAttrValue language) $ do
                 strong $ lexiconDefiniendumSnippet language
                 span $ lexiconDefinitorSnippet language
                 ul $ do
-                    a ! href "/dump" $ wholeDumpLinkTextSnippet language
+                    langLink language "/dump" wholeDumpLinkTextSnippet
                     span $ wholeDumpExplanationSnippet language
                     li $ do
-                        a ! href "/rand" $ randomSelectionLinkTextSnippet language
+                        langLink language "/rand" randomSelectionLinkTextSnippet
                         span $ randomSelectionExplanationSnippet language
             li $ do
                 strong $ practicesDefiniendumSnippet language
                 span $ practicesDefinitorSnippet language
                 ul $ do
                     li $ do
-                        a ! href "/practice/new" $ newPracticeLinkTextSnippet language
+                        langLink language "/practice/new" newPracticeLinkTextSnippet
                         span $ newPracticeExplanationSnippet language
                     li $ do
-                        a ! href "/practice/index" $ indexPracticeLinkTextSnippet language
+                        langLink language "/practice/index" indexPracticeLinkTextSnippet
                         span $ indexPracticeExplanationSnippet language
             li $ do
                 strong $ usersDefiniendumSnippet language

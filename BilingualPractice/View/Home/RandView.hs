@@ -6,6 +6,8 @@ import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextS
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
+import BilingualPractice.View.Helper (langLink)
+
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry (..))
 import BilingualPractice.Model.ViewModel (view)
 import Prelude hiding (head, span)
@@ -23,9 +25,9 @@ randView language records = docTypeHtml ! lang (languageAttrValue language) $ do
     body $ do
         h1 $ titleSnippet language
         p $ do
-            a ! href "/rand" $ resamplingLinkTextSnippet language
+            langLink language "/rand" resamplingLinkTextSnippet
             span " •|||• "
-            a ! href "/" $ backHomeLinkTextSnippet language
+            langLink language "/" backHomeLinkTextSnippet
         table $ do
             tr $ do
                 th $ view language Hu

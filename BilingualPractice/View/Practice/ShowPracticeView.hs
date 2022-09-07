@@ -7,6 +7,8 @@ import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
+import BilingualPractice.View.Helper (langLink)
+
 import BilingualPractice.Model.ViewModel (QuestionAnswerMatchView (..))
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
@@ -28,11 +30,11 @@ showPracticeView language startTime startTimeLocalised matches = docTypeHtml ! l
         p $ do
             form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language
             span " •|||• "
-            a ! href "/practice/new" $ newPracticeLinkTextSnippet language <> "!"
+            langLink language "/practice/new" $ (<> "!") . newPracticeLinkTextSnippet
             span " •|||• "
-            a ! href "/practice/index" $ backToPracticeIndexLinkTextSnippet language
+            langLink language "/practice/index" backToPracticeIndexLinkTextSnippet
             span " •|||• "
-            a ! href "/" $ backHomeLinkTextSnippet language
+            langLink language "/" backHomeLinkTextSnippet
         table $ do
             caption $ toHtml startTimeLocalised
             tr $ do
