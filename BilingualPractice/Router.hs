@@ -7,7 +7,9 @@ import BilingualPractice.Controller.HomeController (homeAction, dumpAction, rand
 import BilingualPractice.Controller.PracticeController (proposeExamenAction, performExamenAction, restartPracticeAction, indexPracticeAction, showPracticeAction, closePracticeAction, deletePracticeAction, repeatPracticeAction)
 import BilingualPractice.Controller.QuestionController (poseFirstRemainingExamenQuestionOrAnounceResultAction, receiveAnswerForQuestion)
 import BilingualPractice.BuiltinServer (builtinServerOptions)
+import Framework.Form (formParam)
 import Web.Scotty (ScottyM, middleware, ActionM, get, post, Param, params)
+import Data.ReflectionX (invertFunction)
 
 
 router :: Bool -> Language -> ScottyM ()
@@ -42,7 +44,4 @@ withDetectLangDefaulting lang paramAction = do
     ifWithLanguageParamThenElse paramNameValuePairs paramAction (paramAction lang)
 
 ifWithLanguageParamThenElse :: [Param] -> (Language -> ActionM a) -> ActionM a -> ActionM a
-ifWithLanguageParamThenElse paramNameValuePairs paramAction defaultAction
-    | ("lang", "en") `elem` paramNameValuePairs = paramAction En
-    | ("lang", "hu") `elem` paramNameValuePairs = paramAction Hu
-    | otherwise                                 = defaultAction
+ifWithLanguageParamThenElse paramNameValuePairs paramAction defaultAction = maybe defaultAction paramAction $ lookup "lang" paramNameValuePairs >>= invertFunction formParam
