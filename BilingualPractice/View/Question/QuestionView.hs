@@ -7,7 +7,6 @@ import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Model.Grammar.VocalAgreement (vocalAgreement2)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
-import Data.Text (Text)
 
 import BilingualPractice.Model.Grammar.Numeral (ordinalSuffix_en, singularOrPluralSuffix_en')
 import Prelude hiding (head, span)
