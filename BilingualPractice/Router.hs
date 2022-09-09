@@ -21,13 +21,13 @@ router logFlag lang = do
     getWith lang "/practice/index"     indexPracticeAction
     getWith lang "/practice/show/:utc" showPracticeAction
     getWith lang "/practice/new"       proposeExamenAction
-    post "/practice/new"       $                               performExamenAction
-    post "/practice/restart"   $                               restartPracticeAction
-    post "/practice/delete"    $                               deletePracticeAction
-    post "/practice/repeat"    $                               repeatPracticeAction
-    post "/practice/closefix"  $                               closePracticeAction
+    postWith lang "/practice/new"      performExamenAction
+    postWith lang "/practice/restart"  restartPracticeAction
+    postWith lang "/practice/delete"   deletePracticeAction
+    postWith lang "/practice/repeat"   repeatPracticeAction
+    postWith lang "/practice/closefix" closePracticeAction
     getWith lang "/question" poseFirstRemainingExamenQuestionOrAnounceResultAction
-    post "/question"           $                               receiveAnswerForQuestion
+    postWith lang "/question"          receiveAnswerForQuestion
 
     getWith lang  "/error/navigationinconsistency" $ flip errorAction "Inconsistent traversal of the site: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
     get  "/error/emptydata" $ withDetectLangDefaulting lang $ flip errorAction "There are no data!"

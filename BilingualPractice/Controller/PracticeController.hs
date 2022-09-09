@@ -7,6 +7,7 @@ import Framework.Controller (blaze)
 import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readExtendedLexiconTable, closePracticeStart, deletePractice)
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, entity, difficulty, qst1Time, restoreEtalonByAnswers, answersOfPracticeStart)
 import BilingualPractice.Model.ViewModel (Viewable (view), viewPractice, conferAndViewCertificate)
+import BilingualPractice.View.Helper (langRedirect)
 import BilingualPractice.View.Practice.ExamenView        (examenView)
 import BilingualPractice.View.Practice.IndexPracticeView (indexPracticeView)
 import BilingualPractice.View.Practice.ShowPracticeView  (showPracticeView)
@@ -40,40 +41,40 @@ showPracticeAction lang = do
     timeZone <- liftIO getCurrentTimeZone
     blaze $ showPracticeView lang utc (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate lang timeZone lexicon answers
 
-closePracticeAction :: ActionM ()
-closePracticeAction = do
+closePracticeAction :: Language -> ActionM ()
+closePracticeAction lang = do
     redirectRoute <- ("/" <>) . intercalate "/" . map snd <$> params
     --let redirectRoute = mconcat ["/", redirectRoute1, "/", redirectRoute2]
     --    errorRoute    = "/error/navigationalinconsistency"
-    liftIO closePracticeStart >>= redirect . bool "/error/navigationinconsistency" redirectRoute
+    liftIO closePracticeStart >>= langRedirect lang . bool "/error/navigationinconsistency" redirectRoute
     -- liftIO $ print routes
 
-deletePracticeAction :: ActionM ()
-deletePracticeAction = do
+deletePracticeAction :: Language -> ActionM ()
+deletePracticeAction lang = do
    utc <- read <$> param "start"
    liftIO $ deletePractice utc
-   redirect "/practice/index"
+   langRedirect lang "/practice/index"
 
-repeatPracticeAction :: ActionM ()
-repeatPracticeAction = do
+repeatPracticeAction :: Language -> ActionM ()
+repeatPracticeAction lang = do
     utc                <- read <$> param "start"
     (lexicon, answers) <- liftIO $ liftM2 (,) readExtendedLexiconTable (readTable "answer")
     flag               <- liftIO $ preparePracticeControllingTables $ restoreEtalonByAnswers (answersOfPracticeStart utc answers) lexicon
-    redirect $ bool "/error/navigationinconsistency" "/question" flag
+    langRedirect lang $ bool "/error/navigationinconsistency" "/question" flag
 
 
 proposeExamenAction :: Language -> ActionM ()
 proposeExamenAction = blaze . examenView
 
-performExamenAction :: ActionM ()
-performExamenAction = do
+performExamenAction :: Language -> ActionM ()
+performExamenAction lang = do
     pars <- map (unpack . fst) <$> params
     numberOfQuestions <- read <$> param "number_of_questions" -- @TODO: form validation
     flag <- liftIO $ preparePracticeControllingTables =<< randQuery numberOfQuestions =<< filter (useCheckMatrixCNF lexiconEntryCheckMatrix pars) <$> readExtendedLexiconTable
-    redirect $ bool "/error/navigationinconsistency" "/question" flag
+    langRedirect lang $ bool "/error/navigationinconsistency" "/question" flag
 
-restartPracticeAction :: ActionM ()
-restartPracticeAction = liftIO closePracticeStart >>= (redirect . bool "/error/navigationinconsistency" "/practice/new")
+restartPracticeAction :: Language -> ActionM ()
+restartPracticeAction lang = liftIO closePracticeStart >>= (langRedirect lang . bool "/error/navigationinconsistency" "/practice/new")
 
 -- lexiconEntryProps = selectorsPropertyCNF lexiconEntryProperties
 

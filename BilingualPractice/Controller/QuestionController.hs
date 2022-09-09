@@ -10,6 +10,7 @@ import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQu
 import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables,
                                                                   getSession, getPracticeStart_unsafe, checkOpenPracticeStart, closePracticeStart, insertAsNewPractice, saveAnswers, modifySession)
 import BilingualPractice.Model.ViewModel (conferAndViewCertificate)
+import BilingualPractice.View.Helper (langRedirect)
 import BilingualPractice.View.Question.QuestionView (questionView) -- !!
 import BilingualPractice.View.Question.ResultView   (resultView) -- !!
 import Database.SimpleHackDBMS.FileStorage (insertIntoTable)
@@ -29,15 +30,15 @@ poseFirstRemainingExamenQuestionOrAnounceResultAction lang = do
             withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView lang nth ofAll) (announceResult lang) etalon personal
         else redirect "/error/navigationinconsistency"
 
-receiveAnswerForQuestion :: ActionM ()
-receiveAnswerForQuestion = do
+receiveAnswerForQuestion :: Language -> ActionM ()
+receiveAnswerForQuestion lang = do
     ansHu <- param "hu"
     ansEn <- param "en"
     prcStartTime <- liftIO getPracticeStart_unsafe
     liftIO $ do
         ansTime  <- getCurrentTime
         modifySession $ \s -> s {personal = personal s ++ [AnsQu {ansHu, ansEn, qst1Time = prcStartTime, ansTime}]}
-    redirect "/question"
+    langRedirect lang "/question"
 
 announceResult :: Language -> [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
 announceResult lang etalon personal = do
