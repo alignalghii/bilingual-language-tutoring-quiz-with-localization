@@ -6,7 +6,7 @@ import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelection
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink, langAction)
 
 import BilingualPractice.Model.ViewModel (PracticeView (..))
 import Prelude hiding (head, div, span, min, max)
@@ -52,8 +52,8 @@ showLink :: Language -> UTCTime -> Html
 showLink language timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ showLinkTextSnippet language
 
 showFormDel, showFormRep :: Language-> UTCTime -> Html
-showFormDel language timeId = form ! method "post" ! action "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ deleteLinkTextSnippet language
-showFormRep language timeId = form ! method "post" ! action "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ repeatLinkTextSnippet language
+showFormDel language timeId = form ! method "post" ! langAction language "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ deleteLinkTextSnippet language
+showFormRep language timeId = form ! method "post" ! langAction language "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ repeatLinkTextSnippet language
 
 
 -- Localization snippets:

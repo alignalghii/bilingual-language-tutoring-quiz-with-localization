@@ -3,6 +3,7 @@
 module BilingualPractice.View.Question.QuestionView (questionView) where
 
 import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, submitCommandSnippet)
+import BilingualPractice.View.LanguageHelper (langAction)
 import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Model.Grammar.VocalAgreement (vocalAgreement2)
 import BilingualPractice.Language (Language (..), languageAttrValue)
@@ -28,13 +29,13 @@ questionView language selfUrl nth ofAll hu = docTypeHtml ! lang (languageAttrVal
         languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
-            form ! method "post" ! action "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $
+            form ! method "post" ! langAction language "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $
                 button ! type_ "submit" $ quitAndRestartPracticeCommandSnippet language
             span " •|||• "
-            form ! method "post" ! action "practice/closefix" ! class_ "inline" $
+            form ! method "post" ! langAction language "practice/closefix" ! class_ "inline" $
                 button ! type_ "submit" $ backHomeLinkTextSnippet language
         p $ askQuestionSnippet language nth ofAll
-        form ! action "/question" ! method "post" $ do
+        form ! langAction language "/question" ! method "post" $ do
             label $ toHtml $ inWhichLanguageSnippet language Hu
             span $ toHtml hu
             br

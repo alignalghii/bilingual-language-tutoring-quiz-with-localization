@@ -10,7 +10,7 @@ import BilingualPractice.Model.RelationalBusinessLogic (LinguisticalUnit (..), D
 import Data.ReflectionX (allInhabitants)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink, langAction)
 
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
@@ -29,7 +29,7 @@ examenView language selfUrl = docTypeHtml ! lang (languageAttrValue language) $ 
         h1 $ titleSnippet language
         p $ do
             langLink language "/" backHomeLinkTextSnippet
-        form ! action "/practice/new" ! method "post" $ do
+        form ! langAction language "/practice/new" ! method "post" $ do
             p $ newPracticeDetailingSnippet language
             label $ askPracticeSizeSnippet language
             input ! type_ "number" ! class_ "smallnum" ! min "1" ! max "30" ! name "number_of_questions" ! value "5"

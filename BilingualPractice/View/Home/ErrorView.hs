@@ -8,7 +8,7 @@ import BilingualPractice.Model.Error (Error)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink, langAction)
 
 import Prelude hiding (head, span, div)
 import Text.Blaze.Html5 as H hiding (map)
@@ -64,7 +64,7 @@ errorView err language selfUrl = docTypeHtml ! lang (languageAttrValue language)
                 span $ inconsistentTraversalErrorCaseHeadingSnippet language
                 ul $ do
                     li $
-                        form ! method "post" ! action "/practice/closefix" ! class_ "inline" $
+                        form ! method "post" ! langAction language "/practice/closefix" ! class_ "inline" $
                             button ! type_ "submit" $ closeFixButtonLabelSnippet language
             li $ noProblemTextSnippet language
 

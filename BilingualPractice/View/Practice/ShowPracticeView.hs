@@ -7,7 +7,7 @@ import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink, langAction)
 
 import BilingualPractice.Model.ViewModel (QuestionAnswerMatchView (..))
 import Prelude hiding (head, div, span, min, max)
@@ -29,7 +29,7 @@ showPracticeView language selfUrl startTime startTimeLocalised matches = docType
         languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
-            form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language
+            form ! method "post" ! langAction language "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language
             span " •|||• "
             langLink language "/practice/new" $ (<> "!") . newPracticeLinkTextSnippet
             span " •|||• "
