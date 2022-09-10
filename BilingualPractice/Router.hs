@@ -30,7 +30,7 @@ router logFlag lang = do
     postWith lang "/question"          receiveAnswerForQuestion
 
     getWith lang  "/error/navigationinconsistency" $ flip errorAction "Inconsistent traversal of the site: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
-    get  "/error/emptydata" $ withDetectLangDefaulting lang $ flip errorAction "There are no data!"
+    getWith  lang "/error/emptydata" $ flip errorAction "There are no data!"
     --post "/error/closepractice" $ errorClosePracticeAction
 
 -- Important note:
