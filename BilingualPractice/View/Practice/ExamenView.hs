@@ -3,7 +3,7 @@
 module BilingualPractice.View.Practice.ExamenView (examenView) where
 
 import BilingualPractice.Model.ViewModel (Viewable (view))
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, submitCommandSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, submitCommandSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Framework.Form (FormParamable (formParam))
 import BilingualPractice.Model.RelationalBusinessLogic (LinguisticalUnit (..), Difficulty (..))
@@ -17,14 +17,15 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
 import Control.Monad (forM_)
 
-examenView :: Language -> Html
-examenView language = docTypeHtml ! lang (languageAttrValue language) $ do
+examenView :: Language -> AttributeValue -> Html
+examenView language selfUrl = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
             langLink language "/" backHomeLinkTextSnippet

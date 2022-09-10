@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Home.DumpView (dumpView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
@@ -15,14 +15,15 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, span, form)
 import Control.Monad (forM_)
 
-dumpView :: Language -> [LexiconEntry] -> Html
-dumpView language vocabularyData = docTypeHtml ! lang (languageAttrValue language) $ do
+dumpView :: Language -> AttributeValue -> [LexiconEntry] -> Html
+dumpView language selfUrl vocabularyData = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $
             langLink language "/" backHomeLinkTextSnippet

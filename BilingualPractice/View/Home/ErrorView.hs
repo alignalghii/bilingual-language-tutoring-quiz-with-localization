@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Home.ErrorView (errorView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet)
 import BilingualPractice.Model.ViewModel (view)
 import BilingualPractice.Model.Error (Error)
 import BilingualPractice.Language (Language (..), languageAttrValue)
@@ -15,8 +15,8 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Data.Bool (bool)
 
-errorView :: Language -> Error -> Html
-errorView language error = docTypeHtml ! lang (languageAttrValue language) $ do
+errorView :: Error -> Language -> AttributeValue -> Html
+errorView err language selfUrl = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
@@ -24,6 +24,7 @@ errorView language error = docTypeHtml ! lang (languageAttrValue language) $ do
         link ! rel "stylesheet" ! href "/style/form.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         ul $ do
             li $ do
@@ -47,7 +48,7 @@ errorView language error = docTypeHtml ! lang (languageAttrValue language) $ do
                         span $ indexPracticeExplanationSnippet language
             li $ do
                 strong $ usersDefiniendumSnippet language
-        p ! class_ "error" $ view language error
+        p ! class_ "error" $ view language err
         div $ errorFixHintHeadingSnippet language
         ul $ do
             li $ do

@@ -15,19 +15,20 @@ import BilingualPractice.View.Question.QuestionView (questionView) -- !!
 import BilingualPractice.View.Question.ResultView   (resultView) -- !!
 import Database.SimpleHackDBMS.FileStorage (insertIntoTable)
 import Web.Scotty (ActionM, param, redirect)
+import Text.Blaze.Html5 (AttributeValue)
 import Control.Monad.Trans (liftIO)
 import Data.Time (getCurrentTime, getCurrentTimeZone)
 
 
-poseFirstRemainingExamenQuestionOrAnounceResultAction :: Language -> ActionM ()
-poseFirstRemainingExamenQuestionOrAnounceResultAction lang = do
+poseFirstRemainingExamenQuestionOrAnounceResultAction :: Language -> AttributeValue -> ActionM ()
+poseFirstRemainingExamenQuestionOrAnounceResultAction lang selfUrl = do
     flag <- liftIO checkOpenPracticeStart
     if flag
         then do
             (etalon, personal) <- liftIO readPracticeControllingTables
             let (ofAll, answd) = (length etalon, length personal)
                 nth            = answd + 1
-            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView lang nth ofAll) (announceResult lang) etalon personal
+            withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView lang selfUrl nth ofAll) (announceResult lang selfUrl) etalon personal
         else redirect "/error/navigationinconsistency"
 
 receiveAnswerForQuestion :: Language -> ActionM ()
@@ -40,8 +41,8 @@ receiveAnswerForQuestion lang = do
         modifySession $ \s -> s {personal = personal s ++ [AnsQu {ansHu, ansEn, qst1Time = prcStartTime, ansTime}]}
     langRedirect lang "/question"
 
-announceResult :: Language -> [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
-announceResult lang etalon personal = do
+announceResult :: Language -> AttributeValue -> [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
+announceResult lang selfUrl etalon personal = do
     let lexicon = etalon -- lexicon <- liftIO readExtendedLexiconTable
     case personal of
         AnsQu {qst1Time = prcStartTime} : _ -> do
@@ -50,7 +51,7 @@ announceResult lang etalon personal = do
                 saveAnswers personal
                 closePracticeStart
                 getCurrentTimeZone
-            blaze $ resultView lang prcStartTime $ conferAndViewCertificate lang timeZone lexicon personal
+            blaze $ resultView lang selfUrl prcStartTime $ conferAndViewCertificate lang timeZone lexicon personal
         [] -> do
             liftIO closePracticeStart
             redirect "/error/emptydata"

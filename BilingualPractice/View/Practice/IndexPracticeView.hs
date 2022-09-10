@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Practice.IndexPracticeView (indexPracticeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
@@ -17,8 +17,8 @@ import Control.Monad (forM_)
 import Data.Time (UTCTime)
 import Data.Bool (bool)
 
-indexPracticeView :: Language -> [PracticeView] -> Html
-indexPracticeView language practices = docTypeHtml ! lang (languageAttrValue language) $ do
+indexPracticeView :: Language -> AttributeValue -> [PracticeView] -> Html
+indexPracticeView language selfUrl practices = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
@@ -26,6 +26,7 @@ indexPracticeView language practices = docTypeHtml ! lang (languageAttrValue lan
         link ! rel "stylesheet" ! href "/style/table.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
             langLink language "/" backHomeLinkTextSnippet

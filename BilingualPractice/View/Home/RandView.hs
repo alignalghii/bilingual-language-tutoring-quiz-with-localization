@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Home.RandView (randView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
@@ -15,14 +15,15 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Control.Monad (forM_)
 
-randView :: Language -> [LexiconEntry] -> Html
-randView language records = docTypeHtml ! lang (languageAttrValue language) $ do
+randView :: Language -> AttributeValue -> [LexiconEntry] -> Html
+randView language selfUrl records = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/table.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
             langLink language "/rand" resamplingLinkTextSnippet

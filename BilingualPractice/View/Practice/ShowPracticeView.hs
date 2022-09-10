@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Practice.ShowPracticeView (showPracticeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet, echoDesignationSnippet, askQuestionReceivingTimeSnippet, askAnswerProvidingTimeSnippet, repeatSamePracticeCommandSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet, echoDesignationSnippet, askQuestionReceivingTimeSnippet, askAnswerProvidingTimeSnippet, repeatSamePracticeCommandSnippet)
 import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
@@ -17,8 +17,8 @@ import Control.Monad (forM_)
 import Data.Time (UTCTime)
 
 
-showPracticeView :: Language -> UTCTime -> String -> [QuestionAnswerMatchView] -> Html
-showPracticeView language startTime startTimeLocalised matches = docTypeHtml ! lang (languageAttrValue language) $ do
+showPracticeView :: Language -> AttributeValue -> UTCTime -> String -> [QuestionAnswerMatchView] -> Html
+showPracticeView language selfUrl startTime startTimeLocalised matches = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
@@ -26,6 +26,7 @@ showPracticeView language startTime startTimeLocalised matches = docTypeHtml ! l
         link ! rel "stylesheet" ! href "/style/table.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
             form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language

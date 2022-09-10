@@ -10,28 +10,30 @@ import BilingualPractice.Controller.QuestionController (poseFirstRemainingExamen
 import BilingualPractice.BuiltinServer (builtinServerOptions)
 import Framework.Form (formParam)
 import Web.Scotty (ScottyM, middleware, ActionM, get, post, Param, params, RoutePattern)
+import Text.Blaze.Html5 (AttributeValue)
 import Data.ReflectionX (invertFunction)
+import Data.String (fromString)
 
 
 router :: Bool -> Language -> ScottyM ()
 router logFlag lang = do
     mapM_ middleware $ builtinServerOptions logFlag
-    getWith lang  "/"    homeAction
-    getWith lang "/dump" dumpAction
-    getWith lang "/rand" randAction
-    getWith lang "/practice/index"     indexPracticeAction
-    getWith lang "/practice/show/:utc" showPracticeAction
-    getWith lang "/practice/new"       proposeExamenAction
+    getWith' lang  "/"   homeAction
+    getWith' lang "/dump" dumpAction
+    getWith' lang "/rand" randAction
+    getWith' lang "/practice/index"     indexPracticeAction
+    getWith' lang "/practice/show/:utc" showPracticeAction
+    getWith' lang "/practice/new"       proposeExamenAction
     postWith lang "/practice/new"      performExamenAction
     postWith lang "/practice/restart"  restartPracticeAction
     postWith lang "/practice/delete"   deletePracticeAction
     postWith lang "/practice/repeat"   repeatPracticeAction
     postWith lang "/practice/closefix" closePracticeAction
-    getWith lang "/question" poseFirstRemainingExamenQuestionOrAnounceResultAction
+    getWith' lang "/question" poseFirstRemainingExamenQuestionOrAnounceResultAction
     postWith lang "/question"          receiveAnswerForQuestion
 
-    getWith lang  "/error/navigationinconsistency" $ flip errorAction InconsistentTraversalError
-    getWith lang "/error/emptydata" $ flip errorAction NoDataError
+    getWith' lang  "/error/navigationinconsistency" $ errorAction InconsistentTraversalError
+    getWith' lang "/error/emptydata" $ errorAction NoDataError
     --post "/error/closepractice" $ errorClosePracticeAction
 
 -- Important note:
@@ -53,3 +55,11 @@ withDetectLangDefaulting lang paramAction = do
 
 ifWithLanguageParamThenElse :: [Param] -> (Language -> ActionM a) -> ActionM a -> ActionM a
 ifWithLanguageParamThenElse paramNameValuePairs paramAction defaultAction = maybe defaultAction paramAction $ lookup "lang" paramNameValuePairs >>= invertFunction formParam
+
+type Url = String
+
+routeCommandWithLangAndSelf :: (RoutePattern -> ActionM a -> scottyDoing) -> Language -> Url -> (Language -> AttributeValue -> ActionM a) -> scottyDoing
+routeCommandWithLangAndSelf command lang url actionWithLangAndSelf = command (fromString url) $ withDetectLangDefaulting lang (flip actionWithLangAndSelf $ fromString url)
+
+getWith' :: Language -> Url -> (Language -> AttributeValue -> ActionM ()) -> ScottyM ()
+getWith' = routeCommandWithLangAndSelf get

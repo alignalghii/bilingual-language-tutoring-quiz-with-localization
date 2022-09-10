@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Home.HomeView (homeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, portfolioLinkTextSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, portfolioLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
@@ -13,13 +13,14 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Data.Bool (bool)
 
-homeView :: Language -> Html
-homeView language = docTypeHtml ! lang (languageAttrValue language) $ do
+homeView :: Language -> AttributeValue -> Html
+homeView language selfUrl = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         ul $ do
             li $ do

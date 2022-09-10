@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Question.QuestionView (questionView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, submitCommandSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, submitCommandSnippet)
 import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Model.Grammar.VocalAgreement (vocalAgreement2)
 import BilingualPractice.Language (Language (..), languageAttrValue)
@@ -17,14 +17,15 @@ import Data.Bool (bool)
 import Data.Time
 
 
-questionView :: Language -> Int -> Int -> String -> Html
-questionView language nth ofAll hu = docTypeHtml ! lang (languageAttrValue language) $ do
+questionView :: Language -> AttributeValue -> Int -> Int -> String -> Html
+questionView language selfUrl nth ofAll hu = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         link ! rel "stylesheet" ! href "/style/form.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
             form ! method "post" ! action "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $

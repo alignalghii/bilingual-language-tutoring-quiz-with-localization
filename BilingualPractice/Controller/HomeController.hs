@@ -12,20 +12,21 @@ import BilingualPractice.View.Home.RandView     (randView)
 import BilingualPractice.View.Home.ErrorView    (errorView)
 import System.RandomX (randQuery)
 import Web.Scotty (ActionM, redirect)
+import Text.Blaze.Html5 (AttributeValue)
 import Control.Monad.Trans (liftIO)
 
 
-homeAction :: Language -> ActionM ()
-homeAction = blaze . homeView
+homeAction :: Language -> AttributeValue -> ActionM ()
+homeAction lang = blaze . homeView lang
 
-dumpAction :: Language -> ActionM ()
-dumpAction language = liftIO readExtendedLexiconTable >>= (blaze . dumpView language)
+dumpAction :: Language -> AttributeValue -> ActionM ()
+dumpAction lang selfUrl = liftIO readExtendedLexiconTable >>= (blaze . dumpView lang selfUrl)
 
-randAction :: Language -> ActionM ()
-randAction language = liftIO (readExtendedLexiconTable >>= randQuery 10) >>= (blaze . randView language)
+randAction :: Language -> AttributeValue -> ActionM ()
+randAction lang selfUrl = liftIO (readExtendedLexiconTable >>= randQuery 10) >>= (blaze . randView lang selfUrl)
 
-errorAction :: Language -> Error -> ActionM ()
-errorAction language = blaze . errorView language
+errorAction :: Error -> Language -> AttributeValue -> ActionM ()
+errorAction err lang = blaze . errorView err lang
 
 --errorClosePracticeAction :: ActionM ()
 --errorClosePracticeAction = do

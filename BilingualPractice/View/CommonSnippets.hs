@@ -2,8 +2,14 @@
 
 module BilingualPractice.View.CommonSnippets where
 
+import BilingualPractice.Model.ViewModel (view)
+import BilingualPractice.View.LanguageHelper (langLink)
 import BilingualPractice.Language (Language (..))
+import Data.ReflectionX (allInhabitants)
+import Text.Blaze.Html5 (Html, div, span, AttributeValue)
+import Prelude hiding (div, span)
 import Data.String (IsString)
+import Data.List (intersperse)
 
 
 appTitleSnippet :: IsString string => Language -> string
@@ -52,3 +58,11 @@ askAnswerProvidingTimeSnippet Hu = "Válaszod időpontja"
 repeatSamePracticeCommandSnippet :: IsString string => Language -> string
 repeatSamePracticeCommandSnippet En = "Repeat this very same practice!"
 repeatSamePracticeCommandSnippet Hu = "Ismételd meg ugyanezt a gyakorlatot!"
+
+languageSelectionFlagBarSnippet :: Language -> AttributeValue -> Html
+languageSelectionFlagBarSnippet language url = div $ sequence_ $ intersperse (span "|") $ languageFlagLink language url <$> allInhabitants
+
+languageFlagLink :: Language -> AttributeValue -> Language -> Html
+languageFlagLink how url which
+    | how == which = span $ view how which
+    | otherwise    = langLink which url $ view how

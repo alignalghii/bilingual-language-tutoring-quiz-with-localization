@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Question.ResultView (resultView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet, echoDesignationSnippet, askQuestionReceivingTimeSnippet, askAnswerProvidingTimeSnippet, repeatSamePracticeCommandSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet, echoDesignationSnippet, askQuestionReceivingTimeSnippet, askAnswerProvidingTimeSnippet, repeatSamePracticeCommandSnippet)
 import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
@@ -18,8 +18,8 @@ import Data.Bool (bool)
 import Data.Time
 
 
-resultView :: Language -> UTCTime -> [QuestionAnswerMatchView] -> Html
-resultView language startTime confer = docTypeHtml ! lang (languageAttrValue language) $ do
+resultView :: Language -> AttributeValue -> UTCTime -> [QuestionAnswerMatchView] -> Html
+resultView language selfUrl startTime confer = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
@@ -27,6 +27,7 @@ resultView language startTime confer = docTypeHtml ! lang (languageAttrValue lan
         link ! rel "stylesheet" ! href "/style/form.css"
         title $ titleSnippet language
     body $ do
+        languageSelectionFlagBarSnippet language selfUrl
         h1 $ titleSnippet language
         p $ do
             form ! method "post" ! action "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language

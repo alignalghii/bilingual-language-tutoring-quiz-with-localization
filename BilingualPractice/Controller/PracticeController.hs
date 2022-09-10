@@ -17,6 +17,7 @@ import Database.SimpleHackDBMS.FileStorage (readTable)
 import System.RandomX (randQuery)
 import Data.Property (matchField)
 import Web.Scotty (ActionM, param, params, redirect)
+import Text.Blaze.Html5 (AttributeValue)
 import Network.URI.Encode (decode) -- @TODO should come tom ViewModel
 import Data.Text.Lazy (unpack, intercalate)
 import Data.TimeX (keepDateAbbrevTime')
@@ -26,20 +27,20 @@ import Control.Monad (liftM2)
 import Control.Monad.Trans (liftIO)
 
 
-indexPracticeAction :: Language -> ActionM ()
-indexPracticeAction lang = do
+indexPracticeAction :: Language -> AttributeValue -> ActionM ()
+indexPracticeAction lang selfUrl = do
     practices <- liftIO $ readTable "practice"
     answers   <- liftIO $ readTable "answer"
     timeZone  <- liftIO getCurrentTimeZone
-    blaze $ indexPracticeView lang $ viewPractice timeZone answers <$> practices
+    blaze $ indexPracticeView lang selfUrl $ viewPractice timeZone answers <$> practices
 
-showPracticeAction :: Language -> ActionM ()
-showPracticeAction lang = do
+showPracticeAction :: Language -> AttributeValue -> ActionM ()
+showPracticeAction lang selfUrl = do
     utc <- (read . decode . unpack) <$> param "utc"
     answers <- liftIO $ filter (matchField qst1Time utc) <$> readTable "answer"
     lexicon <- liftIO $ readExtendedLexiconTable
     timeZone <- liftIO getCurrentTimeZone
-    blaze $ showPracticeView lang utc (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate lang timeZone lexicon answers
+    blaze $ showPracticeView lang selfUrl utc (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate lang timeZone lexicon answers
 
 closePracticeAction :: Language -> ActionM ()
 closePracticeAction lang = do
@@ -63,8 +64,8 @@ repeatPracticeAction lang = do
     langRedirect lang $ bool "/error/navigationinconsistency" "/question" flag
 
 
-proposeExamenAction :: Language -> ActionM ()
-proposeExamenAction = blaze . examenView
+proposeExamenAction :: Language -> AttributeValue -> ActionM ()
+proposeExamenAction lang = blaze . examenView lang
 
 performExamenAction :: Language -> ActionM ()
 performExamenAction lang = do
