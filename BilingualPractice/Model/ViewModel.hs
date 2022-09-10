@@ -2,7 +2,8 @@
 
 module BilingualPractice.Model.ViewModel where
 
-import BilingualPractice.Language (Language (..))
+import BilingualPractice.Language (Language (..)) -- should become BilingualPractice.Model.Language ?
+import BilingualPractice.Model.Error (Error (..))
 import Data.String (IsString)
 
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, QuestionAnswerMatch (..), LinguisticalUnit (..), Difficulty (..), Practice (..), AnsweredQuestion (..), conferPracticeCertificate)
@@ -40,6 +41,12 @@ instance Viewable Language where
     view Hu En = "angol"
     view En Hu = "Hungarian"
     view Hu Hu = "magyar"
+
+instance Viewable Error where
+    view En NoDataError = "There are no data!"
+    view Hu NoDataError = "Nincsenek adatok!"
+    view En InconsistentTraversalError = "Inconsistent traversal of the site: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
+    view Hu InconsistentTraversalError = "Az oldal bejárása során következetlenség történhetett (valami lezáratlanul maradt cselekmény)!"
 
 
 instance FormParamable LinguisticalUnit where

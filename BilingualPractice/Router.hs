@@ -3,6 +3,7 @@
 module BilingualPractice.Router where
 
 import BilingualPractice.Language (Language (..))
+import BilingualPractice.Model.Error (Error (..))
 import BilingualPractice.Controller.HomeController (homeAction, dumpAction, randAction, errorAction)
 import BilingualPractice.Controller.PracticeController (proposeExamenAction, performExamenAction, restartPracticeAction, indexPracticeAction, showPracticeAction, closePracticeAction, deletePracticeAction, repeatPracticeAction)
 import BilingualPractice.Controller.QuestionController (poseFirstRemainingExamenQuestionOrAnounceResultAction, receiveAnswerForQuestion)
@@ -29,8 +30,8 @@ router logFlag lang = do
     getWith lang "/question" poseFirstRemainingExamenQuestionOrAnounceResultAction
     postWith lang "/question"          receiveAnswerForQuestion
 
-    getWith lang  "/error/navigationinconsistency" $ flip errorAction "Inconsistent traversal of the site: probably You have opened a practice and it got interrupted without closing due to some forced traversal."
-    getWith  lang "/error/emptydata" $ flip errorAction "There are no data!"
+    getWith lang  "/error/navigationinconsistency" $ flip errorAction InconsistentTraversalError
+    getWith lang "/error/emptydata" $ flip errorAction NoDataError
     --post "/error/closepractice" $ errorClosePracticeAction
 
 -- Important note:

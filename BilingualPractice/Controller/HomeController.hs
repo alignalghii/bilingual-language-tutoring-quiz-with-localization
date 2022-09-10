@@ -4,6 +4,7 @@ module BilingualPractice.Controller.HomeController where
 
 import BilingualPractice.Language (Language)
 import Framework.Controller (blaze)
+import BilingualPractice.Model.Error (Error)
 import BilingualPractice.Model.TableManipulationForBusinessLogic (readExtendedLexiconTable, closePracticeStart)
 import BilingualPractice.View.Home.HomeView     (homeView)
 import BilingualPractice.View.Home.DumpView     (dumpView)
@@ -23,7 +24,7 @@ dumpAction language = liftIO readExtendedLexiconTable >>= (blaze . dumpView lang
 randAction :: Language -> ActionM ()
 randAction language = liftIO (readExtendedLexiconTable >>= randQuery 10) >>= (blaze . randView language)
 
-errorAction :: Language -> String -> ActionM ()
+errorAction :: Language -> Error -> ActionM ()
 errorAction language = blaze . errorView language
 
 --errorClosePracticeAction :: ActionM ()
