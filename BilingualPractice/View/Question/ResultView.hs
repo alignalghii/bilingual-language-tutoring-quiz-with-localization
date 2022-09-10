@@ -7,7 +7,7 @@ import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.Helper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink)
 
 import BilingualPractice.Model.ViewModel (QuestionAnswerMatchView (..))
 import Prelude hiding (head, span)

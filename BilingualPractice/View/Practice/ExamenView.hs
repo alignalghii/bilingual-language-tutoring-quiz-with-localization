@@ -10,7 +10,7 @@ import BilingualPractice.Model.RelationalBusinessLogic (LinguisticalUnit (..), D
 import Data.ReflectionX (allInhabitants)
 import Data.String (IsString)
 
-import BilingualPractice.View.Helper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink)
 
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)

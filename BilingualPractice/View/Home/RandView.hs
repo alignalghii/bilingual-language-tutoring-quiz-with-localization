@@ -6,7 +6,7 @@ import BilingualPractice.View.CommonSnippets (appTitleSnippet, backHomeLinkTextS
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.Helper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink)
 
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry (..))
 import BilingualPractice.Model.ViewModel (view)

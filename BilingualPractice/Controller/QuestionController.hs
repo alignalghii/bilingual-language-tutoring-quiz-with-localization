@@ -10,7 +10,7 @@ import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQu
 import BilingualPractice.Model.TableManipulationForBusinessLogic (preparePracticeControllingTables, readPracticeControllingTables,
                                                                   getSession, getPracticeStart_unsafe, checkOpenPracticeStart, closePracticeStart, insertAsNewPractice, saveAnswers, modifySession)
 import BilingualPractice.Model.ViewModel (conferAndViewCertificate)
-import BilingualPractice.View.Helper (langRedirect)
+import BilingualPractice.View.LanguageHelper (langRedirect)
 import BilingualPractice.View.Question.QuestionView (questionView) -- !!
 import BilingualPractice.View.Question.ResultView   (resultView) -- !!
 import Database.SimpleHackDBMS.FileStorage (insertIntoTable)

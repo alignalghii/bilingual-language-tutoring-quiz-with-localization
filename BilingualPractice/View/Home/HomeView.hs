@@ -6,7 +6,7 @@ import BilingualPractice.View.CommonSnippets (appTitleSnippet, portfolioLinkText
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.Helper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink)
 
 import Prelude hiding (head, span)
 import Text.Blaze.Html5 as H hiding (map)

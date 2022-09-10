@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module BilingualPractice.View.Helper where
+module BilingualPractice.View.LanguageHelper where
 
 import BilingualPractice.Language (Language)
 import BilingualPractice.Model.ViewModel () -- instance FormParamable Language
