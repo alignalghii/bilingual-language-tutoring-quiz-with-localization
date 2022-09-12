@@ -17,7 +17,7 @@ import Framework.Url (Url)
 import Database.SimpleHackDBMS.FileStorage (readTable)
 import System.RandomX (randQuery)
 import Data.Property (matchField)
-import Web.Scotty (ActionM, param, params, redirect)
+import Web.Scotty (ActionM, param, params)
 import Text.Blaze.Html5 (AttributeValue)
 import Network.URI.Encode (decode) -- @TODO should come tom ViewModel
 import Data.Text.Lazy (unpack)

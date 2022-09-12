@@ -15,7 +15,7 @@ import BilingualPractice.View.Question.QuestionView (questionView) -- !!
 import BilingualPractice.View.Question.ResultView   (resultView) -- !!
 import Framework.Url (Url)
 import Database.SimpleHackDBMS.FileStorage (insertIntoTable)
-import Web.Scotty (ActionM, param, redirect)
+import Web.Scotty (ActionM, param)
 import Text.Blaze.Html5 (AttributeValue)
 import Control.Monad.Trans (liftIO)
 import Data.Time (getCurrentTime, getCurrentTimeZone)
@@ -30,7 +30,7 @@ poseFirstRemainingExamenQuestionOrAnounceResultAction lang selfUrl = do
             let (ofAll, answd) = (length etalon, length personal)
                 nth            = answd + 1
             withFirstUnansweredQuestionIfAnyOrElse (blaze . questionView lang selfUrl nth ofAll) (announceResult lang selfUrl) etalon personal
-        else redirect "/error/navigationinconsistency"
+        else langRedirect' lang "/error/navigationinconsistency"
 
 receiveAnswerForQuestion :: Language -> ActionM ()
 receiveAnswerForQuestion lang = do
@@ -55,4 +55,4 @@ announceResult lang selfUrl etalon personal = do
             blaze $ resultView lang selfUrl prcStartTime $ conferAndViewCertificate lang timeZone lexicon personal
         [] -> do
             liftIO closePracticeStart
-            redirect "/error/emptydata"
+            langRedirect' lang "/error/emptydata"
