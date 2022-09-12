@@ -21,7 +21,7 @@ import Web.Scotty (ActionM, param, params)
 import Text.Blaze.Html5 (AttributeValue)
 import Network.URI.Encode (decode) -- @TODO should come tom ViewModel
 import Data.Text.Lazy (unpack)
-import Data.List (intercalate)
+import Data.ListX (preIntercalate)
 import Data.String (fromString)
 import Data.TimeX (keepDateAbbrevTime')
 import Data.Time (getCurrentTimeZone)
@@ -47,7 +47,7 @@ showPracticeAction lang selfUrl = do
 
 closePracticeAction :: Language -> ActionM ()
 closePracticeAction lang = do
-    redirectRoute <- fromString . ("/" <>) . intercalate "/" . map (unpack . snd) <$> params
+    redirectRoute <- fromString . preIntercalate "/" . map (unpack . snd) <$> params
     --let redirectRoute = mconcat ["/", redirectRoute1, "/", redirectRoute2]
     --    errorRoute    = "/error/navigationalinconsistency"
     liftIO closePracticeStart >>= langRedirect' lang . bool "/error/navigationinconsistency" redirectRoute

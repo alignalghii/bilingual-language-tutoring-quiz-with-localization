@@ -18,6 +18,7 @@ import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label)
 import Control.Monad (forM_)
 
+
 examenView :: Language -> Url -> Html
 examenView language selfUrl = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do

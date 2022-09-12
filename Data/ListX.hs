@@ -5,6 +5,7 @@ module Data.ListX where
 import Data.List.HT (viewL)
 import Data.Maybe.HT (toMaybe)
 import Data.Maybe (mapMaybe)
+import Data.List (intercalate)
 
 
 descartesProduct2 :: [a] -> [b] -> [(a, b)]
@@ -48,3 +49,12 @@ uncurry4 f (a1, a2, a3, a4) = f a1 a2 a3 a4
 
 filterIt_unsafe :: (a -> Bool) -> [a] -> a
 filterIt_unsafe p = head . filter p
+
+updateFirstOrLeave :: Eq a => (a, b) -> [(a, b)] -> [(a, b)]
+updateFirstOrLeave p'          []                 = [p']
+updateFirstOrLeave p'@(a', b') (p@(a, b) : pairs)
+    | a' == a   = p' : pairs
+    | otherwise = p  : updateFirstOrLeave p' pairs
+
+preIntercalate :: [a] -> [[a]] -> [a]
+preIntercalate sep = (sep ++) . intercalate sep
