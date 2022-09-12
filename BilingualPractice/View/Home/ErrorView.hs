@@ -2,7 +2,7 @@
 
 module BilingualPractice.View.Home.ErrorView (errorView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet')
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet', backHomeLinkTextSnippet)
 import BilingualPractice.Model.ViewModel (view)
 import Framework.Url (Url)
 import BilingualPractice.Model.Error (Error)
@@ -67,7 +67,9 @@ errorView err language selfUrl = docTypeHtml ! lang (languageAttrValue language)
                     li $
                         form ! method "post" ! langAction' language "/practice/closefix" ! class_ "inline" $
                             button ! type_ "submit" $ closeFixButtonLabelSnippet language
-            li $ noProblemTextSnippet language
+            li $ do
+                noProblemTextSnippet language
+                langLink' language "/" backHomeLinkTextSnippet
 
 
 titleSnippet :: (IsString string, Semigroup string) => Language -> string
@@ -158,5 +160,5 @@ closeFixButtonLabelSnippet En = "click here to close."
 closeFixButtonLabelSnippet Hu = "zárd be az esetleg szabálytalanul megszakított (lezárás nélkül) félbe maradt új gyakolatot."
 
 noProblemTextSnippet :: IsString string => Language -> string
-noProblemTextSnippet En = "There is also a chance that no action has to be done: the error is temporary, You can use the site without any worries"
-noProblemTextSnippet Hu = "Előfordulhat, hogy nem kell semmit csinálnod: használd nyugodtan tovább az oldalt"
+noProblemTextSnippet En = "There is also a chance that no action has to be done: the error is temporary, You can use the site without any worries."
+noProblemTextSnippet Hu = "Előfordulhat, hogy nem kell semmit csinálnod: használd nyugodtan tovább az oldalt."
