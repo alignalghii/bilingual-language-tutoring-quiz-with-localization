@@ -2,12 +2,13 @@
 
 module BilingualPractice.View.Practice.ShowPracticeView (showPracticeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet, echoDesignationSnippet, askQuestionReceivingTimeSnippet, askAnswerProvidingTimeSnippet, repeatSamePracticeCommandSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet', backHomeLinkTextSnippet, newPracticeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet, askGuessCorrectnessStatusSnippet, echoDesignationSnippet, askQuestionReceivingTimeSnippet, askAnswerProvidingTimeSnippet, repeatSamePracticeCommandSnippet)
 import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Language (Language (..), languageAttrValue)
+import Framework.Url (Url)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink, langAction)
+import BilingualPractice.View.LanguageHelper (langLink', langAction')
 
 import BilingualPractice.Model.ViewModel (QuestionAnswerMatchView (..))
 import Prelude hiding (head, div, span, min, max)
@@ -17,7 +18,7 @@ import Control.Monad (forM_)
 import Data.Time (UTCTime)
 
 
-showPracticeView :: Language -> AttributeValue -> UTCTime -> String -> [QuestionAnswerMatchView] -> Html
+showPracticeView :: Language -> Url -> UTCTime -> String -> [QuestionAnswerMatchView] -> Html
 showPracticeView language selfUrl startTime startTimeLocalised matches = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
@@ -26,16 +27,16 @@ showPracticeView language selfUrl startTime startTimeLocalised matches = docType
         link ! rel "stylesheet" ! href "/style/table.css"
         title $ titleSnippet language
     body $ do
-        languageSelectionFlagBarSnippet language selfUrl
+        languageSelectionFlagBarSnippet' language selfUrl
         h1 $ titleSnippet language
         p $ do
-            form ! method "post" ! langAction language "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language
+            form ! method "post" ! langAction' language "/practice/repeat" ! class_ "inline" $ button ! type_ "submit" ! name "start" ! value (toValue $ show startTime) $ repeatSamePracticeCommandSnippet language
             span " •|||• "
-            langLink language "/practice/new" $ (<> "!") . newPracticeLinkTextSnippet
+            langLink' language "/practice/new" $ (<> "!") . newPracticeLinkTextSnippet
             span " •|||• "
-            langLink language "/practice/index" backToPracticeIndexLinkTextSnippet
+            langLink' language "/practice/index" backToPracticeIndexLinkTextSnippet
             span " •|||• "
-            langLink language "/" backHomeLinkTextSnippet
+            langLink' language "/" backHomeLinkTextSnippet
         table $ do
             caption $ toHtml startTimeLocalised
             tr $ do

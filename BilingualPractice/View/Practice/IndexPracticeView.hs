@@ -2,13 +2,14 @@
 
 module BilingualPractice.View.Practice.IndexPracticeView (indexPracticeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, newPracticeLinkTextSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet', backHomeLinkTextSnippet, newPracticeLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink, langAction)
+import BilingualPractice.View.LanguageHelper (langLink', langAction')
 
 import BilingualPractice.Model.ViewModel (PracticeView (..))
+import Framework.Url (Url)
 import Prelude hiding (head, div, span, min, max)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span, label, div)
@@ -17,7 +18,7 @@ import Control.Monad (forM_)
 import Data.Time (UTCTime)
 import Data.Bool (bool)
 
-indexPracticeView :: Language -> AttributeValue -> [PracticeView] -> Html
+indexPracticeView :: Language -> Url -> [PracticeView] -> Html
 indexPracticeView language selfUrl practices = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
@@ -26,12 +27,12 @@ indexPracticeView language selfUrl practices = docTypeHtml ! lang (languageAttrV
         link ! rel "stylesheet" ! href "/style/table.css"
         title $ titleSnippet language
     body $ do
-        languageSelectionFlagBarSnippet language selfUrl
+        languageSelectionFlagBarSnippet' language selfUrl
         h1 $ titleSnippet language
         p $ do
-            langLink language "/" backHomeLinkTextSnippet
+            langLink' language "/" backHomeLinkTextSnippet
             span " •|||• "
-            langLink language "/practice/new" newPracticeLinkTextSnippet
+            langLink' language "/practice/new" newPracticeLinkTextSnippet
         div $
             table $ do
                 tr $ do
@@ -52,8 +53,8 @@ showLink :: Language -> UTCTime -> Html
 showLink language timeId = a ! href ("/practice/show/" <> (toValue $ encode $ encode $ show timeId)) $ showLinkTextSnippet language
 
 showFormDel, showFormRep :: Language-> UTCTime -> Html
-showFormDel language timeId = form ! method "post" ! langAction language "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ deleteLinkTextSnippet language
-showFormRep language timeId = form ! method "post" ! langAction language "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ repeatLinkTextSnippet language
+showFormDel language timeId = form ! method "post" ! langAction' language "/practice/delete" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ deleteLinkTextSnippet language
+showFormRep language timeId = form ! method "post" ! langAction' language "/practice/repeat" $ button ! type_ "submit" ! name "start" ! value (toValue $ show timeId) $ repeatLinkTextSnippet language
 
 
 -- Localization snippets:

@@ -2,11 +2,12 @@
 
 module BilingualPractice.View.Question.QuestionView (questionView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, submitCommandSnippet)
-import BilingualPractice.View.LanguageHelper (langAction)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet', backHomeLinkTextSnippet, submitCommandSnippet)
+import BilingualPractice.View.LanguageHelper (langAction')
 import BilingualPractice.Model.ViewModel (Viewable (view))
 import BilingualPractice.Model.Grammar.VocalAgreement (vocalAgreement2)
 import BilingualPractice.Language (Language (..), languageAttrValue)
+import Framework.Url (Url)
 import Data.String (IsString)
 
 import BilingualPractice.Model.Grammar.Numeral (ordinalSuffix_en, singularOrPluralSuffix_en')
@@ -18,7 +19,7 @@ import Data.Bool (bool)
 import Data.Time
 
 
-questionView :: Language -> AttributeValue -> Int -> Int -> String -> Html
+questionView :: Language -> Url -> Int -> Int -> String -> Html
 questionView language selfUrl nth ofAll hu = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
@@ -26,16 +27,16 @@ questionView language selfUrl nth ofAll hu = docTypeHtml ! lang (languageAttrVal
         link ! rel "stylesheet" ! href "/style/form.css"
         title $ titleSnippet language
     body $ do
-        languageSelectionFlagBarSnippet language selfUrl
+        languageSelectionFlagBarSnippet' language selfUrl
         h1 $ titleSnippet language
         p $ do
-            form ! method "post" ! langAction language "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $
+            form ! method "post" ! langAction' language "practice/closefix?redir1=practice&redir2=new" ! class_ "inline" $
                 button ! type_ "submit" $ quitAndRestartPracticeCommandSnippet language
             span " •|||• "
-            form ! method "post" ! langAction language "practice/closefix" ! class_ "inline" $
+            form ! method "post" ! langAction' language "practice/closefix" ! class_ "inline" $
                 button ! type_ "submit" $ backHomeLinkTextSnippet language
         p $ askQuestionSnippet language nth ofAll
-        form ! langAction language "/question" ! method "post" $ do
+        form ! langAction' language "/question" ! method "post" $ do
             label $ toHtml $ inWhichLanguageSnippet language Hu
             span $ toHtml hu
             br

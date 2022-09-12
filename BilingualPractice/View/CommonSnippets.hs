@@ -3,8 +3,9 @@
 module BilingualPractice.View.CommonSnippets where
 
 import BilingualPractice.Model.ViewModel (view)
-import BilingualPractice.View.LanguageHelper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink, langLink')
 import BilingualPractice.Language (Language (..))
+import Framework.Url (Url)
 import Data.ReflectionX (allInhabitants)
 import Text.Blaze.Html5 (Html, div, span, AttributeValue)
 import Prelude hiding (div, span)
@@ -66,3 +67,11 @@ languageFlagLink :: Language -> AttributeValue -> Language -> Html
 languageFlagLink how url which
     | how == which = span $ view how which
     | otherwise    = langLink which url $ view how
+
+languageSelectionFlagBarSnippet' :: Language -> Url -> Html
+languageSelectionFlagBarSnippet' language url = div $ sequence_ $ intersperse (span "|") $ languageFlagLink' language url <$> allInhabitants
+
+languageFlagLink' :: Language -> Url -> Language -> Html
+languageFlagLink' how url which
+    | how == which = span $ view how which
+    | otherwise    = langLink' which url $ view how

@@ -2,20 +2,21 @@
 
 module BilingualPractice.View.Home.ErrorView (errorView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet')
 import BilingualPractice.Model.ViewModel (view)
+import Framework.Url (Url)
 import BilingualPractice.Model.Error (Error)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink, langAction)
+import BilingualPractice.View.LanguageHelper (langLink', langAction')
 
 import Prelude hiding (head, span, div)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Data.Bool (bool)
 
-errorView :: Error -> Language -> AttributeValue -> Html
+errorView :: Error -> Language -> Url -> Html
 errorView err language selfUrl = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
@@ -24,27 +25,27 @@ errorView err language selfUrl = docTypeHtml ! lang (languageAttrValue language)
         link ! rel "stylesheet" ! href "/style/form.css"
         title $ titleSnippet language
     body $ do
-        languageSelectionFlagBarSnippet language selfUrl
+        languageSelectionFlagBarSnippet' language selfUrl
         h1 $ titleSnippet language
         ul $ do
             li $ do
                 strong $ lexiconDefiniendumSnippet language
                 span $ lexiconDefinitorSnippet language
                 ul $ do
-                    langLink language "/dump" wholeDumpLinkTextSnippet
+                    langLink' language "/dump" wholeDumpLinkTextSnippet
                     span $ wholeDumpExplanationSnippet language
                     li $ do
-                        langLink language "/rand" randomSelectionLinkTextSnippet
+                        langLink' language "/rand" randomSelectionLinkTextSnippet
                         span $ randomSelectionExplanationSnippet language
             li $ do
                 strong $ practicesDefiniendumSnippet language
                 span $ practicesDefinitorSnippet language
                 ul $ do
                     li $ do
-                        langLink language "/practice/new" newPracticeLinkTextSnippet
+                        langLink' language "/practice/new" newPracticeLinkTextSnippet
                         span $ newPracticeExplanationSnippet language
                     li $ do
-                        langLink language "/practice/index" indexPracticeLinkTextSnippet
+                        langLink' language "/practice/index" indexPracticeLinkTextSnippet
                         span $ indexPracticeExplanationSnippet language
             li $ do
                 strong $ usersDefiniendumSnippet language
@@ -56,7 +57,7 @@ errorView err language selfUrl = docTypeHtml ! lang (languageAttrValue language)
                 ul $ do
                     li $ do
                         span $ disjunctionWord1Snippet language
-                        langLink language "/practice/new" tooStrictFilteringHintSnippet
+                        langLink' language "/practice/new" tooStrictFilteringHintSnippet
                     li $ do
                         span $ disjunctionWord2Snippet language
                         emptyDatabaseHintSnippet language
@@ -64,7 +65,7 @@ errorView err language selfUrl = docTypeHtml ! lang (languageAttrValue language)
                 span $ inconsistentTraversalErrorCaseHeadingSnippet language
                 ul $ do
                     li $
-                        form ! method "post" ! langAction language "/practice/closefix" ! class_ "inline" $
+                        form ! method "post" ! langAction' language "/practice/closefix" ! class_ "inline" $
                             button ! type_ "submit" $ closeFixButtonLabelSnippet language
             li $ noProblemTextSnippet language
 

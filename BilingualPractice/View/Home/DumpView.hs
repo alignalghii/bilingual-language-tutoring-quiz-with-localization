@@ -2,20 +2,21 @@
 
 module BilingualPractice.View.Home.DumpView (dumpView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, backHomeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet', backHomeLinkTextSnippet, askLinguisticalUnitSnippet, askDifficultyLevelSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink')
 
 import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry (..))
 import BilingualPractice.Model.ViewModel (view)
+import Framework.Url (Url)
 import Prelude hiding (head)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, span, form)
 import Control.Monad (forM_)
 
-dumpView :: Language -> AttributeValue -> [LexiconEntry] -> Html
+dumpView :: Language -> Url -> [LexiconEntry] -> Html
 dumpView language selfUrl vocabularyData = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
@@ -23,10 +24,10 @@ dumpView language selfUrl vocabularyData = docTypeHtml ! lang (languageAttrValue
         link ! rel "stylesheet" ! href "/style/table.css"
         title $ titleSnippet language
     body $ do
-        languageSelectionFlagBarSnippet language selfUrl
+        languageSelectionFlagBarSnippet' language selfUrl
         h1 $ titleSnippet language
         p $
-            langLink language "/" backHomeLinkTextSnippet
+            langLink' language "/" backHomeLinkTextSnippet
         table $ do
             tr $ do
                 th $ view language Hu

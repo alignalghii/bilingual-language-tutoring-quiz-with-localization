@@ -2,45 +2,46 @@
 
 module BilingualPractice.View.Home.HomeView (homeView) where
 
-import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet, portfolioLinkTextSnippet)
+import BilingualPractice.View.CommonSnippets (appTitleSnippet, languageSelectionFlagBarSnippet', portfolioLinkTextSnippet)
 import BilingualPractice.Language (Language (..), languageAttrValue)
+import Framework.Url (Url)
 import Data.String (IsString)
 
-import BilingualPractice.View.LanguageHelper (langLink)
+import BilingualPractice.View.LanguageHelper (langLink')
 
 import Prelude hiding (head, span)
 import Text.Blaze.Html5 as H hiding (map)
 import Text.Blaze.Html5.Attributes as HA hiding (title, form, span)
 import Data.Bool (bool)
 
-homeView :: Language -> AttributeValue -> Html
+homeView :: Language -> Url -> Html
 homeView language selfUrl = docTypeHtml ! lang (languageAttrValue language) $ do
     head $ do
         meta ! charset "UTF-8"
         link ! rel "icon" ! href "/img/favicon.ico"
         title $ titleSnippet language
     body $ do
-        languageSelectionFlagBarSnippet language selfUrl
+        languageSelectionFlagBarSnippet' language selfUrl
         h1 $ titleSnippet language
         ul $ do
             li $ do
                 strong $ lexiconDefiniendumSnippet language
                 span $ lexiconDefinitorSnippet language
                 ul $ do
-                    langLink language "/dump" wholeDumpLinkTextSnippet
+                    langLink' language "/dump" wholeDumpLinkTextSnippet
                     span $ wholeDumpExplanationSnippet language
                     li $ do
-                        langLink language "/rand" randomSelectionLinkTextSnippet
+                        langLink' language "/rand" randomSelectionLinkTextSnippet
                         span $ randomSelectionExplanationSnippet language
             li $ do
                 strong $ practicesDefiniendumSnippet language
                 span $ practicesDefinitorSnippet language
                 ul $ do
                     li $ do
-                        langLink language "/practice/new" newPracticeLinkTextSnippet
+                        langLink' language "/practice/new" newPracticeLinkTextSnippet
                         span $ newPracticeExplanationSnippet language
                     li $ do
-                        langLink language "/practice/index" indexPracticeLinkTextSnippet
+                        langLink' language "/practice/index" indexPracticeLinkTextSnippet
                         span $ indexPracticeExplanationSnippet language
             li $ do
                 strong $ usersDefiniendumSnippet language
