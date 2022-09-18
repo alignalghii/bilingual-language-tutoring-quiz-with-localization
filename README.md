@@ -1,5 +1,5 @@
 ---
-[[To project source]](#top) •|||• [[See live web app]](http://bilingual.curlgrep-phantom-funspec.hu:3000) •|||• [[Back to central personal homepage]](https://alignalghii.github.io)
+[[To project source]](#top) •|||• [[See live web app]](http://bilingual.curlgrep-phantom-funspec.hu:3003) •|||• [[Back to central personal homepage]](https://alignalghii.github.io)
 
 ---
 
@@ -9,7 +9,7 @@
 
 This small web app is a simple, quiz-like self-learning tool to practice foreign-languages phrases and words (here: helping the practice activity of Hungarian pupils in their learning English).
 
-[You can see and try it here](http://bilingual.curlgrep-phantom-funspec.hu:3000), the labels and explanations are all in English.
+[You can see and try it here](http://bilingual.curlgrep-phantom-funspec.hu:3003), the labels and explanations are all in English.
 
 ## Developer documentation
 
