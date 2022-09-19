@@ -1,7 +1,8 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-module BilingualPractice.Model.RelationalBusinessLogic where
+module BilingualPractice.Model.RelationalBusinessLogic (module BilingualPractice.Model.RelationalBusinessLogic, module BilingualPractice.Model.Relation.LexiconEntry) where
 
+import BilingualPractice.Model.Relation.LexiconEntry
 import BilingualPractice.Model.Grammar.Numeral (numerals_en, numerals_hu)
 import Data.Property (matchField)
 import Data.Time (UTCTime)
@@ -10,14 +11,8 @@ import Data.List (zipWith4, (\\))
 import Data.Bool (bool)
 
 
-data LinguisticalUnit = LUNumber | LUWord | LUPhrase | LUSentence deriving (Eq, Read, Show, Bounded, Enum)
-
-data Difficulty = Easy | MiddleLevel | Difficult deriving (Eq, Read, Show, Bounded, Enum)
-
-data LexiconEntry = LxcE {hu, en :: String, entity :: LinguisticalUnit, difficulty :: Difficulty} deriving (Read, Show) -- Eq
-
 numeralsRelation :: [LexiconEntry]
-numeralsRelation = zipWith4 LxcE numerals_hu numerals_en  (repeat LUNumber) (repeat Easy)
+numeralsRelation = zipWith4 LexiconEntry numerals_hu numerals_en  (repeat LUNumber) (repeat Easy)
 
  -- @TODO use a multi-value approach like >>= and use `findCorrectTranslations` instead:
  -- it should be more roboust to potential later lexicon streamlingings!
@@ -54,7 +49,7 @@ conferPracticeCertificate lexicon personalAnswers = diffingTimes $ map (conferAn
 --pairingUp AnsQu {ansHu, ansEn, qst1Time, ansTime} LxcE {hu, en, entity, difficulty} = QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
 conferAnswer :: [LexiconEntry] -> AnsweredQuestion -> QuestionAnswerMatch
-conferAnswer lexicon AnsQu {ansHu, ansEn, qst1Time, ansTime} = let LxcE {hu, en, entity, difficulty} = findCorrectTranslation lexicon ansHu
+conferAnswer lexicon AnsQu {ansHu, ansEn, qst1Time, ansTime} = let (hu, en, entity, difficulty) = lexiconEntryAsTuple $ findCorrectTranslation lexicon ansHu
                                                                in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
 --conferAnswers :: [LexiconEntry] -> AnsweredQuestion -> [QuestionAnswerMatch]

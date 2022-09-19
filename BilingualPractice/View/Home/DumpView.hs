@@ -8,7 +8,7 @@ import Data.String (IsString)
 
 import BilingualPractice.View.LanguageHelper (langLink')
 
-import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry (..))
+import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, lexiconEntryAsTuple)
 import BilingualPractice.Model.ViewModel (view)
 import Framework.Url (Url)
 import Prelude hiding (head)
@@ -34,7 +34,7 @@ dumpView language selfUrl vocabularyData = docTypeHtml ! lang (languageAttrValue
                 th $ view language En
                 th $ askLinguisticalUnitSnippet language
                 th $ askDifficultyLevelSnippet  language
-            forM_ vocabularyData $ \ LxcE {en, hu, entity, difficulty} -> do
+            forM_ (lexiconEntryAsTuple <$> vocabularyData) $ \(en, hu, entity, difficulty) -> do
                 tr $ do
                     td $ toHtml hu
                     td $ toHtml en
