@@ -1,9 +1,10 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-module BilingualPractice.Model.RelationalBusinessLogic (module BilingualPractice.Model.RelationalBusinessLogic, module BilingualPractice.Model.Relation.LexiconEntry, module BilingualPractice.Model.Relation.Practice) where
+module BilingualPractice.Model.RelationalBusinessLogic (module BilingualPractice.Model.RelationalBusinessLogic, module BilingualPractice.Model.Relation.LexiconEntry, module BilingualPractice.Model.Relation.Practice, module BilingualPractice.Model.Relation.AnsweredQuestion) where
 
 import BilingualPractice.Model.Relation.LexiconEntry
 import BilingualPractice.Model.Relation.Practice
+import BilingualPractice.Model.Relation.AnsweredQuestion
 
 import BilingualPractice.Model.Grammar.Numeral (numerals_en, numerals_hu)
 import Data.Property (matchField)
@@ -25,7 +26,7 @@ findCorrectTranslation = flip $ filterIt_unsafe . matchField hu --head $ findCor
 --findCorrectTranslations lexicon sameHu = filter (matchField hu sameHu) lexicon
 
 
-data AnsweredQuestion = AnsQu {ansHu, ansEn :: String, qst1Time, ansTime :: UTCTime} deriving (Read, Show) -- Eq
+-- data AnsweredQuestion = AnsQu {ansHu, ansEn :: String, qst1Time, ansTime :: UTCTime} deriving (Read, Show) -- Eq
 
 data QuestionAnswerMatch = QuAnsMtch {dictHu, dictEn, yourEn :: String, mark :: Bool, askedAtTime, answeredAtTime :: UTCTime, dictEntity :: LinguisticalUnit, dictDifficulty :: Difficulty}
 
@@ -51,8 +52,8 @@ conferPracticeCertificate lexicon personalAnswers = diffingTimes $ map (conferAn
 --pairingUp AnsQu {ansHu, ansEn, qst1Time, ansTime} LxcE {hu, en, entity, difficulty} = QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
 conferAnswer :: [LexiconEntry] -> AnsweredQuestion -> QuestionAnswerMatch
-conferAnswer lexicon AnsQu {ansHu, ansEn, qst1Time, ansTime} = let (hu, en, entity, difficulty) = lexiconEntryAsTuple $ findCorrectTranslation lexicon ansHu
-                                                               in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
+conferAnswer lexicon (AnsweredQuestion ansHu ansEn qst1Time ansTime) = let (hu, en, entity, difficulty) = lexiconEntryAsTuple $ findCorrectTranslation lexicon ansHu
+                                                                       in QuAnsMtch {dictHu = hu, dictEn = en, yourEn = ansEn, mark = ansEn == en, askedAtTime = qst1Time, answeredAtTime = ansTime, dictEntity = entity, dictDifficulty = difficulty}
 
 --conferAnswers :: [LexiconEntry] -> AnsweredQuestion -> [QuestionAnswerMatch]
 --conferAnswers lexicon answer = pairingUp answer <$> findCorrectTranslations lexicon (ansHu answer)

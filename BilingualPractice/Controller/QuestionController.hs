@@ -39,14 +39,14 @@ receiveAnswerForQuestion lang = do
     prcStartTime <- liftIO getPracticeStart_unsafe
     liftIO $ do
         ansTime  <- getCurrentTime
-        modifySession $ \s -> s {personal = personal s ++ [AnsQu {ansHu, ansEn, qst1Time = prcStartTime, ansTime}]}
+        modifySession $ \s -> s {personal = personal s ++ [AnsweredQuestion ansHu ansEn prcStartTime ansTime]}
     langRedirect' lang "/question"
 
 announceResult :: Language -> Url -> [LexiconEntry] -> [AnsweredQuestion] -> ActionM ()
 announceResult lang selfUrl etalon personal = do
     let lexicon = etalon -- lexicon <- liftIO readExtendedLexiconTable
     case personal of
-        AnsQu {qst1Time = prcStartTime} : _ -> do
+        AnsweredQuestion _ _ prcStartTime _ : _ -> do
             timeZone <- liftIO $ do
                 insertAsNewPractice prcStartTime
                 saveAnswers personal

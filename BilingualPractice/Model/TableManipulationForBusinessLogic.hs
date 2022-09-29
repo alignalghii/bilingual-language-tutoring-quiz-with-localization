@@ -2,7 +2,7 @@
 
 module BilingualPractice.Model.TableManipulationForBusinessLogic where
 
-import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (qst1Time), numeralsRelation, Practice (..), prcStartTime, Session (..))
+import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion, qst1Time, numeralsRelation, Practice (..), prcStartTime, Session (..))
 import Database.SimpleHackDBMS.FileStorage (readTable, writeTable, truncateTable, insertIntoTable, appendToTable, updateTable, deleteFromTable)
 import Data.Persistence (writeData, writeData_typDed, readData, modifyData, modifyData_typDed)
 import Data.Property (matchField)
