@@ -7,3 +7,5 @@ var/*.hs
 !var/.gitkeep
 _obsolete
 test/*.archive
+*.dyn_hi
+*.dyn_o
