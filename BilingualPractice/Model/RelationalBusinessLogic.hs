@@ -1,8 +1,10 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-module BilingualPractice.Model.RelationalBusinessLogic (module BilingualPractice.Model.RelationalBusinessLogic, module BilingualPractice.Model.Relation.LexiconEntry) where
+module BilingualPractice.Model.RelationalBusinessLogic (module BilingualPractice.Model.RelationalBusinessLogic, module BilingualPractice.Model.Relation.LexiconEntry, module BilingualPractice.Model.Relation.Practice) where
 
 import BilingualPractice.Model.Relation.LexiconEntry
+import BilingualPractice.Model.Relation.Practice
+
 import BilingualPractice.Model.Grammar.Numeral (numerals_en, numerals_hu)
 import Data.Property (matchField)
 import Data.Time (UTCTime)
@@ -60,7 +62,7 @@ diffingTimes []       = []
 diffingTimes (m : ms) = m : diffingTimes (map (\m' -> m' {askedAtTime = answeredAtTime m}) ms)
 
 
-data Practice = Prc {prcStartTime :: UTCTime, isOpen :: Bool} deriving (Read, Show)
+-- data Practice = Prc {prcStartTime :: UTCTime, isOpen :: Bool} deriving (Read, Show)
 
 
 data Session = Sssn {etalon :: [LexiconEntry], personal :: [AnsweredQuestion], maybePracticeStart :: Maybe UTCTime} deriving (Read, Show)

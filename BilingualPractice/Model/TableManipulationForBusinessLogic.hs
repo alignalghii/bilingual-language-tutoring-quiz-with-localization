@@ -2,7 +2,7 @@
 
 module BilingualPractice.Model.TableManipulationForBusinessLogic where
 
-import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (qst1Time), numeralsRelation, Practice (..), Session (..))
+import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion (qst1Time), numeralsRelation, Practice (..), prcStartTime, Session (..))
 import Database.SimpleHackDBMS.FileStorage (readTable, writeTable, truncateTable, insertIntoTable, appendToTable, updateTable, deleteFromTable)
 import Data.Persistence (writeData, writeData_typDed, readData, modifyData, modifyData_typDed)
 import Data.Property (matchField)
@@ -61,7 +61,7 @@ closePracticeStart = do
     return $ isJust mbStart
 
 insertAsNewPractice :: UTCTime -> IO ()
-insertAsNewPractice prcStartTime = insertIntoTable "practice" Prc {prcStartTime, isOpen = True}
+insertAsNewPractice prcStartTime = insertIntoTable "practice" $ Practice prcStartTime True
 
 saveAnswers :: [AnsweredQuestion] -> IO [AnsweredQuestion]
 saveAnswers = appendToTable "answer"

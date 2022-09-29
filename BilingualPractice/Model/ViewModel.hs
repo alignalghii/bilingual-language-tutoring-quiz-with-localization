@@ -83,7 +83,7 @@ styleMark = bool "wrong" "ok"
 data PracticeView = PrcVw {prcStartTimeId :: UTCTime, prcStartTimeView :: String, questionsCount :: Int}
 
 viewPractice :: TimeZone -> [AnsweredQuestion] -> Practice -> PracticeView
-viewPractice timeZone answers Prc {prcStartTime} = PrcVw {prcStartTimeId = prcStartTime, prcStartTimeView = keepDateAbbrevTime' timeZone prcStartTime, questionsCount = length $ filter (matchField qst1Time prcStartTime) answers}
+viewPractice timeZone answers (Practice prcStartTime _) = PrcVw {prcStartTimeId = prcStartTime, prcStartTimeView = keepDateAbbrevTime' timeZone prcStartTime, questionsCount = length $ filter (matchField qst1Time prcStartTime) answers}
 
 conferAndViewCertificate :: Language -> TimeZone -> [LexiconEntry] -> [AnsweredQuestion] -> [QuestionAnswerMatchView]
 conferAndViewCertificate lang timeZone lexicon personalAnswers = viewMatch lang timeZone <$> conferPracticeCertificate lexicon personalAnswers
