@@ -11,9 +11,11 @@ import Data.Time (UTCTime, getCurrentTime)
 import Data.Maybe (isJust, fromJust)
 import Control.Monad (void)
 
+import Database.Persist.Sqlite (selectList, entityVal)
+import BilingualPractice.Model.EstablishBackendAndConnection (runConnection)
 
 readLexiconTable, readExtendedLexiconTable :: IO [LexiconEntry]
-readLexiconTable         = readTable "lexicon"
+readLexiconTable = runConnection $ map entityVal <$> selectList [] []
 readExtendedLexiconTable = (++ numeralsRelation) <$> readLexiconTable
 
 preparePracticeControllingTables :: [LexiconEntry] -> IO Bool
