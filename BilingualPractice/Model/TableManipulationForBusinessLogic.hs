@@ -2,7 +2,7 @@
 
 module BilingualPractice.Model.TableManipulationForBusinessLogic where
 
-import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion, qst1Time, numeralsRelation, Practice (..), prcStartTime, Session (..))
+import BilingualPractice.Model.RelationalBusinessLogic (LexiconEntry, AnsweredQuestion, qst1Time, numeralsRelation, Practice (..), EntityField (PracticePrcStartTime, AnsweredQuestionQst1Time), AnsweredQuestionId, prcStartTime, Session (..))
 import Database.SimpleHackDBMS.FileStorage (readTable, writeTable, truncateTable, insertIntoTable, appendToTable, updateTable, deleteFromTable)
 import Data.Persistence (writeData, writeData_typDed, readData, modifyData, modifyData_typDed)
 import Data.Property (matchField)
@@ -11,7 +11,7 @@ import Data.Time (UTCTime, getCurrentTime)
 import Data.Maybe (isJust, fromJust)
 import Control.Monad (void)
 
-import Database.Persist.Sqlite (selectList, entityVal)
+import Database.Persist.Sqlite (selectList, entityVal, insert, deleteWhere, (==.))
 import BilingualPractice.Model.EstablishBackendAndConnection (runConnection)
 
 readLexiconTable, readExtendedLexiconTable :: IO [LexiconEntry]
@@ -63,15 +63,19 @@ closePracticeStart = do
     return $ isJust mbStart
 
 insertAsNewPractice :: UTCTime -> IO ()
-insertAsNewPractice prcStartTime = insertIntoTable "practice" $ Practice prcStartTime True
+insertAsNewPractice prcStartTime = void $ runConnection $ insert $ Practice prcStartTime True
+--insertIntoTable "practice" $ Practice prcStartTime True
 
-saveAnswers :: [AnsweredQuestion] -> IO [AnsweredQuestion]
-saveAnswers = appendToTable "answer"
+saveAnswers :: [AnsweredQuestion] -> IO [AnsweredQuestionId]
+saveAnswers = runConnection . mapM insert
+-- appendToTable "answer"
 
 deletePractice :: UTCTime -> IO ()
-deletePractice utc = void $ do
-    deleteFromTable "practice" $ matchField prcStartTime utc
-    deleteFromTable "answer"   $ matchField qst1Time     utc
+deletePractice utc = runConnection $ do
+    deleteWhere [PracticePrcStartTime ==. utc]
+    deleteWhere [AnsweredQuestionQst1Time ==. utc]
+    -- deleteFromTable "practice" $ matchField prcStartTime utc
+    -- deleteFromTable "answer"   $ matchField qst1Time     utc
 
 
 readSession :: IO Session

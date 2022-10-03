@@ -14,7 +14,7 @@ import BilingualPractice.View.Practice.ShowPracticeView  (showPracticeView)
 import BilingualPractice.View.Question.ResultView  (resultView) -- !! @TODO unorthodox
 import Framework.Form (CheckList, makeCheckList, useCheckMatrixCNF)
 import Framework.Url (Url)
-import Database.SimpleHackDBMS.FileStorage (readTable)
+-- import Database.SimpleHackDBMS.FileStorage (readTable)
 import System.RandomX (randQuery)
 import Data.Property (matchField)
 import Web.Scotty (ActionM, param, params)
@@ -29,18 +29,23 @@ import Data.Bool (bool)
 import Control.Monad (liftM2)
 import Control.Monad.Trans (liftIO)
 
+import Database.Persist.Sqlite (selectList, entityVal) -- @TODO use database joins instead of Haskell-hacked list manipulation
+import BilingualPractice.Model.EstablishBackendAndConnection (runConnection)
+
 
 indexPracticeAction :: Language -> Url -> ActionM ()
 indexPracticeAction lang selfUrl = do
-    practices <- liftIO $ readTable "practice"
-    answers   <- liftIO $ readTable "answer"
+    -- @TODO use database joins instead of Haskell-hacked list manipulation
+    practices <- liftIO $ runConnection $ map entityVal <$> selectList [] [] -- readTable "practice"
+    answers   <- liftIO $ runConnection $ map entityVal <$> selectList [] [] -- readTable "answer"
     timeZone  <- liftIO getCurrentTimeZone
     blaze $ indexPracticeView lang selfUrl $ viewPractice timeZone answers <$> practices
 
 showPracticeAction :: Language -> Url -> ActionM ()
 showPracticeAction lang selfUrl = do
     utc <- (read . decode . unpack) <$> param "utc"
-    answers <- liftIO $ filter (matchField qst1Time utc) <$> readTable "answer"
+    answers <- liftIO $ filter (matchField qst1Time utc) <$> runConnection (runConnection $ map entityVal <$> selectList [] []) -- readTable "answer"
+    -- @TODO use database joins instead of Haskell-hacked list manipulation
     lexicon <- liftIO $ readExtendedLexiconTable
     timeZone <- liftIO getCurrentTimeZone
     blaze $ showPracticeView lang selfUrl utc (keepDateAbbrevTime' timeZone utc) $ conferAndViewCertificate lang timeZone lexicon answers
@@ -62,7 +67,7 @@ deletePracticeAction lang = do
 repeatPracticeAction :: Language -> ActionM ()
 repeatPracticeAction lang = do
     utc                <- read <$> param "start"
-    (lexicon, answers) <- liftIO $ liftM2 (,) readExtendedLexiconTable (readTable "answer")
+    (lexicon, answers) <- liftIO $ liftM2 (,) readExtendedLexiconTable $ runConnection $ map entityVal <$> selectList [] [] -- readTable "answer"
     flag               <- liftIO $ preparePracticeControllingTables $ restoreEtalonByAnswers (answersOfPracticeStart utc answers) lexicon
     langRedirect' lang $ bool "/error/navigationinconsistency" "/question" flag
 
